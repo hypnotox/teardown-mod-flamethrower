@@ -1,0 +1,4 @@
+name = Flaminator
+author = HypnoTox
+description = TEST
+tags = Tool
