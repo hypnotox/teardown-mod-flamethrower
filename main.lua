@@ -39,86 +39,53 @@ function tick(dt)
 		if InputDown("lmb") then
 			-- Get fire spawn locations in front of Player
 			local t = GetCameraTransform()
-			local c = TransformToParentPoint(t, Vec(0.3, -0.3, -1))
-			local d = TransformToParentPoint(t, Vec(0.3, -0.3, -2.5))
-			local dd = TransformToParentPoint(t, Vec(0.7, -0.7, -2.8))
-			local ddd = TransformToParentPoint(t, Vec(0.7, .1, -3.1))
-			local dddd = TransformToParentPoint(t, Vec(-0.1, -0.7, -3.4))
-			local ddddd = TransformToParentPoint(t, Vec(-0.1, .1, -3.7))
-			local e = TransformToParentPoint(t, Vec(0.2, -0.2, -4))
-			local ee = TransformToParentPoint(t, Vec(0.7, -0.7, -4.3))
-			local eee = TransformToParentPoint(t, Vec(0.7, 0.3, -4.6))
-			local eeee = TransformToParentPoint(t, Vec(-0.3, -0.7, -4.9))
-			local eeeee = TransformToParentPoint(t, Vec(-0.3, 0.3, -5.2))
-			local f = TransformToParentPoint(t, Vec(0.2, -0.2, -5.5))
-			local ff = TransformToParentPoint(t, Vec(0.8, -0.8, -5.8))
-			local fff = TransformToParentPoint(t, Vec(0.8, 0.4, -6.1))
-			local ffff = TransformToParentPoint(t, Vec(-0.4, -0.8, -6.4))
-			local fffff = TransformToParentPoint(t, Vec(-0.4, 0.4, -6.7))
-			local g = TransformToParentPoint(t, Vec(0.1, -0.1, -7))
-			local gg = TransformToParentPoint(t, Vec(0.8, -0.8, -7.3))
-			local ggg = TransformToParentPoint(t, Vec(0.8, 0.6, -7.6))
-			local gggg = TransformToParentPoint(t, Vec(-0.6, -0.8, -7.9))
-			local ggggg = TransformToParentPoint(t, Vec(-0.6, 0.6, -8.2))
-			local h = TransformToParentPoint(t, Vec(0.1, -0.1, -8.5))
-			local hh = TransformToParentPoint(t, Vec(0.9, -0.9, -8.8))
-			local hhh = TransformToParentPoint(t, Vec(0.9, 0.7, -9.1))
-			local hhhh = TransformToParentPoint(t, Vec(-0.7, -0.9, -9.4))
-			local hhhhh = TransformToParentPoint(t, Vec(-0.7, 0.7, -9.7))
-			local i = TransformToParentPoint(t, Vec(0.1, -0.1, -10))
-			local ii = TransformToParentPoint(t, Vec(0.7, -0.7, -10.5))
-			local iii = TransformToParentPoint(t, Vec(0.7, 0.5, -11))
-			local iiii = TransformToParentPoint(t, Vec(-0.5, -0.7, -11.5))
-			local j = TransformToParentPoint(t, Vec(-0.5, 0.5, -12))
-			local jj = TransformToParentPoint(t, Vec(0, 0, -12.5))
-			local jjj = TransformToParentPoint(t, Vec(0.4, -0.4, -13))
-			local jjjj = TransformToParentPoint(t, Vec(0.4, 0.4, -13.5))
-			local k = TransformToParentPoint(t, Vec(-0.4, -0.4, -14))
-			local kk = TransformToParentPoint(t, Vec(-0.4, 0.4, -14.5))
-			local kkk = TransformToParentPoint(t, Vec(0, 0, -15))
-			local kkkk = TransformToParentPoint(t, Vec(0.3, -0.3, -15.5))
-			local kkkkk = TransformToParentPoint(t, Vec(-0.3, 0.3, -16))
+			local points = {
+				TransformToParentPoint(t, Vec(0.3, -0.3, -1)),
+				TransformToParentPoint(t, Vec(0.3, -0.3, -2.5)),
+				TransformToParentPoint(t, Vec(0.7, -0.7, -2.8)),
+				TransformToParentPoint(t, Vec(0.7, .1, -3.1)),
+				TransformToParentPoint(t, Vec(-0.1, -0.7, -3.4)),
+				TransformToParentPoint(t, Vec(-0.1, .1, -3.7)),
+				TransformToParentPoint(t, Vec(0.2, -0.2, -4)),
+				TransformToParentPoint(t, Vec(0.7, -0.7, -4.3)),
+				TransformToParentPoint(t, Vec(0.7, 0.3, -4.6)),
+				TransformToParentPoint(t, Vec(-0.3, -0.7, -4.9)),
+				TransformToParentPoint(t, Vec(-0.3, 0.3, -5.2)),
+				TransformToParentPoint(t, Vec(0.2, -0.2, -5.5)),
+				TransformToParentPoint(t, Vec(0.8, -0.8, -5.8)),
+				TransformToParentPoint(t, Vec(0.8, 0.4, -6.1)),
+				TransformToParentPoint(t, Vec(-0.4, -0.8, -6.4)),
+				TransformToParentPoint(t, Vec(-0.4, 0.4, -6.7)),
+				TransformToParentPoint(t, Vec(0.1, -0.1, -7)),
+				TransformToParentPoint(t, Vec(0.8, -0.8, -7.3)),
+				TransformToParentPoint(t, Vec(0.8, 0.6, -7.6)),
+				TransformToParentPoint(t, Vec(-0.6, -0.8, -7.9)),
+				TransformToParentPoint(t, Vec(-0.6, 0.6, -8.2)),
+				TransformToParentPoint(t, Vec(0.1, -0.1, -8.5)),
+				TransformToParentPoint(t, Vec(0.9, -0.9, -8.8)),
+				TransformToParentPoint(t, Vec(0.9, 0.7, -9.1)),
+				TransformToParentPoint(t, Vec(-0.7, -0.9, -9.4)),
+				TransformToParentPoint(t, Vec(-0.7, 0.7, -9.7)),
+				TransformToParentPoint(t, Vec(0.1, -0.1, -10)),
+				TransformToParentPoint(t, Vec(0.7, -0.7, -10.5)),
+				TransformToParentPoint(t, Vec(0.7, 0.5, -11)),
+				TransformToParentPoint(t, Vec(-0.5, -0.7, -11.5)),
+				TransformToParentPoint(t, Vec(-0.5, 0.5, -12)),
+				TransformToParentPoint(t, Vec(0, 0, -12.5)),
+				TransformToParentPoint(t, Vec(0.4, -0.4, -13)),
+				TransformToParentPoint(t, Vec(0.4, 0.4, -13.5)),
+				TransformToParentPoint(t, Vec(-0.4, -0.4, -14)),
+				TransformToParentPoint(t, Vec(-0.4, 0.4, -14.5)),
+				TransformToParentPoint(t, Vec(0, 0, -15)),
+				TransformToParentPoint(t, Vec(0.3, -0.3, -15.5)),
+				TransformToParentPoint(t, Vec(-0.3, 0.3, -16)),
+			}
 	
 			-- make tons of fire if something combustible is there
-			SpawnFire(c)
-			SpawnFire(d)
-			SpawnFire(dd)
-			SpawnFire(ddd)
-			SpawnFire(dddd)
-			SpawnFire(ddddd)
-			SpawnFire(e)
-			SpawnFire(ee)
-			SpawnFire(eee)
-			SpawnFire(eeee)
-			SpawnFire(eeeee)
-			SpawnFire(f)
-			SpawnFire(ff)
-			SpawnFire(fff)
-			SpawnFire(ffff)
-			SpawnFire(fffff)
-			SpawnFire(g)
-			SpawnFire(gg)
-			SpawnFire(ggg)
-			SpawnFire(gggg)
-			SpawnFire(ggggg)
-			SpawnFire(h)
-			SpawnFire(hh)
-			SpawnFire(hhh)
-			SpawnFire(hhhh)
-			SpawnFire(hhhhh)
-			SpawnFire(i)
-			SpawnFire(ii)
-			SpawnFire(iii)
-			SpawnFire(iiii)
-			SpawnFire(j)
-			SpawnFire(jj)
-			SpawnFire(jjj)
-			SpawnFire(jjjj)
-			SpawnFire(k)
-			SpawnFire(kk)
-			SpawnFire(kkk)
-			SpawnFire(kkkk)
-			SpawnFire(kkkkk)
+			for _, p in ipairs(points) do
+				SpawnFire(p)
+			end
+
 			PointLight(c, 1, 0.7, 0.3, 0.40)
 			PointLight(d, 1, 0.7, 0.3, 0.40)
 			PointLight(e, 1, 0.7, 0.3, 0.40)
@@ -138,15 +105,7 @@ function update(dt)
     if GetString("game.player.tool") == "flaminator" and GetBool("game.player.canusetool") then
         -- Compute hit points and front direction of Player Weapon in world space
         local t = GetCameraTransform()
-        local tb = GetToolBody()
-        local tbt = GetBodyTransform(tb)
-        local pos = tbt.pos
-        local dir = TransformToParentVec(tbt, Vec(-0.02, 0.02, -1))
-        local hit, dist, normal, shape = QueryRaycast(pos, dir, 9.8, .15)
-        local p = TransformToParentPoint(t, Vec(.35, -.3, -1.55))
-        local q = TransformToParentPoint(t, Vec(.35, -.3, -1.30))
         local pp = TransformToParentPoint(t, Vec(.45, -.5, -1.65))
-        local qq = TransformToParentPoint(t, Vec(.45, -.5, -4))
         local d = TransformToParentVec(t, Vec(-0.07, .06, -1))
 
         if InputDown("lmb") then -- Flaminator Flame Effects
