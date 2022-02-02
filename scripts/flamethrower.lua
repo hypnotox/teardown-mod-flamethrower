@@ -83,9 +83,7 @@ function Flamethrower:spawnNozzleFlameParticles()
     local camera = GetCameraTransform()
     local nozzle = TransformToParentTransform(camera, Transform(VecAdd(self.nozzleOffset, Vec(0, -0.05, 0))))
     local direction = TransformToParentVec(nozzle, Vec(0, 1, -1))
-
-    local playerVelocity = GetPlayerVelocity()
-    local flameVelocity = VecAdd(playerVelocity, VecScale(direction, 0.01))
+    local flameVelocity = VecScale(direction, 0.01)
 
     local flameVelocityHigh = VecAdd(flameVelocity, VecScale(direction, 0.1))
     local flameVelocityMedium = VecAdd(flameVelocity, VecScale(direction, 0.05))
