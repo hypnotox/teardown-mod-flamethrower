@@ -14,7 +14,7 @@ end
 
 function Flame:tick(dt, distance)
     local size = self.distance / 8
-    PointLight(self.transform.pos, 1, 0.7, 0.3, size)
+    PointLight(self.transform.pos, 1, 0.3, 0.1, size / 2)
 
     for j = 1, 10, 1 do
         local point = self:randomPoint(size)
