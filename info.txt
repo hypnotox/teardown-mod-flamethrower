@@ -1,4 +1,4 @@
-name = Flaminator
+name = Common Flamethrower
 author = HypnoTox
-description = TEST
+description = A flamethrower that tries to be fairly realistic, burns like hell. If you have any suggestions please comment.
 tags = Tool
