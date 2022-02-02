@@ -54,14 +54,16 @@ function emulateFlames(dt)
 
         -- Get fire spawn locations in front of Player
         local camera = GetCameraTransform()
-        local fwd = TransformToParentVec(camera, Vec(0, 0, -1))
-        local hit, dist, normal, shape = QueryRaycast(camera.pos, fwd, maxFlameDist)
-        local hitPoint = Transform(VecAdd(camera.pos, VecScale(fwd, dist)), camera.rot)
+        local nozzle = TransformToParentTransform(camera, Transform(Vec(0.3, -0.3, -1.2)))
+        local fwd = TransformToParentVec(nozzle, Vec(0, 0, -1))
+        local hit, dist, normal, shape = QueryRaycast(nozzle.pos, fwd, maxFlameDist)
+        local hitPoint = Transform(VecAdd(nozzle.pos, VecScale(fwd, dist)), nozzle.rot)
 
         if flameCooldown <= 0 then
             table.insert(flames, {
-                ['transform'] = TransformCopy(camera),
-                ['distance'] = 0
+                ['transform'] = TransformCopy(nozzle),
+                ['distance'] = 0,
+                ['maxDistance'] = dist
             })
         end
     else
@@ -85,7 +87,7 @@ function emulateFlames(dt)
         flame['transform'] = currentTransform
         flame['distance'] = flame['distance'] + distance
 
-        if flame['distance'] > maxFlameDist then
+        if flame['distance'] > flame['maxDistance'] then
             table.remove(flames, i)
         end
     end
@@ -99,33 +101,34 @@ function spawnParticles(dt)
     -- Compute hit points and front direction of Player Weapon in world space
     local camera = GetCameraTransform()
     local nozzle = TransformToParentTransform(camera, Transform(Vec(0.3, -0.3, -1.2)))
-    local d = TransformToParentVec(camera, Vec(-0.07, 0.06, -1))
+    local direction = TransformToParentVec(nozzle, Vec(0, 0, -1))
 
     if InputDown("lmb") then -- Flamethrower Flame Effects
         local playerVelocity = GetPlayerVelocity()
-        playerVelocity = VecAdd(playerVelocity, VecScale(d, -0.1))
+        playerVelocity = VecAdd(playerVelocity, VecScale(direction, -0.1))
         local pvel = VecScale(playerVelocity, .7)
 
         ParticleReset()
-        ParticleSticky(0.1)
-        ParticleCollide(0.01)
+        ParticleSticky(0.2)
+        ParticleCollide(0.1)
         ParticleTile(5)
         ParticleGravity(0, 20)
-        ParticleDrag(0, 0.3)
+        ParticleDrag(0, 0.5)
+        ParticleStretch(20)
 
         -- medium orange to red
         ParticleColor(1, math.random(40, 50) * 0.01, 0, 1, math.random(20, 40) * 0.01, 0)
         ParticleEmissive(1, 0)
         ParticleRadius(0.06, 2)
         ParticleAlpha(1, 0)
-        SpawnParticle(nozzle.pos, VecAdd(pvel, VecScale(d, 30)), 0.7) -- medium orange to red
+        SpawnParticle(nozzle.pos, VecAdd(pvel, VecScale(direction, 30)), 0.7) -- medium orange to red
 
         -- smaller yellow to orange
         ParticleColor(1, math.random(75, 85) * .01, .1, 1, math.random(55, 65) * 0.01, 0.4)
         ParticleEmissive(3, 0)
         ParticleRadius(0.05, 1.5)
         ParticleAlpha(1, 0)
-        SpawnParticle(nozzle.pos, VecAdd(pvel, VecScale(d, 30)), 0.7) -- smaller yellow to orange
+        SpawnParticle(nozzle.pos, VecAdd(pvel, VecScale(direction, 30)), 0.7) -- smaller yellow to orange
 
         -- smallest white to white/yellow
         ParticleColor(1, 1, 0.8, 0.8, 0.8, math.random(50, 60) * 0.01)
@@ -133,7 +136,7 @@ function spawnParticles(dt)
         ParticleTile(3)
         ParticleRadius(0.1, 1.25)
         ParticleAlpha(0.5, 0, "easeout")
-        SpawnParticle(nozzle.pos, VecAdd(pvel, VecScale(d, 30)), 0.7) -- smallest white to white/yellow
+        SpawnParticle(nozzle.pos, VecAdd(pvel, VecScale(direction, 30)), 0.7) -- smallest white to white/yellow
 
         -- bigger black
         ParticleRadius(0.1, 5)
@@ -141,7 +144,7 @@ function spawnParticles(dt)
         ParticleColor(0, 0, 0, 0.1, 0.1, 0.1)
         ParticleTile(14)
         ParticleAlpha(0.6, 0)
-        SpawnParticle(nozzle.pos, VecAdd(pvel, VecScale(d, 30)), 1.8) -- bigger black
+        SpawnParticle(nozzle.pos, VecAdd(pvel, VecScale(direction, 30)), 1.8) -- bigger black
 
         -- Play Flamethrower sound
         PlayLoop(soundFlamethrowerActive, GetPlayerTransform().pos, soundVolume)
