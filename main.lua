@@ -1,23 +1,21 @@
-nozzleOffsetTransform = Transform(Vec(0.3, -0.3, -1.2))
-
 function init()
-    RegisterTool("flamethrower", "Flamethrower", "MOD/vox/Flamethrower.vox")
-    SetBool("game.tool.flamethrower.enabled", true)
-    SetInt("game.tool.flamethrower.ammo", 100)
+    RegisterTool("hypnotox_flamethrower", "Flamethrower", "MOD/vox/Flamethrower.vox")
+    SetBool("game.tool.hypnotox_flamethrower.enabled", true)
+    SetInt("game.tool.hypnotox_flamethrower.ammo", 100)
     soundIncinerate = LoadLoop("sound/incinerate.ogg")
     soundIgnition = LoadSound("sound/ignition.ogg")
     soundExtinguish = LoadSound("sound/extinguish.ogg")
 end
 
 function tick(dt)
-    if GetString("game.player.tool") == "flamethrower" and GetBool("game.player.canusetool") then
+    if GetString("game.player.tool") == "hypnotox_flamethrower" and GetBool("game.player.canusetool") then
         SetBool("hud.aimdot", false)
 
         -- Ignition and Extinguish sound effects for the Flamethrower
-        if GetString("game.player.tool") == "flamethrower" and InputPressed("lmb") then
+        if GetString("game.player.tool") == "hypnotox_flamethrower" and InputPressed("lmb") then
             PlaySound(soundIgnition, GetPlayerTransform().pos, (math.random(50, 60) * 0.01))
         end
-        if GetString("game.player.tool") == "flamethrower" and InputReleased("lmb") then
+        if GetString("game.player.tool") == "hypnotox_flamethrower" and InputReleased("lmb") then
             PlaySound(soundExtinguish, GetPlayerTransform().pos, (math.random(10, 20) * 0.01))
         end
 
@@ -28,21 +26,20 @@ function tick(dt)
 
             -- Get fire spawn locations in front of Player
 			local camera = GetCameraTransform()
-			local nozzle = TransformToParentTransform(camera, nozzleOffsetTransform)
-			local fwd = TransformToParentVec(nozzle, Vec(0, 0, -1))
-			local maxDist = 10;
-			local hit, dist, normal, shape = QueryRaycast(nozzle.pos, fwd, maxDist)
+			local fwd = TransformToParentVec(camera, Vec(0, 0, -1))
+			local maxDist = 15;
+			local hit, dist, normal, shape = QueryRaycast(camera.pos, fwd, maxDist)
+            local hitPoint = Transform(VecAdd(camera.pos, VecScale(fwd, dist)), camera.rot)
 
-            if hit then
-				local hitPoint = Transform(VecAdd(nozzle.pos, VecScale(fwd, dist)), camera.rot)
-				DebugLine(nozzle.pos, hitPoint.pos)
+			for i = 0, dist, 0.2 do
+				local size = i / 5
+				local currentPosition = VecAdd(hitPoint.pos, Vec(0, 0, -i))
 
-				for i = 1, 100, 1 do
-					local point = randomPoint(hitPoint.pos, 1)
+				for j = 1, 20, 1 do
+					local point = randomPoint(hitPoint.pos, size)
 					SpawnFire(point)
-                    DebugCross(point)
 				end
-            end
+			end
         else
             -- Resting Tool Position
             local offset = Transform(Vec(0.3, -0.3, -.74))
@@ -70,11 +67,10 @@ function randomPoint(offsetFrom, radius)
 end
 
 function update(dt)
-    if GetString("game.player.tool") == "flamethrower" and GetBool("game.player.canusetool") then
+    if GetString("game.player.tool") == "hypnotox_flamethrower" and GetBool("game.player.canusetool") then
         -- Compute hit points and front direction of Player Weapon in world space
         local camera = GetCameraTransform()
-		local nozzle = TransformToParentTransform(camera, nozzleOffsetTransform)
-		DebugCross(nozzle.pos, 0, 255, 0)
+		local nozzle = TransformToParentTransform(camera, Transform(Vec(0.3, -0.3, -1.2)))
         local d = TransformToParentVec(camera, Vec(-0.07, .06, -1))
 
         if InputDown("lmb") then -- Flamethrower Flame Effects
