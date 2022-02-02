@@ -53,7 +53,7 @@ end
 
 function Flamethrower:emulateFlames(dt)
     if InputDown("lmb") then
-        local offset = Transform(Vec(0.3, -0.3, -.71))
+        local offset = Transform(Vec(0.3, -0.3, -0.71))
         SetToolTransform(offset, 0.3)
 
         local camera = GetCameraTransform()
@@ -64,7 +64,7 @@ function Flamethrower:emulateFlames(dt)
 
         table.insert(self.flames, Flame:new(nozzle, dist))
     else
-        local offset = Transform(Vec(0.3, -0.3, -.74))
+        local offset = Transform(Vec(0.3, -0.3, -0.74))
         SetToolTransform(offset, 0.6)
     end
 
