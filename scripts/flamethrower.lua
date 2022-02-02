@@ -4,7 +4,8 @@ Flamethrower = {
     maxFlameDist = 15,
     flameVelocity = 20,
     flames = {},
-    soundVolume = 1
+    soundVolume = 1,
+    nozzleOffset = Vec(0.3, -0.3, -1.1)
 }
 
 function Flamethrower:init()
@@ -20,8 +21,9 @@ function Flamethrower:tick(dt)
     SetBool("hud.aimdot", false)
     self:playSoundsIfNecessary()
     self:setToolPosition()
+    self:spawnNozzleFlameParticles()
+    self:spawnFlameParticles()
     self:emulateFlames(dt)
-    self:spawnParticles()
 end
 
 function Flamethrower:setToolPosition()
@@ -55,7 +57,7 @@ function Flamethrower:emulateFlames(dt)
         SetToolTransform(offset, 0.3)
 
         local camera = GetCameraTransform()
-        local nozzle = TransformToParentTransform(camera, Transform(Vec(0.3, -0.3, -1.3)))
+        local nozzle = TransformToParentTransform(camera, Transform(self.nozzleOffset))
         local fwd = TransformToParentVec(nozzle, Vec(0, 0, -1))
         local hit, dist, normal, shape = QueryRaycast(nozzle.pos, fwd, self.maxFlameDist)
         local hitPoint = Transform(VecAdd(nozzle.pos, VecScale(fwd, dist)), nozzle.rot)
@@ -77,15 +79,52 @@ function Flamethrower:emulateFlames(dt)
     end
 end
 
-function Flamethrower:spawnParticles()
+function Flamethrower:spawnNozzleFlameParticles()
     local camera = GetCameraTransform()
-    local nozzle = TransformToParentTransform(camera, Transform(Vec(0.3, -0.3, -1.3)))
+    local nozzle = TransformToParentTransform(camera, Transform(VecAdd(self.nozzleOffset, Vec(0, -0.05, 0))))
+    local direction = TransformToParentVec(nozzle, Vec(0, 1, -1))
+
+    local playerVelocity = GetPlayerVelocity()
+    local flameVelocity = VecAdd(playerVelocity, VecScale(direction, 0.01))
+
+    local flameVelocityHigh = VecAdd(flameVelocity, VecScale(direction, 0.1))
+    local flameVelocityMedium = VecAdd(flameVelocity, VecScale(direction, 0.05))
+    local flameVelocityLow = VecAdd(flameVelocity, VecScale(direction, 0.025))
+
+    ParticleReset()
+    ParticleSticky(0)
+    ParticleCollide(0)
+    ParticleGravity(0, 10)
+    ParticleDrag(0)
+    ParticleTile(5)
+
+    -- white core
+    ParticleColor(1, math.random(9, 10) / 10, math.random(9, 10) / 10)
+    ParticleEmissive(1, 0)
+    ParticleRadius(0.03, 0.01)
+    ParticleAlpha(0.7, 0)
+    SpawnParticle(nozzle.pos, flameVelocityHigh, 0.1)
+    SpawnParticle(nozzle.pos, flameVelocityMedium, 0.15)
+    SpawnParticle(nozzle.pos, flameVelocityLow, 0.18)
+
+    -- orange tint
+    ParticleColor(1, math.random(28, 44) / 100, 0)
+    ParticleEmissive(1, 0)
+    ParticleRadius(0.05, 0.02)
+    ParticleAlpha(0.7, 0)
+    SpawnParticle(nozzle.pos, flameVelocityHigh, 0.1)
+    SpawnParticle(nozzle.pos, flameVelocityMedium, 0.15)
+    SpawnParticle(nozzle.pos, flameVelocityLow, 0.18)
+end
+
+function Flamethrower:spawnFlameParticles()
+    local camera = GetCameraTransform()
+    local nozzle = TransformToParentTransform(camera, Transform(self.nozzleOffset))
     local direction = TransformToParentVec(nozzle, Vec(0, 0, -1))
 
     if InputDown("lmb") then
         local playerVelocity = GetPlayerVelocity()
-        playerVelocity = VecAdd(playerVelocity, VecScale(direction, -0.1))
-        local flameVelocity = VecScale(playerVelocity, .7)
+        local flameVelocity = VecScale(VecAdd(playerVelocity, VecScale(direction, -0.1)), 0.7)
 
         local flameVelocity30 = VecAdd(flameVelocity, VecScale(direction, 30))
         local flameVelocity25 = VecAdd(flameVelocity, VecScale(direction, 25))
@@ -120,7 +159,7 @@ function Flamethrower:spawnParticles()
         -- red splatter
         ParticleColor(1, math.random(5, 15) / 100, 0)
         ParticleEmissive(3, 0)
-        ParticleRadius(0.04, 1, 'easeout')
+        ParticleRadius(0.03, 1, 'easeout')
         ParticleAlpha(0.2, 0)
         SpawnParticle(nozzle.pos, flameVelocity30, 0.7)
         SpawnParticle(nozzle.pos, flameVelocity25, 0.6)
