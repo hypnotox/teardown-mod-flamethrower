@@ -61,7 +61,6 @@ function tick(dt)
             for j = 1, 20, 1 do
                 local point = randomPoint(currentTransform.pos, size)
                 SpawnFire(point)
-                DebugCross(point)
             end
 
             waft['transform'] = currentTransform
