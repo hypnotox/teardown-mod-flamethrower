@@ -18,6 +18,7 @@ function tick(dt)
     if GetString("game.player.tool") == "hypnotox_flamethrower" and GetBool("game.player.canusetool") then
         SetBool("hud.aimdot", false)
         playSoundsIfNecessary()
+        setToolPosition()
         emulateFlames(dt)
         spawnParticles()
     end
@@ -31,14 +32,31 @@ function randomPoint(offsetFrom, radius)
     return VecAdd(offsetFrom, QuatRotateVec(offsetRotation, Vec(0, 0, offsetLength)))
 end
 
+function setToolPosition()
+    if InputDown("lmb") then
+        -- Minimum Tool Recoil
+        local offset = Transform(Vec(0.3, -0.3, -.71))
+        SetToolTransform(offset, 0.3)
+    else
+        -- Resting Tool Position
+        local offset = Transform(Vec(0.3, -0.3, -.74))
+        SetToolTransform(offset, 0.6)
+    end
+end
+
 function playSoundsIfNecessary()
     -- Ignition and Extinguish sound effects for the Flamethrower
-    if GetString("game.player.tool") == "hypnotox_flamethrower" and InputPressed("lmb") then
+    if InputPressed("lmb") then
         PlaySound(soundFlamethrowerStart, GetPlayerTransform().pos, soundVolume)
         PlaySound(soundFlamethrowerActive, GetPlayerTransform().pos, soundVolume)
     end
-    if GetString("game.player.tool") == "hypnotox_flamethrower" and InputReleased("lmb") then
+
+    if InputReleased("lmb") then
         PlaySound(soundFlamethrowerEnd, GetPlayerTransform().pos, soundVolume)
+    end
+
+    if InputDown("lmb") then
+        PlayLoop(soundFlamethrowerActive, GetPlayerTransform().pos, soundVolume)
     end
 end
 
@@ -54,7 +72,7 @@ function emulateFlames(dt)
 
         -- Get fire spawn locations in front of Player
         local camera = GetCameraTransform()
-        local nozzle = TransformToParentTransform(camera, Transform(Vec(0.3, -0.3, -1.2)))
+        local nozzle = TransformToParentTransform(camera, Transform(Vec(0.3, -0.3, -1.3)))
         local fwd = TransformToParentVec(nozzle, Vec(0, 0, -1))
         local hit, dist, normal, shape = QueryRaycast(nozzle.pos, fwd, maxFlameDist)
         local hitPoint = Transform(VecAdd(nozzle.pos, VecScale(fwd, dist)), nozzle.rot)
@@ -100,53 +118,60 @@ end
 function spawnParticles(dt)
     -- Compute hit points and front direction of Player Weapon in world space
     local camera = GetCameraTransform()
-    local nozzle = TransformToParentTransform(camera, Transform(Vec(0.3, -0.3, -1.2)))
+    local nozzle = TransformToParentTransform(camera, Transform(Vec(0.3, -0.3, -1.3)))
     local direction = TransformToParentVec(nozzle, Vec(0, 0, -1))
 
     if InputDown("lmb") then -- Flamethrower Flame Effects
         local playerVelocity = GetPlayerVelocity()
         playerVelocity = VecAdd(playerVelocity, VecScale(direction, -0.1))
-        local pvel = VecScale(playerVelocity, .7)
+        local flameVelocity = VecScale(playerVelocity, .7)
+
+        local flameVelocity30 = VecAdd(flameVelocity, VecScale(direction, 30))
+        local flameVelocity25 = VecAdd(flameVelocity, VecScale(direction, 25))
+        local flameVelocity20 = VecAdd(flameVelocity, VecScale(direction, 20))
 
         ParticleReset()
-        ParticleSticky(0.2)
+        ParticleSticky(0.1)
         ParticleCollide(0.1)
-        ParticleTile(5)
         ParticleGravity(0, 20)
         ParticleDrag(0, 0.5)
-        ParticleStretch(20)
+        ParticleStretch(10)
+        ParticleTile(5)
 
-        -- medium orange to red
+        -- white core
+        ParticleColor(1, math.random(9, 10) / 10, math.random(9, 10) / 10)
+        ParticleEmissive(1, 0)
+        ParticleRadius(0.02, 0.6, 'easeout')
+        ParticleAlpha(0.5, 0)
+        SpawnParticle(nozzle.pos, flameVelocity30, 0.7)
+        SpawnParticle(nozzle.pos, flameVelocity25, 0.6)
+        SpawnParticle(nozzle.pos, flameVelocity20, 0.5)
+
+        -- orange tint
+        ParticleColor(1, math.random(28, 44) / 100, 0)
+        ParticleEmissive(5, 0)
+        ParticleRadius(0.03, 0.8, 'easeout')
+        ParticleAlpha(1, 0)
+        SpawnParticle(nozzle.pos, flameVelocity30, 0.7)
+        SpawnParticle(nozzle.pos, flameVelocity25, 0.6)
+        SpawnParticle(nozzle.pos, flameVelocity20, 0.5)
+
+        -- red splatter
+        ParticleColor(1, math.random(5, 15) / 100, 0)
+        ParticleEmissive(3, 0)
+        ParticleRadius(0.04, 1, 'easeout')
+        ParticleAlpha(0.2, 0)
+        SpawnParticle(nozzle.pos, flameVelocity30, 0.7)
+        SpawnParticle(nozzle.pos, flameVelocity25, 0.6)
+        SpawnParticle(nozzle.pos, flameVelocity20, 0.5)
+
+        -- red cloud
         ParticleColor(1, math.random(40, 50) * 0.01, 0, 1, math.random(20, 40) * 0.01, 0)
         ParticleEmissive(1, 0)
-        ParticleRadius(0.06, 2)
-        ParticleAlpha(1, 0)
-        SpawnParticle(nozzle.pos, VecAdd(pvel, VecScale(direction, 30)), 0.7) -- medium orange to red
-
-        -- smaller yellow to orange
-        ParticleColor(1, math.random(75, 85) * .01, .1, 1, math.random(55, 65) * 0.01, 0.4)
-        ParticleEmissive(3, 0)
-        ParticleRadius(0.05, 1.5)
-        ParticleAlpha(1, 0)
-        SpawnParticle(nozzle.pos, VecAdd(pvel, VecScale(direction, 30)), 0.7) -- smaller yellow to orange
-
-        -- smallest white to white/yellow
-        ParticleColor(1, 1, 0.8, 0.8, 0.8, math.random(50, 60) * 0.01)
-        ParticleEmissive(5, 0)
-        ParticleTile(3)
-        ParticleRadius(0.1, 1.25)
-        ParticleAlpha(0.5, 0, "easeout")
-        SpawnParticle(nozzle.pos, VecAdd(pvel, VecScale(direction, 30)), 0.7) -- smallest white to white/yellow
-
-        -- bigger black
-        ParticleRadius(0.1, 5)
-        ParticleEmissive(0, 0)
-        ParticleColor(0, 0, 0, 0.1, 0.1, 0.1)
-        ParticleTile(14)
-        ParticleAlpha(0.6, 0)
-        SpawnParticle(nozzle.pos, VecAdd(pvel, VecScale(direction, 30)), 1.8) -- bigger black
-
-        -- Play Flamethrower sound
-        PlayLoop(soundFlamethrowerActive, GetPlayerTransform().pos, soundVolume)
+        ParticleRadius(0.03, 1.2, 'easeout')
+        ParticleAlpha(0.8, 0)
+        SpawnParticle(nozzle.pos, flameVelocity30, 0.7)
+        SpawnParticle(nozzle.pos, flameVelocity25, 0.6)
+        SpawnParticle(nozzle.pos, flameVelocity20, 0.5)
     end
 end
