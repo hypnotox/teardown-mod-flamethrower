@@ -3,14 +3,15 @@ local baseFlameCooldown = 0.2
 local flameCooldown = 0
 local flameVelocity = 20
 local flames = {}
+local soundVolume = 1
 
 function init()
     RegisterTool("hypnotox_flamethrower", "Flamethrower", "MOD/vox/Flamethrower.vox")
     SetBool("game.tool.hypnotox_flamethrower.enabled", true)
     SetInt("game.tool.hypnotox_flamethrower.ammo", 100)
-    soundIncinerate = LoadLoop("sound/incinerate.ogg")
-    soundIgnition = LoadSound("sound/ignition.ogg")
-    soundExtinguish = LoadSound("sound/extinguish.ogg")
+    soundFlamethrowerActive = LoadLoop("sound/flamethrower-active.ogg")
+    soundFlamethrowerStart = LoadSound("sound/flamethrower-start.ogg")
+    soundFlamethrowerEnd = LoadSound("sound/flamethrower-end.ogg")
 end
 
 function tick(dt)
@@ -33,10 +34,11 @@ end
 function playSoundsIfNecessary()
     -- Ignition and Extinguish sound effects for the Flamethrower
     if GetString("game.player.tool") == "hypnotox_flamethrower" and InputPressed("lmb") then
-        PlaySound(soundIgnition, GetPlayerTransform().pos, (math.random(50, 60) * 0.01))
+        PlaySound(soundFlamethrowerStart, GetPlayerTransform().pos, soundVolume)
+        PlaySound(soundFlamethrowerActive, GetPlayerTransform().pos, soundVolume)
     end
     if GetString("game.player.tool") == "hypnotox_flamethrower" and InputReleased("lmb") then
-        PlaySound(soundExtinguish, GetPlayerTransform().pos, (math.random(10, 20) * 0.01))
+        PlaySound(soundFlamethrowerEnd, GetPlayerTransform().pos, soundVolume)
     end
 end
 
@@ -142,6 +144,6 @@ function spawnParticles(dt)
         SpawnParticle(nozzle.pos, VecAdd(pvel, VecScale(d, 30)), 1.8) -- bigger black
 
         -- Play Flamethrower sound
-        PlayLoop(soundIncinerate, GetPlayerTransform().pos, (math.random(5, 7) * 0.1))
+        PlayLoop(soundFlamethrowerActive, GetPlayerTransform().pos, soundVolume)
     end
 end
