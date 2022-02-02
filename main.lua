@@ -1,3 +1,9 @@
+local maxDist = 15
+local waftCooldown = 0.2
+local currentWaftCooldown = 0
+local waftVelocity = 20
+local wafts = {}
+
 function init()
     RegisterTool("hypnotox_flamethrower", "Flamethrower", "MOD/vox/Flamethrower.vox")
     SetBool("game.tool.hypnotox_flamethrower.enabled", true)
@@ -19,58 +25,72 @@ function tick(dt)
             PlaySound(soundExtinguish, GetPlayerTransform().pos, (math.random(10, 20) * 0.01))
         end
 
+        if InputReleased("lmb") then
+            currentWaftCooldown = 0
+        end
+
         if InputDown("lmb") then
             -- Minimum Tool Recoil
             local offset = Transform(Vec(0.3, -0.3, -.71))
             SetToolTransform(offset, 0.3)
 
             -- Get fire spawn locations in front of Player
-			local camera = GetCameraTransform()
-			local fwd = TransformToParentVec(camera, Vec(0, 0, -1))
-			local maxDist = 15;
-			local hit, dist, normal, shape = QueryRaycast(camera.pos, fwd, maxDist)
+            local camera = GetCameraTransform()
+            local fwd = TransformToParentVec(camera, Vec(0, 0, -1))
+            local hit, dist, normal, shape = QueryRaycast(camera.pos, fwd, maxDist)
             local hitPoint = Transform(VecAdd(camera.pos, VecScale(fwd, dist)), camera.rot)
 
-			for i = 0, dist, 0.2 do
-				local size = i / 5
-				local currentPosition = VecAdd(hitPoint.pos, Vec(0, 0, -i))
-
-				for j = 1, 20, 1 do
-					local point = randomPoint(hitPoint.pos, size)
-					SpawnFire(point)
-				end
-			end
+            if currentWaftCooldown <= 0 then
+                table.insert(wafts, {
+                    ['transform'] = TransformCopy(camera),
+                    ['distance'] = 0
+                })
+            end
         else
             -- Resting Tool Position
             local offset = Transform(Vec(0.3, -0.3, -.74))
             SetToolTransform(offset, 0.6)
         end
+
+        local distance = waftVelocity * dt
+
+        for i, waft in ipairs(wafts) do
+            local size = waft['distance'] / 6
+            local currentTransform = TransformToParentTransform(waft['transform'], Transform(Vec(0, 0, -distance)))
+
+            for j = 1, 20, 1 do
+                local point = randomPoint(currentTransform.pos, size)
+                SpawnFire(point)
+                DebugCross(point)
+            end
+
+            waft['transform'] = currentTransform
+            waft['distance'] = waft['distance'] + distance
+
+            if waft['distance'] > maxDist then
+                table.remove(wafts, i)
+            end
+        end
+
+        if currentWaftCooldown > 0 then
+            currentWaftCooldown = currentWaftCooldown - dt
+        end
     end
 end
 
 function randomPoint(offsetFrom, radius)
-	local radius = radius * 100
-	local offsetLength = math.random(-radius, radius) / 100
-	local offsetRotation = QuatEuler(
-		math.random(0, 360),
-		math.random(0, 360),
-		math.random(0, 360)
-	)
+    local radius = radius * 100
+    local offsetLength = math.random(-radius, radius) / 100
+    local offsetRotation = QuatEuler(math.random(0, 360), math.random(0, 360), math.random(0, 360))
 
-	return VecAdd(
-		offsetFrom,
-		QuatRotateVec(
-			offsetRotation,
-			Vec(0, 0, offsetLength)
-		)
-	)
+    return VecAdd(offsetFrom, QuatRotateVec(offsetRotation, Vec(0, 0, offsetLength)))
 end
 
 function update(dt)
     if GetString("game.player.tool") == "hypnotox_flamethrower" and GetBool("game.player.canusetool") then
         -- Compute hit points and front direction of Player Weapon in world space
         local camera = GetCameraTransform()
-		local nozzle = TransformToParentTransform(camera, Transform(Vec(0.3, -0.3, -1.2)))
+        local nozzle = TransformToParentTransform(camera, Transform(Vec(0.3, -0.3, -1.2)))
         local d = TransformToParentVec(camera, Vec(-0.07, .06, -1))
 
         if InputDown("lmb") then -- Flamethrower Flame Effects
