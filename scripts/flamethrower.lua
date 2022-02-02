@@ -59,7 +59,7 @@ function Flamethrower:emulateFlames(dt)
         local camera = GetCameraTransform()
         local nozzle = TransformToParentTransform(camera, Transform(self.nozzleOffset))
         local fwd = TransformToParentVec(nozzle, Vec(0, 0, -1))
-        local hit, dist, normal, shape = QueryRaycast(nozzle.pos, fwd, self.maxFlameDist)
+        local hit, dist, normal, shape = QueryRaycast(nozzle.pos, fwd, self.maxFlameDist, 0.1)
         local hitPoint = Transform(VecAdd(nozzle.pos, VecScale(fwd, dist)), nozzle.rot)
 
         table.insert(self.flames, Flame:new(nozzle, dist))
