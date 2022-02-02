@@ -8,9 +8,9 @@ function init()
     RegisterTool("flamethrower", "Flamethrower", "MOD/vox/Flamethrower.vox")
     SetBool("game.tool.flamethrower.enabled", true)
     SetInt("game.tool.flamethrower.ammo", 100)
-    soundIncinerate = LoadLoop("incinerate.ogg")
-    soundIgnition = LoadSound("ignition.ogg")
-    soundExtinguish = LoadSound("extinguish.ogg")
+    soundIncinerate = LoadLoop("sound/incinerate.ogg")
+    soundIgnition = LoadSound("sound/ignition.ogg")
+    soundExtinguish = LoadSound("sound/extinguish.ogg")
 end
 
 function tick(dt)
