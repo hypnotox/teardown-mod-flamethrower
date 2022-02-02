@@ -1,4 +1,9 @@
 name = Gasoline Flamethrower
 author = HypnoTox
-description = A gasoline flamethrower that tries to be fairly realistic. If you have any suggestions please comment.
+description = A flamethrower that tries to be fairly realistic. 
+
+Currently it's using the default particle system for the flames and a custom implementation to compute which voxels should be burned. The effect should be fairly realistic for a gasoline powered flamethrower.
+
+The mod is in active development and subject to change.
+If you have any suggestions please comment.
 tags = Tool
