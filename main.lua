@@ -8,9 +8,9 @@ function init()
     RegisterTool("flamethrower", "Flamethrower", "MOD/vox/Flamethrower.vox")
     SetBool("game.tool.flamethrower.enabled", true)
     SetInt("game.tool.flamethrower.ammo", 100)
-    soundIncinerate = LoadLoop("incinerate.ogg")
-    soundIgnition = LoadSound("ignition.ogg")
-    soundExtinguish = LoadSound("extinguish.ogg")
+    soundIncinerate = LoadLoop("sound/incinerate.ogg")
+    soundIgnition = LoadSound("sound/ignition.ogg")
+    soundExtinguish = LoadSound("sound/extinguish.ogg")
 end
 
 function tick(dt)
@@ -85,14 +85,6 @@ function tick(dt)
 			for _, p in ipairs(points) do
 				SpawnFire(p)
 			end
-
-			PointLight(c, 1, 0.7, 0.3, 0.40)
-			PointLight(d, 1, 0.7, 0.3, 0.40)
-			PointLight(e, 1, 0.7, 0.3, 0.40)
-			PointLight(f, 1, 0.7, 0.3, 0.40)
-			PointLight(g, 1, 0.7, 0.3, 0.40)
-			PointLight(h, 1, 0.7, 0.3, 0.40)
-			PointLight(i, 1, 0.7, 0.3, 0.40)
 		end
 	end
 end
@@ -105,8 +97,8 @@ function update(dt)
     if GetString("game.player.tool") == "flamethrower" and GetBool("game.player.canusetool") then
         -- Compute hit points and front direction of Player Weapon in world space
         local t = GetCameraTransform()
-        local pp = TransformToParentPoint(t, Vec(.45, -.5, -1.65))
-        local d = TransformToParentVec(t, Vec(-0.07, .06, -1))
+        local pp = TransformToParentPoint(t, Vec(0, 0, 0))
+        local d = TransformToParentVec(t, Vec(0, 0, 0))
 
         if InputDown("lmb") then -- Flamethrower Flame Effects
             local v = GetPlayerVelocity()
