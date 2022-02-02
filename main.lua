@@ -55,8 +55,9 @@ function tick(dt)
         local distance = waftVelocity * dt
 
         for i, waft in ipairs(wafts) do
-            local size = waft['distance'] / 6
+            local size = waft['distance'] / 8
             local currentTransform = TransformToParentTransform(waft['transform'], Transform(Vec(0, 0, -distance)))
+            PointLight(currentTransform.pos, 1, 0.7, 0.3, size)
 
             for j = 1, 20, 1 do
                 local point = randomPoint(currentTransform.pos, size)
