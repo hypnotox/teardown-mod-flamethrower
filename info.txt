@@ -1,4 +1,4 @@
 name = Common Flamethrower
 author = HypnoTox
-description = A flamethrower that tries to be fairly realistic, burns like hell. If you have any suggestions please comment.
+description = A flamethrower that tries to be fairly realistic. If you have any suggestions please comment. This mod is based off of the Plasma Incinerator by BattleBob72.
 tags = Tool
