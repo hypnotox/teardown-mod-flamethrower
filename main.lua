@@ -85,14 +85,6 @@ function tick(dt)
 			for _, p in ipairs(points) do
 				SpawnFire(p)
 			end
-
-			PointLight(c, 1, 0.7, 0.3, 0.40)
-			PointLight(d, 1, 0.7, 0.3, 0.40)
-			PointLight(e, 1, 0.7, 0.3, 0.40)
-			PointLight(f, 1, 0.7, 0.3, 0.40)
-			PointLight(g, 1, 0.7, 0.3, 0.40)
-			PointLight(h, 1, 0.7, 0.3, 0.40)
-			PointLight(i, 1, 0.7, 0.3, 0.40)
 		end
 	end
 end
