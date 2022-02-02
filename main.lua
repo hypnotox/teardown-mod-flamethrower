@@ -5,23 +5,23 @@ power = .1
 cooldownTimer = 0
 
 function init()
-    RegisterTool("flaminator", "Flaminator", "MOD/vox/Flaminator.vox")
-    SetBool("game.tool.flaminator.enabled", true)
-    SetInt("game.tool.flaminator.ammo", 100)
+    RegisterTool("flamethrower", "Flamethrower", "MOD/vox/Flamethrower.vox")
+    SetBool("game.tool.flamethrower.enabled", true)
+    SetInt("game.tool.flamethrower.ammo", 100)
     soundIncinerate = LoadLoop("incinerate.ogg")
     soundIgnition = LoadSound("ignition.ogg")
     soundExtinguish = LoadSound("extinguish.ogg")
 end
 
 function tick(dt)
-	if GetString("game.player.tool") == "flaminator" and GetBool("game.player.canusetool") then
+	if GetString("game.player.tool") == "flamethrower" and GetBool("game.player.canusetool") then
 		SetBool("hud.aimdot", false)
 	
-		-- Ignition and Extinguish sound effects for Plasma and Flaminator
-		if GetString("game.player.tool") == "flaminator" and InputPressed("lmb") then
+		-- Ignition and Extinguish sound effects for the Flamethrower
+		if GetString("game.player.tool") == "flamethrower" and InputPressed("lmb") then
 			PlaySound(soundIgnition, GetPlayerTransform().pos, (math.random(50, 60) * 0.01))
 		end
-		if GetString("game.player.tool") == "flaminator" and InputReleased("lmb") then
+		if GetString("game.player.tool") == "flamethrower" and InputReleased("lmb") then
 			PlaySound(soundExtinguish, GetPlayerTransform().pos, (math.random(10, 20) * 0.01))
 		end
 	
@@ -35,7 +35,7 @@ function tick(dt)
 			SetToolTransform(offset, 0.3)
 		end
 	
-		-- Check if Left Mouse Button is Pressed Down activating Flaminator Flames
+		-- Check if Left Mouse Button is Pressed Down activating Flamethrower Flames
 		if InputDown("lmb") then
 			-- Get fire spawn locations in front of Player
 			local t = GetCameraTransform()
@@ -102,13 +102,13 @@ function update(dt)
         cooldownTimer = cooldownTimer - dt
     end
 
-    if GetString("game.player.tool") == "flaminator" and GetBool("game.player.canusetool") then
+    if GetString("game.player.tool") == "flamethrower" and GetBool("game.player.canusetool") then
         -- Compute hit points and front direction of Player Weapon in world space
         local t = GetCameraTransform()
         local pp = TransformToParentPoint(t, Vec(.45, -.5, -1.65))
         local d = TransformToParentVec(t, Vec(-0.07, .06, -1))
 
-        if InputDown("lmb") then -- Flaminator Flame Effects
+        if InputDown("lmb") then -- Flamethrower Flame Effects
             local v = GetPlayerVelocity()
             v = VecAdd(v, VecScale(d, -.1))
 
@@ -149,7 +149,7 @@ function update(dt)
             ParticleGravity(0, 20)
             ParticleDrag(0, .3)
             SpawnParticle(pp, VecAdd(pvel, VecScale(d, 30)), 1.8) -- bigger black
-            -- Play Flaminator sound
+            -- Play Flamethrower sound
             PlayLoop(soundIncinerate, GetPlayerTransform().pos, (math.random(5, 7) * 0.1))
         end
     end
