@@ -5,5 +5,5 @@ description = A gasoline powered flamethrower that tries to be fairly realistic.
 Currently it's using the default particle system for the flames and a custom implementation to compute which voxels should be burned.
 
 The mod is in active development and subject to change.
-If you have any suggestions please comment.
+If you have any suggestions or come across any bugs/problems please comment.
 tags = Tool
