@@ -1,11 +1,5 @@
 #include "umf.lua"
 
-local function bool(id, invert)
-    id = "savegame.mod." .. id
-    invert = not invert
-    return function() return GetBool(id) == invert end
-end
-
 OptionsMenu {
     title = "Flamethrower",
 	OptionsMenu.Text("thanks to the Precision Flight mod for inspiration for this options panel"),
