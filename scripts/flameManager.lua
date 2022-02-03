@@ -6,16 +6,14 @@ FlameManager = {
 }
 
 function FlameManager:throwFlames()
-    if InputDown("lmb") then
+    if InputDown('usetool') then
         local camera = GetCameraTransform()
         local nozzle = TransformToParentTransform(camera, Transform(FlameManager.nozzleOffset))
         local fwd = TransformToParentVec(nozzle, Vec(0, 0, -1))
-        local hit, dist, normal, shape = QueryRaycast(nozzle.pos, fwd, FlameManager.maxFlameDist, 0.1)
-        local hitPoint = Transform(VecAdd(nozzle.pos, VecScale(fwd, dist)), nozzle.rot)
-        local ammoUsed = Flamethrower.ammoPerSecond * GetTimeStep()
+        local hit, dist = QueryRaycast(nozzle.pos, fwd, FlameManager.maxFlameDist, 0.1)
 
         table.insert(FlameManager.flames, Flame:new(nozzle, dist))
-        Flamethrower:removeAmmo(ammoUsed)
+        Flamethrower:ammoTick(ammoUsed)
     end
 end
 
