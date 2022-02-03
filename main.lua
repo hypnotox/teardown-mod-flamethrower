@@ -3,6 +3,7 @@
 #include "scripts/flameManager.lua"
 #include "scripts/particleManager.lua"
 #include "scripts/soundManager.lua"
+#include "lib/util.lua"
 
 function init()
     Flamethrower:init()
