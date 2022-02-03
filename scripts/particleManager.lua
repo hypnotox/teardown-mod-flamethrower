@@ -20,20 +20,21 @@ function ParticleManager:spawnNozzleFlameParticles()
     -- white core
     ParticleColor(1, math.random(9, 10) / 10, math.random(9, 10) / 10)
     ParticleEmissive(1, 0)
-    ParticleRadius(0.03, 0.01)
+    ParticleRadius(0.04, 0.015)
     ParticleAlpha(0.7, 0)
-    SpawnParticle(nozzle.pos, flameVelocityHigh, 0.1)
-    SpawnParticle(nozzle.pos, flameVelocityMedium, 0.15)
-    SpawnParticle(nozzle.pos, flameVelocityLow, 0.18)
+    SpawnParticle(nozzle.pos, flameVelocityHigh, 0.15)
+    SpawnParticle(nozzle.pos, flameVelocityMedium, 0.2)
+    SpawnParticle(nozzle.pos, flameVelocityLow, 0.25)
 
     -- orange tint
     ParticleColor(1, math.random(28, 44) / 100, 0)
     ParticleEmissive(1, 0)
-    ParticleRadius(0.05, 0.02)
+    ParticleRadius(0.06, 0.015)
     ParticleAlpha(0.7, 0)
-    SpawnParticle(nozzle.pos, flameVelocityHigh, 0.1)
-    SpawnParticle(nozzle.pos, flameVelocityMedium, 0.15)
-    SpawnParticle(nozzle.pos, flameVelocityLow, 0.18)
+    SpawnParticle(nozzle.pos, flameVelocityHigh, 0.15)
+    SpawnParticle(nozzle.pos, flameVelocityMedium, 0.2)
+    SpawnParticle(nozzle.pos, flameVelocityLow, 0.25)
+    PointLight(nozzle.pos, 1, 0.3, 0.1, 0.2)
 end
 
 function ParticleManager:spawnFlameParticles()
@@ -41,7 +42,6 @@ function ParticleManager:spawnFlameParticles()
         local camera = GetCameraTransform()
         local nozzle = TransformToParentTransform(camera, Transform(Flamethrower.nozzleOffset))
         local direction = TransformToParentVec(nozzle, Vec(0, 0, -1))
-        local playerVelocity = GetPlayerVelocity()
         local flameVelocity = VecScale(VecScale(direction, -0.1), 0.7)
 
         local flameVelocity30 = VecAdd(flameVelocity, VecScale(direction, 30))
@@ -58,7 +58,7 @@ function ParticleManager:spawnFlameParticles()
 
         -- white core
         ParticleColor(1, math.random(9, 10) / 10, math.random(9, 10) / 10)
-        ParticleEmissive(1, 0)
+        ParticleEmissive(2, 0)
         ParticleRadius(0.02, 0.6, 'easeout')
         ParticleAlpha(0.5, 0)
         SpawnParticle(nozzle.pos, flameVelocity30, 0.7)
@@ -67,7 +67,7 @@ function ParticleManager:spawnFlameParticles()
 
         -- orange tint
         ParticleColor(1, math.random(28, 44) / 100, 0)
-        ParticleEmissive(5, 0)
+        ParticleEmissive(6, 0)
         ParticleRadius(0.03, 0.8, 'easeout')
         ParticleAlpha(1, 0)
         SpawnParticle(nozzle.pos, flameVelocity30, 0.7)
@@ -76,7 +76,7 @@ function ParticleManager:spawnFlameParticles()
 
         -- red splatter
         ParticleColor(1, math.random(5, 15) / 100, 0)
-        ParticleEmissive(3, 0)
+        ParticleEmissive(4, 0)
         ParticleRadius(0.03, 1, 'easeout')
         ParticleAlpha(0.2, 0)
         SpawnParticle(nozzle.pos, flameVelocity30, 0.7)
@@ -85,7 +85,7 @@ function ParticleManager:spawnFlameParticles()
 
         -- red cloud
         ParticleColor(1, math.random(40, 50) * 0.01, 0, 1, math.random(20, 40) * 0.01, 0)
-        ParticleEmissive(1, 0)
+        ParticleEmissive(3, 0)
         ParticleRadius(0.03, 1.2, 'easeout')
         ParticleAlpha(0.8, 0)
         SpawnParticle(nozzle.pos, flameVelocity30, 0.7)
