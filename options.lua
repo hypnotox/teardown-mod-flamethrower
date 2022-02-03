@@ -1,4 +1,4 @@
-#include "umf.lua"
+#include "lib/umf.lua"
 
 OptionsMenu {
     title = "Flamethrower",
