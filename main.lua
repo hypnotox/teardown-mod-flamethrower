@@ -9,3 +9,9 @@ function tick(dt)
         Flamethrower:tick(dt)
     end
 end
+
+function update()
+    if GetString("game.player.tool") == "hypnotox_flamethrower" and GetBool("game.player.canusetool") then
+        Flamethrower:update()
+    end
+end
