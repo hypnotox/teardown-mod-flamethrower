@@ -17,7 +17,7 @@ function SoundManager:playSoundsIfNecessary()
         PlaySound(self.soundFlamethrowerActive, GetPlayerTransform().pos, self.soundVolume)
     end
 
-    if InputReleased('lmb') then
+    if InputReleased('usetool') then
         PlaySound(self.soundFlamethrowerEnd, GetPlayerTransform().pos, self.soundVolume)
     end
 
