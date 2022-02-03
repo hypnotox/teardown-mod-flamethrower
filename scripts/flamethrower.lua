@@ -5,13 +5,15 @@ Flamethrower = {
     flameVelocity = 20,
     flames = {},
     soundVolume = 1,
-    nozzleOffset = Vec(0.3, -0.3, -1.1)
+    nozzleOffset = Vec(0.3, -0.3, -1.1),
+    ammoPerSecond = 5,
+    maxAmmo = 100
 }
 
 function Flamethrower:init()
     RegisterTool("hypnotox_flamethrower", "Flamethrower", "MOD/vox/Flamethrower.vox")
     SetBool("game.tool.hypnotox_flamethrower.enabled", true)
-    SetInt("game.tool.hypnotox_flamethrower.ammo", 100)
+    SetFloat("game.tool.hypnotox_flamethrower.ammo", self.maxAmmo)
     self.soundFlamethrowerActive = LoadLoop("sound/flamethrower-active.ogg")
     self.soundFlamethrowerStart = LoadSound("sound/flamethrower-start.ogg")
     self.soundFlamethrowerEnd = LoadSound("sound/flamethrower-end.ogg")
@@ -19,19 +21,29 @@ end
 
 function Flamethrower:tick(dt)
     SetBool("hud.aimdot", false)
-    self:playSoundsIfNecessary()
     self:setToolPosition()
-    self:spawnNozzleFlameParticles()
-    self:spawnFlameParticles()
+
+    if GetInt("game.tool.hypnotox_flamethrower.ammo") > 0 then
+        self:playSoundsIfNecessary()
+        self:spawnNozzleFlameParticles()
+        self:spawnFlameParticles()
+    end
+
     self:emulateFlames(dt)
 end
 
+function Flamethrower:update()
+    if GetInt("game.tool.hypnotox_flamethrower.ammo") > 0 then
+        self:throwFlames()
+    end
+end
+
 function Flamethrower:setToolPosition()
-    if InputDown("lmb") then
-        local offset = Transform(Vec(0.3, -0.3, -.71))
+    if InputDown("lmb") and GetInt("game.tool.hypnotox_flamethrower.ammo") > 0 then
+        local offset = Transform(Vec(0.3, -0.3, -0.71))
         SetToolTransform(offset, 0.3)
     else
-        local offset = Transform(Vec(0.3, -0.3, -.74))
+        local offset = Transform(Vec(0.3, -0.3, -0.74))
         SetToolTransform(offset, 0.6)
     end
 end
@@ -51,23 +63,22 @@ function Flamethrower:playSoundsIfNecessary()
     end
 end
 
-function Flamethrower:emulateFlames(dt)
+function Flamethrower:throwFlames()
     if InputDown("lmb") then
-        local offset = Transform(Vec(0.3, -0.3, -0.71))
-        SetToolTransform(offset, 0.3)
-
         local camera = GetCameraTransform()
         local nozzle = TransformToParentTransform(camera, Transform(self.nozzleOffset))
         local fwd = TransformToParentVec(nozzle, Vec(0, 0, -1))
         local hit, dist, normal, shape = QueryRaycast(nozzle.pos, fwd, self.maxFlameDist, 0.1)
         local hitPoint = Transform(VecAdd(nozzle.pos, VecScale(fwd, dist)), nozzle.rot)
+        local ammoLeft = GetFloat("game.tool.hypnotox_flamethrower.ammo")
+        local ammoUsed = (self.ammoPerSecond / 60)
 
         table.insert(self.flames, Flame:new(nozzle, dist))
-    else
-        local offset = Transform(Vec(0.3, -0.3, -0.74))
-        SetToolTransform(offset, 0.6)
+        SetFloat("game.tool.hypnotox_flamethrower.ammo", ammoLeft - ammoUsed)
     end
+end
 
+function Flamethrower:emulateFlames(dt)
     local distance = self.flameVelocity * dt
 
     for i, flame in ipairs(self.flames) do
