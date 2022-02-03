@@ -2,7 +2,6 @@ Flamethrower = {
     maxFlameDist = 15,
     flameVelocity = 20,
     flames = {},
-    soundVolume = 1,
     maxAmmo = 100,
     ammoPerSecond = 5,
     nozzleOffset = Vec(0.3, -0.3, -1.1),
