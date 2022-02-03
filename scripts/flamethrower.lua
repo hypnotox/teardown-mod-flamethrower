@@ -5,9 +5,9 @@ Flamethrower = {
     flameVelocity = 20,
     flames = {},
     soundVolume = 1,
-    nozzleOffset = Vec(0.3, -0.3, -1.1),
+    maxAmmo = 100,
     ammoPerSecond = 5,
-    maxAmmo = 100
+    nozzleOffset = Vec(0.3, -0.3, -1.1),
 }
 
 function Flamethrower:init()
@@ -19,7 +19,7 @@ function Flamethrower:init()
     self.soundFlamethrowerEnd = LoadSound("sound/flamethrower-end.ogg")
 end
 
-function Flamethrower:tick(dt)
+function Flamethrower:tick()
     SetBool("hud.aimdot", false)
     self:setToolPosition()
 
@@ -29,7 +29,7 @@ function Flamethrower:tick(dt)
         self:spawnFlameParticles()
     end
 
-    self:emulateFlames(dt)
+    self:emulateFlames()
 end
 
 function Flamethrower:update()
@@ -71,18 +71,18 @@ function Flamethrower:throwFlames()
         local hit, dist, normal, shape = QueryRaycast(nozzle.pos, fwd, self.maxFlameDist, 0.1)
         local hitPoint = Transform(VecAdd(nozzle.pos, VecScale(fwd, dist)), nozzle.rot)
         local ammoLeft = GetFloat("game.tool.hypnotox_flamethrower.ammo")
-        local ammoUsed = (self.ammoPerSecond / 60)
+        local ammoUsed = self.ammoPerSecond * GetTimeStep()
 
         table.insert(self.flames, Flame:new(nozzle, dist))
         SetFloat("game.tool.hypnotox_flamethrower.ammo", ammoLeft - ammoUsed)
     end
 end
 
-function Flamethrower:emulateFlames(dt)
-    local distance = self.flameVelocity * dt
+function Flamethrower:emulateFlames()
+    local distance = self.flameVelocity * GetTimeStep()
 
     for i, flame in ipairs(self.flames) do
-        flame:tick(dt, distance)
+        flame:tick(distance)
 
         if flame.distance > flame.maxDistance then
             table.remove(self.flames, i)
@@ -128,9 +128,9 @@ end
 
 function Flamethrower:spawnFlameParticles()
     if InputDown("lmb") then
-    local camera = GetCameraTransform()
-    local nozzle = TransformToParentTransform(camera, Transform(self.nozzleOffset))
-    local direction = TransformToParentVec(nozzle, Vec(0, 0, -1))
+        local camera = GetCameraTransform()
+        local nozzle = TransformToParentTransform(camera, Transform(self.nozzleOffset))
+        local direction = TransformToParentVec(nozzle, Vec(0, 0, -1))
         local playerVelocity = GetPlayerVelocity()
         local flameVelocity = VecScale(VecScale(direction, -0.1), 0.7)
 
