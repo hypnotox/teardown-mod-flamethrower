@@ -1,5 +1,5 @@
 SoundManager = {
-    soundVolume = 1,
+    soundVolume = 0.5,
     soundFlamethrowerActive = nil,
     soundFlamethrowerStart = nil,
     soundFlamethrowerEnd = nil
