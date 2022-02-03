@@ -1,4 +1,5 @@
 SoundManager = {
+    soundVolume = 1,
     soundFlamethrowerActive = nil,
     soundFlamethrowerStart = nil,
     soundFlamethrowerEnd = nil
@@ -12,15 +13,15 @@ end
 
 function SoundManager:playSoundsIfNecessary()
     if InputPressed("lmb") then
-        PlaySound(Flamethrower.soundFlamethrowerStart, GetPlayerTransform().pos, Flamethrower.soundVolume)
-        PlaySound(Flamethrower.soundFlamethrowerActive, GetPlayerTransform().pos, Flamethrower.soundVolume)
+        PlaySound(self.soundFlamethrowerStart, GetPlayerTransform().pos, self.soundVolume)
+        PlaySound(self.soundFlamethrowerActive, GetPlayerTransform().pos, self.soundVolume)
     end
 
     if InputReleased("lmb") then
-        PlaySound(Flamethrower.soundFlamethrowerEnd, GetPlayerTransform().pos, Flamethrower.soundVolume)
+        PlaySound(self.soundFlamethrowerEnd, GetPlayerTransform().pos, self.soundVolume)
     end
 
     if InputDown("lmb") then
-        PlayLoop(Flamethrower.soundFlamethrowerActive, GetPlayerTransform().pos, Flamethrower.soundVolume)
+        PlayLoop(self.soundFlamethrowerActive, GetPlayerTransform().pos, self.soundVolume)
     end
 end
