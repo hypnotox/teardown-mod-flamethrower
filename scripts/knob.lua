@@ -11,7 +11,7 @@ function Knob:update()
     knobShape = shapes[2]
     -- DrawShapeOutline(knobShape, 255, 255, 0, 1)
 
-    if InputPressed("lmb") then
+    if InputPressed('usetool') then
         SetShapeEmissiveScale(knobShape, 100)
     end
 

@@ -38,7 +38,7 @@ function ParticleManager:spawnNozzleFlameParticles()
 end
 
 function ParticleManager:spawnFlameParticles()
-    if InputDown("lmb") then
+    if InputDown('usetool') then
         local camera = GetCameraTransform()
         local nozzle = TransformToParentTransform(camera, Transform(Flamethrower.nozzleOffset))
         local direction = TransformToParentVec(nozzle, Vec(0, 0, -1))
