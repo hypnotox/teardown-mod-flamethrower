@@ -14,7 +14,7 @@ end
 
 function Flame:tick(distance)
     local size = self.distance / 8
-    PointLight(self.transform.pos, 1, 0.3, 0.1, size / 2)
+    PointLight(self.transform.pos, 1, 0.3, 0.1, size)
 
     for j = 1, 10, 1 do
         local point = self:randomPoint(size)
@@ -25,8 +25,8 @@ function Flame:tick(distance)
     self.distance = self.distance + distance
 end
 
-function Flame:randomPoint(radius)
-    local radius = radius * 100
+function Flame:randomPoint(r)
+    local radius = r * 100
     local offsetLength = math.random(-radius, radius) / 100
     local offsetRotation = QuatEuler(math.random(0, 360), math.random(0, 360), math.random(0, 360))
 
