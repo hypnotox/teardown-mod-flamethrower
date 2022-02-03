@@ -12,7 +12,7 @@ function Flame:new(nozzle, dist)
     return instance
 end
 
-function Flame:tick(dt, distance)
+function Flame:tick(distance)
     local size = self.distance / 8
     PointLight(self.transform.pos, 1, 0.3, 0.1, size / 2)
 
