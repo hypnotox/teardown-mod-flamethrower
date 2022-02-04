@@ -66,32 +66,32 @@ end
 function Flamethrower:getKnobTransform()
     local tool = GetToolBody()
     local shapes = GetBodyShapes(tool)
+    local shape = shapes[2]
+    local min, max = GetShapeBounds(shape)
+    local center = VecLerp(min, max, 0.5)
     local toolTransform = GetBodyTransform(tool)
-    local transform = TransformCopy(GetShapeWorldTransform(shapes[2]))
-    transform.rot = QuatCopy(toolTransform.rot)
-    transform.pos = TransformToParentPoint(transform, Vec(0.025, 0.025, -0.025))
 
-    return transform
+    return Transform(center, QuatCopy(toolTransform.rot))
 end
 
 function Flamethrower:getFireStarterTransform()
     local tool = GetToolBody()
     local shapes = GetBodyShapes(tool)
+    local shape = shapes[3]
+    local min, max = GetShapeBounds(shape)
+    local center = VecLerp(min, max, 0.5)
     local toolTransform = GetBodyTransform(tool)
-    local transform = TransformCopy(GetShapeWorldTransform(shapes[3]))
-    transform.rot = QuatCopy(toolTransform.rot)
-    transform.pos = TransformToParentPoint(transform, Vec(0.025, 0.025, -0.025))
 
-    return transform
+    return Transform(center, QuatCopy(toolTransform.rot))
 end
 
 function Flamethrower:getNozzleTransform()
     local tool = GetToolBody()
     local shapes = GetBodyShapes(tool)
+    local shape = shapes[4]
+    local min, max = GetShapeBounds(shape)
+    local center = VecLerp(min, max, 0.5)
     local toolTransform = GetBodyTransform(tool)
-    local transform = TransformCopy(GetShapeWorldTransform(shapes[4]))
-    transform.rot = QuatCopy(toolTransform.rot)
-    transform.pos = TransformToParentPoint(transform, Vec(0.025, 0.025, -0.025))
 
-    return transform
+    return Transform(center, QuatCopy(toolTransform.rot))
 end
