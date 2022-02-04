@@ -1,10 +1,7 @@
 Flamethrower = {
     maxAmmo = 100,
     ammoPerSecond = 5,
-    maxFlameDist = 15,
     flameVelocity = 30,
-    flames = {},
-    nozzleOffset = Vec(0.3, -0.3, -1.1),
 }
 
 function Flamethrower:init()
