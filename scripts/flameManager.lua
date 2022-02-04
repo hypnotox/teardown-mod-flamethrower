@@ -6,7 +6,7 @@ function FlameManager:throwFlames(flameVelocity, lifetime)
     if InputDown('usetool') then
         local nozzle = Flamethrower:getNozzleTransform()
         local fwd = TransformToParentVec(nozzle, Vec(0, 0, -1))
-        local hit, maxDist = QueryRaycast(nozzle.pos, fwd, 1000, 0.15)
+        local _, maxDist = QueryRaycast(nozzle.pos, fwd, 1000, 0.15)
 
         table.insert(FlameManager.flames, Flame:new(nozzle, VecLength(flameVelocity) * 0.8, lifetime, maxDist))
         Flamethrower:ammoTick(ammoUsed)
