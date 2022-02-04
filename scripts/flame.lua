@@ -1,10 +1,12 @@
 Flame = {}
 
-function Flame:new(nozzle, dist)
+function Flame:new(nozzle, fwd, lifetime, maxDist)
     local instance = {
         transform = TransformCopy(nozzle),
-        distance = 0,
-        maxDistance = dist
+        fwd = fwd,
+        lifetime = lifetime,
+        dist = 0,
+        maxDist = maxDist,
     }
 
     setmetatable(instance, self)
@@ -12,17 +14,25 @@ function Flame:new(nozzle, dist)
     return instance
 end
 
-function Flame:tick(distance)
-    local size = self.distance / 8
-    PointLight(self.transform.pos, 1, 0.3, 0.1, size)
+function Flame:tick()
+    local travelledDist = self.fwd * GetTimeStep()
+    local size = (self.dist / self.fwd) * 1.5
 
-    for j = 1, 10, 1 do
-        local point = self:randomPoint(size)
-        SpawnFire(point)
+    if size < 0 then
+        size = 0.05
     end
 
-    self.transform = TransformToParentTransform(self.transform, Transform(Vec(0, 0, -distance)))
-    self.distance = self.distance + distance
+    PointLight(self.transform.pos, 1, 0.3, 0.1, size)
+
+    for j = 1, 20, 1 do
+        local point = self:randomPoint(size)
+        SpawnFire(point)
+        Debug:cross(point)
+    end
+
+    self.transform = TransformToParentTransform(self.transform, Transform(Vec(0, 0, -travelledDist)))
+    self.dist = self.dist + travelledDist
+    self.lifetime = self.lifetime - GetTimeStep()
 end
 
 function Flame:randomPoint(r)

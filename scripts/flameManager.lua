@@ -5,25 +5,22 @@ FlameManager = {
     nozzleOffset = Vec(0.3, -0.3, -1.1),
 }
 
-function FlameManager:throwFlames()
+function FlameManager:throwFlames(flameVelocity, lifetime)
     if InputDown('usetool') then
-        local camera = GetCameraTransform()
-        local nozzle = TransformToParentTransform(camera, Transform(FlameManager.nozzleOffset))
+        local nozzle = Flamethrower:getNozzleTransform()
         local fwd = TransformToParentVec(nozzle, Vec(0, 0, -1))
-        local hit, dist = QueryRaycast(nozzle.pos, fwd, FlameManager.maxFlameDist, 0.1)
+        local hit, maxDist = QueryRaycast(nozzle.pos, fwd, FlameManager.maxFlameDist, 0.15)
 
-        table.insert(FlameManager.flames, Flame:new(nozzle, dist))
+        table.insert(FlameManager.flames, Flame:new(nozzle, VecLength(flameVelocity) * 0.8, lifetime, maxDist))
         Flamethrower:ammoTick(ammoUsed)
     end
 end
 
 function FlameManager:emulateFlames()
-    local distance = FlameManager.flameVelocity * GetTimeStep()
-
     for i, flame in ipairs(FlameManager.flames) do
-        flame:tick(distance)
+        flame:tick()
 
-        if flame.distance > flame.maxDistance then
+        if flame.lifetime < 0 or flame.dist > flame.maxDist then
             table.remove(FlameManager.flames, i)
         end
     end
