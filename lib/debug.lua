@@ -26,6 +26,11 @@ function Debug:tick()
     Debug:watch('nozzleRot', Debug:dumpString(nozzleTransform.rot))
     Debug:cross(nozzleTransform.pos, 255, 0, 0, 0.7)
 
+    local knobTransform = Flamethrower:getKnobTransform()
+    Debug:watch('knob', Debug:dumpString(knobTransform.pos))
+    Debug:watch('knobRot', Debug:dumpString(knobTransform.rot))
+    Debug:cross(knobTransform.pos, 255, 0, 0, 0.7)
+
     local flameVelocity = Flamethrower:getFlameVelocity()
     Debug:watch('FlameVelocity', Debug:dumpString(flameVelocity))
     Debug:watch('FlameVelocityMagnitude', Debug:dumpString(VecLength(flameVelocity)))
