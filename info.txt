@@ -3,7 +3,7 @@ author = HypnoTox
 tags = Tool
 description = A gasoline powered flamethrower that tries to be fairly realistic.
 
-Currently it's using the default particle system for the flames and a custom implementation to compute which voxels should be burned.
+Currently, it's using the default particle system for the flames and a custom implementation to compute which voxels should be burned.
 
 [h2]Features[/h2]
 
@@ -15,7 +15,7 @@ Holding "left arrow" or "right arrow" will close or open the nozzle respectively
 
 [h2]Planned features[/h2]
 
-This is a list of features that i have commited to, other features might be in development too.
+This is a list of features that I have committed to, other features might be in development too.
 
 [list]
 	[*]Flame deflection simulation (find inflammable voxels after deflecting from some surface)
