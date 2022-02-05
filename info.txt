@@ -7,6 +7,7 @@ Currently it's using the default particle system for the flames and a custom imp
 [h2]Features[/h2]
 
 Holding "left arrow" or "right arrow" will close or open the nozzle respectively up to a limit, changing the pressure of the flames.
+An options panel is planned to change the keybinds in the future.
 
 [h3]Infos[h3]
 
