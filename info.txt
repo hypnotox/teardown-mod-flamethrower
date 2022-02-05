@@ -1,8 +1,7 @@
 name = Gasoline Flamethrower
 author = HypnoTox
 tags = Tool
-description =
-A gasoline powered flamethrower that tries to be fairly realistic.
+description = A gasoline powered flamethrower that tries to be fairly realistic.
 
 Currently it's using the default particle system for the flames and a custom implementation to compute which voxels should be burned.
 
