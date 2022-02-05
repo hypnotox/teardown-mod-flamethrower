@@ -48,10 +48,10 @@ function ParticleManager:spawnFlameParticles(flameVelocity, lifetime)
     self.flameVelocityLow = VecAdd(flameVelocity, VecScale(direction, 20))
 
     ParticleReset()
-    ParticleSticky(0.1)
-    ParticleCollide(0.1)
+    ParticleSticky(0.2)
+    ParticleCollide(0.01)
     ParticleGravity(5, -10)
-    ParticleDrag(0, 0.5)
+    ParticleDrag(0, 0.3)
     ParticleStretch(10)
     ParticleTile(5)
 
@@ -59,33 +59,33 @@ function ParticleManager:spawnFlameParticles(flameVelocity, lifetime)
     ParticleColor(1, math.random(9, 10) / 10, math.random(9, 10) / 10)
     ParticleEmissive(2, 0)
     ParticleRadius(0.02, 0.7)
-    ParticleAlpha(0.5, 0)
+    ParticleAlpha(0.8, 0.5)
     self:spawnFlameParticle(nozzle.pos, lifetime)
 
     -- orange tint
     ParticleColor(1, math.random(28, 44) / 100, 0)
     ParticleEmissive(6, 0)
     ParticleRadius(0.03, 1.2)
-    ParticleAlpha(1, 0)
+    ParticleAlpha(1, 0.5)
     self:spawnFlameParticle(nozzle.pos, lifetime)
 
     -- red splatter
     ParticleColor(1, math.random(5, 15) / 100, 0)
     ParticleEmissive(4, 0)
     ParticleRadius(0.03, 1.3)
-    ParticleAlpha(0.2, 0)
+    ParticleAlpha(0.3, 0.7)
     self:spawnFlameParticle(nozzle.pos, lifetime)
 
     -- red cloud
     ParticleColor(1, math.random(40, 50) * 0.01, 0, 1, math.random(20, 40) * 0.01, 0)
     ParticleEmissive(3, 0)
     ParticleRadius(0.03, 1.5)
-    ParticleAlpha(0.8, 0)
+    ParticleAlpha(0.8, 0.5)
     self:spawnFlameParticle(nozzle.pos, lifetime)
 end
 
 function ParticleManager:spawnFlameParticle(pos, lifetime)
     SpawnParticle(pos, self.flameVelocityHigh, lifetime)
-    SpawnParticle(pos, self.flameVelocityMedium, lifetime * 0.7)
-    SpawnParticle(pos, self.flameVelocityLow, lifetime * 0.4)
+    SpawnParticle(pos, self.flameVelocityMedium, lifetime * 0.8)
+    SpawnParticle(pos, self.flameVelocityLow, lifetime * 0.7)
 end
