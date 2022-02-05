@@ -23,7 +23,7 @@ function FlameManager:update()
     for i, flame in ipairs(FlameManager.flames) do
         flame:update()
 
-        if flame.lifetime < 0 or flame.dist > flame.maxDist then
+        if not flame.isAlive then
             table.remove(FlameManager.flames, i)
         end
     end

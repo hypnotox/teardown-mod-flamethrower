@@ -8,7 +8,8 @@ function Flame:new(nozzle, fwd, lifetime, hit, maxDist, normal)
         dist = 0,
         hit = hit,
         maxDist = maxDist,
-        normal = normal
+        normal = normal,
+        isAlive = true
     }
 
     setmetatable(instance, self)
@@ -36,6 +37,10 @@ function Flame:update()
         local point = self:randomPoint(size)
         SpawnFire(point)
         Debug:cross(point, 255, 0, 0, 0.7)
+    end
+
+    if self.lifetime < 0 or self.dist > self.maxDist then
+        self.isAlive = false
     end
 
     local travelledDist = self.fwd * GetTimeStep()
