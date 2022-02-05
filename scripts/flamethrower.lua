@@ -23,9 +23,12 @@ function Flamethrower:tick()
     SetBool('hud.aimdot', false)
     self:setToolPosition()
     SoundManager:playSoundsIfNecessary()
-    ParticleManager:spawnNozzleFlameParticles()
     FlameManager:tick()
     Knob:tick()
+
+    if GetInt('game.tool.hypnotox_flamethrower.ammo') > 0 then
+        ParticleManager:spawnNozzleFlameParticles()
+    end
 end
 
 function Flamethrower:update()
