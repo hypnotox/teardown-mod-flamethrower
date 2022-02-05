@@ -4,6 +4,8 @@ Flamethrower = {
     flameVelocity = 30,
 }
 
+-- Teardown API methods
+
 function Flamethrower:init()
     local modelPath = 'MOD/vox/Flamethrower.vox'
 
@@ -13,35 +15,31 @@ function Flamethrower:init()
 
     RegisterTool('hypnotox_flamethrower', 'Flamethrower', modelPath)
     SetBool('game.tool.hypnotox_flamethrower.enabled', true)
-    SetFloat('game.tool.hypnotox_flamethrower.ammo', Flamethrower.maxAmmo)
+    SetFloat('game.tool.hypnotox_flamethrower.ammo', self.maxAmmo)
     SoundManager:init()
 end
 
 function Flamethrower:tick()
     SetBool('hud.aimdot', false)
-    Flamethrower:setToolPosition()
-    Flamethrower:throwFlames()
-end
-
-function Flamethrower:throwFlames()
+    self:setToolPosition()
     SoundManager:playSoundsIfNecessary()
     ParticleManager:spawnNozzleFlameParticles()
+    FlameManager:tick()
+end
 
+function Flamethrower:update()
     if GetInt('game.tool.hypnotox_flamethrower.ammo') > 0 and InputDown('usetool') then
         local lifetime = 1
-        local nozzle = Flamethrower:getNozzleTransform()
-        local direction = TransformToParentVec(nozzle, Vec(0, 0, -1))
-        direction = VecAdd(direction, TransformToParentVec(GetPlayerTransform()))
-        local flameVelocity = VecScale(direction, self.flameVelocity)
-        Debug:watch('FlameVelocity', Debug:dumpString(flameVelocity))
-        Debug:watch('FlameVelocityMagnitude', Debug:dumpString(VecLength(flameVelocity)))
+        local flameVelocity = self:getFlameVelocity()
 
         FlameManager:throwFlames(flameVelocity, lifetime * 0.5)
         ParticleManager:spawnFlameParticles(flameVelocity, lifetime)
     end
 
-    FlameManager:emulateFlames()
+    FlameManager:update()
 end
+
+-- Helper methods
 
 function Flamethrower:ammoTick()
     local ammoUsed = self.ammoPerSecond * GetTimeStep()
@@ -58,6 +56,16 @@ function Flamethrower:setToolPosition()
         local offset = Transform(Vec(0.3, -0.3, -0.74))
         SetToolTransform(offset, 0.6)
     end
+end
+
+-- Getters
+
+function Flamethrower:getFlameVelocity()
+    local nozzle = Flamethrower:getNozzleTransform()
+    local direction = TransformToParentVec(nozzle, Vec(0, 0, -1))
+    direction = VecAdd(direction, TransformToParentVec(GetPlayerTransform()))
+
+    return VecScale(direction, self.flameVelocity)
 end
 
 function Flamethrower:getKnobTransform()
