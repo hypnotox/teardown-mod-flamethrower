@@ -1,16 +1,28 @@
 name = Gasoline Flamethrower
 author = HypnoTox
-description = A gasoline powered flamethrower that tries to be fairly realistic. 
+tags = Tool
+description =
+A gasoline powered flamethrower that tries to be fairly realistic.
 
 Currently it's using the default particle system for the flames and a custom implementation to compute which voxels should be burned.
 
 [h2]Features[/h2]
 
+[h3]Adjustable nozzle[/h3]
 Holding "left arrow" or "right arrow" will close or open the nozzle respectively up to a limit, changing the pressure of the flames.
 An options panel is planned to change the keybinds in the future.
 
-[h3]Infos[h3]
+[h2]Planned features[/h2]
+
+This is a list of features that i have commited to, other features might be in development too.
+
+[list]
+    [*]Flame deflection simulation (find inflammable voxels after deflecting from some surface)
+    [*]Better nozzle implementation
+    [*]Options menu (for keybinds, maybe other options as well)
+[/list]
+
+[h2]Infos[/h2]
 
 The mod is in active development and subject to change.
 If you have any suggestions or come across any bugs/problems please comment.
-tags = Tool
