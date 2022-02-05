@@ -9,7 +9,7 @@ Currently it's using the default particle system for the flames and a custom imp
 
 [h3]Increased fire limit[/h3]
 This mod increases the fire limit.
-It will be possible to adjust this value or disable this in the future.
+It will be possible to adjust / disable this in the future.
 
 [h3]Adjustable nozzle[/h3]
 Holding "left arrow" or "right arrow" will close or open the nozzle respectively up to a limit, changing the pressure of the flames.
