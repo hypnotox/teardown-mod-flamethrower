@@ -33,6 +33,11 @@ function Debug:tick()
 
     Debug:watch('FireCount', GetFireCount())
     Debug:watch('FlamesCount', #FlameManager.flames)
+
+    Debug:watch('FireLimitEnabled', GetBool('savegame.mod.features.fire_limit.enabled'))
+    Debug:watch('FireLimitValue', GetInt('savegame.mod.features.fire_limit.value'))
+    Debug:watch('KnobDecrease', GetString('savegame.mod.features.nozzle.keybinds.decrease'))
+    Debug:watch('KnobIncrease', GetString('savegame.mod.features.nozzle.keybinds.increase'))
 end
 
 -- Debug functions --

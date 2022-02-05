@@ -12,7 +12,10 @@ function init()
     -- Must be disabled when publishing
     --Debug:enable()
     Flamethrower:init()
-    SetInt("game.fire.maxcount", 1000000)
+
+    if GetBool('savegame.mod.features.fire_limit.enabled') then
+        SetInt("game.fire.maxcount", GetInt('savegame.mod.features.fire_limit.value'))
+    end
 end
 
 function tick(dt)
