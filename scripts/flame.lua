@@ -29,11 +29,21 @@ function Flame:update()
         size = 0.05
     end
 
-    if self.hit and self.maxDist - self.dist < 0.2 then
-        size = (size * 5) * (self.maxDist - self.dist)
+    if self.hit then
+        local distToWall = self.maxDist - self.dist
+
+        if distToWall < 0.1 then
+            distToWall = 0.1
+        end
+
+        if distToWall < 0.2 then
+            size = size / (distToWall * 5)
+        end
     end
 
-    for _ = 1, 20, 1 do
+    local samplePoints = tonumber(size * 50)
+
+    for _ = 1, samplePoints, 1 do
         local point = self:randomPoint(size)
         SpawnFire(point)
         Debug:cross(point, 255, 0, 0, 0.7)
