@@ -22,7 +22,6 @@ function Flame:tick()
 end
 
 function Flame:update()
-    local travelledDist = self.fwd * GetTimeStep()
     local size = (self.dist * 2) / self.fwd
 
     if size < 0 then
@@ -36,9 +35,10 @@ function Flame:update()
     for _ = 1, 20, 1 do
         local point = self:randomPoint(size)
         SpawnFire(point)
-        Debug:cross(point)
+        Debug:cross(point, 255, 0, 0, 0.7)
     end
 
+    local travelledDist = self.fwd * GetTimeStep()
     self.transform = TransformToParentTransform(self.transform, Transform(Vec(0, 0, -travelledDist)))
     self.dist = self.dist + travelledDist
     self.lifetime = self.lifetime - GetTimeStep()
