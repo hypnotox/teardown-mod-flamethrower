@@ -13,9 +13,12 @@ end
 
 function Knob:tick()
     Debug:shapeOutline(knobShape)
+    local knobShape = Flamethrower:getKnobShape()
 
-    if InputPressed('usetool') then
-        SetShapeEmissiveScale(knobShape, 100)
+    if InputDown('usetool') then
+        SetShapeEmissiveScale(knobShape, 0.1)
+    else
+        SetShapeEmissiveScale(knobShape, 0)
     end
 
     if InputDown(self.keybinds.decrease) and not InputDown(self.keybinds.increase) and self.flameVelocity >= self.flameVelocityMin then
