@@ -12,6 +12,7 @@ function init()
     -- Must be disabled when publishing
     --Debug:enable()
     Flamethrower:init()
+    SetInt("game.fire.maxcount", 1000000)
 end
 
 function tick(dt)
