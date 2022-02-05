@@ -9,11 +9,9 @@ Currently it's using the default particle system for the flames and a custom imp
 
 [h3]Increased fire limit[/h3]
 This mod increases the fire limit.
-It will be possible to adjust / disable this in the future.
 
 [h3]Adjustable nozzle[/h3]
 Holding "left arrow" or "right arrow" will close or open the nozzle respectively up to a limit, changing the pressure of the flames.
-An options panel is planned to change the keybinds in the future.
 
 [h2]Planned features[/h2]
 
@@ -22,7 +20,6 @@ This is a list of features that i have commited to, other features might be in d
 [list]
 	[*]Flame deflection simulation (find inflammable voxels after deflecting from some surface)
 	[*]Better nozzle implementation
-	[*]Options menu (for keybinds, maybe other options as well)
 [/list]
 
 [h2]Infos[/h2]
