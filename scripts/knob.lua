@@ -2,13 +2,8 @@ Knob = {
     flameVelocity = 20,
     flameVelocityMin = 5,
     flameVelocityMax = 40,
-    flameVelocityDefault = 20,
     changePerSecond = 10,
 }
-
-function Knob:init()
-    self:setDefaultVelocity()
-end
 
 function Knob:tick()
     Debug:watch('KnobDegree', degree)
@@ -16,12 +11,6 @@ function Knob:tick()
 
     if InputPressed('usetool') then
         SetShapeEmissiveScale(knobShape, 100)
-    end
-
-    if InputPressed('downarrow') then
-        local change = self.flameVelocityDefault - self.flameVelocity
-        self:rotateKnob(change)
-        self:setDefaultVelocity()
     end
 
     if InputDown('leftarrow') and not InputDown('rightarrow') and self.flameVelocity >= self.flameVelocityMin then
@@ -50,8 +39,4 @@ function Knob:rotateKnob(degree)
             QuatRotateQuat(knobTransform.rot, QuatEuler(0, degree, 0))
         )
     )
-end
-
-function Knob:setDefaultVelocity()
-    self.flameVelocity = (self.flameVelocityMin + self.flameVelocityMax) / 2
 end
