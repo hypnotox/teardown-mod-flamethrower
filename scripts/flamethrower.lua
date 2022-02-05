@@ -25,6 +25,7 @@ function Flamethrower:tick()
     SoundManager:playSoundsIfNecessary()
     ParticleManager:spawnNozzleFlameParticles()
     FlameManager:tick()
+    Knob:tick()
 end
 
 function Flamethrower:update()
@@ -65,24 +66,36 @@ function Flamethrower:getFlameVelocity()
     local direction = TransformToParentVec(nozzle, Vec(0, 0, -1))
     direction = VecAdd(direction, TransformToParentVec(GetPlayerTransform()))
 
-    return VecScale(direction, self.flameVelocity)
+    return VecScale(direction, Knob.flameVelocity * 2)
+end
+
+function Flamethrower:getKnobShape()
+    local tool = GetToolBody()
+    local shapes = GetBodyShapes(tool)
+
+    return shapes[2]
 end
 
 function Flamethrower:getKnobTransform()
     local tool = GetToolBody()
-    local shapes = GetBodyShapes(tool)
-    local shape = shapes[2]
+    local shape = self:getKnobShape()
     local min, max = GetShapeBounds(shape)
     local center = VecLerp(min, max, 0.5)
     local toolTransform = GetBodyTransform(tool)
 
     return Transform(center, QuatCopy(toolTransform.rot))
+end
+
+function Flamethrower:getFireStarterShape()
+    local tool = GetToolBody()
+    local shapes = GetBodyShapes(tool)
+
+    return shapes[3]
 end
 
 function Flamethrower:getFireStarterTransform()
     local tool = GetToolBody()
-    local shapes = GetBodyShapes(tool)
-    local shape = shapes[3]
+    local shape = self:getFireStarterShape()
     local min, max = GetShapeBounds(shape)
     local center = VecLerp(min, max, 0.5)
     local toolTransform = GetBodyTransform(tool)
@@ -90,10 +103,16 @@ function Flamethrower:getFireStarterTransform()
     return Transform(center, QuatCopy(toolTransform.rot))
 end
 
-function Flamethrower:getNozzleTransform()
+function Flamethrower:getNozzleShape()
     local tool = GetToolBody()
     local shapes = GetBodyShapes(tool)
-    local shape = shapes[4]
+
+    return shapes[4]
+end
+
+function Flamethrower:getNozzleTransform()
+    local tool = GetToolBody()
+    local shape = self:getNozzleShape()
     local min, max = GetShapeBounds(shape)
     local center = VecLerp(min, max, 0.5)
     local toolTransform = GetBodyTransform(tool)

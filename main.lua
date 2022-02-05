@@ -4,6 +4,7 @@
 #include "scripts/flameManager.lua"
 #include "scripts/particleManager.lua"
 #include "scripts/soundManager.lua"
+#include "scripts/knob.lua"
 #include "lib/debug.lua"
 ]]
 
