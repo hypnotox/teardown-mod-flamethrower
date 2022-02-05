@@ -26,9 +26,13 @@ function Flamethrower:tick()
     SoundManager:playSoundsIfNecessary()
     FlameManager:tick()
     Knob:tick()
+    local fireStarterShape = Flamethrower:getFireStarterShape()
 
     if GetInt('game.tool.hypnotox_flamethrower.ammo') > 0 then
+        SetShapeEmissiveScale(fireStarterShape, 0.5)
         ParticleManager:spawnNozzleFlameParticles()
+    else
+        SetShapeEmissiveScale(fireStarterShape, 0)
     end
 end
 
