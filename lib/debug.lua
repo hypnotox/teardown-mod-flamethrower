@@ -25,6 +25,12 @@ function Debug:tick()
     Debug:watch('nozzle', Debug:dumpString(nozzleTransform.pos))
     Debug:watch('nozzleRot', Debug:dumpString(nozzleTransform.rot))
     Debug:cross(nozzleTransform.pos, 255, 0, 0, 0.7)
+
+    local flameVelocity = Flamethrower:getFlameVelocity()
+    Debug:watch('FlameVelocity', Debug:dumpString(flameVelocity))
+    Debug:watch('FlameVelocityMagnitude', Debug:dumpString(VecLength(flameVelocity)))
+
+    Debug:watch('FireCount', GetFireCount())
 end
 
 -- Debug functions --
