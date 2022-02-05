@@ -8,27 +8,23 @@ function Debug:enable()
 end
 
 function Debug:tick()
-    Debug:watch('player', Debug:dumpString(GetPlayerTransform().pos))
-    Debug:watch('playerRot', Debug:dumpString(GetPlayerTransform().rot))
+    Debug:watch('player', Debug:dumpString(GetPlayerTransform()))
+    Debug:watch('camera', Debug:dumpString(GetCameraTransform()))
 
     local tool = GetToolBody()
     local toolTransform = GetBodyTransform(tool)
-    Debug:watch('tool', Debug:dumpString(toolTransform.pos))
-    Debug:watch('toolRot', Debug:dumpString(toolTransform.rot))
+    Debug:watch('tool', Debug:dumpString(toolTransform))
 
     local fireStarterTransform = Flamethrower:getFireStarterTransform()
-    Debug:watch('fireStarter', Debug:dumpString(fireStarterTransform.pos))
-    Debug:watch('fireStarterRot', Debug:dumpString(fireStarterTransform.rot))
+    Debug:watch('fireStarter', Debug:dumpString(fireStarterTransform))
     Debug:cross(fireStarterTransform.pos, 0, 255, 0, 0.7)
 
     local nozzleTransform = Flamethrower:getNozzleTransform()
-    Debug:watch('nozzle', Debug:dumpString(nozzleTransform.pos))
-    Debug:watch('nozzleRot', Debug:dumpString(nozzleTransform.rot))
+    Debug:watch('nozzle', Debug:dumpString(nozzleTransform))
     Debug:cross(nozzleTransform.pos, 255, 0, 0, 0.7)
 
     local knobTransform = Flamethrower:getKnobTransform()
-    Debug:watch('knob', Debug:dumpString(knobTransform.pos))
-    Debug:watch('knobRot', Debug:dumpString(knobTransform.rot))
+    Debug:watch('knob', Debug:dumpString(knobTransform))
     Debug:cross(knobTransform.pos, 255, 0, 0, 0.7)
 
     local flameVelocity = Flamethrower:getFlameVelocity()
@@ -36,6 +32,7 @@ function Debug:tick()
     Debug:watch('FlameVelocityMagnitude', Debug:dumpString(VecLength(flameVelocity)))
 
     Debug:watch('FireCount', GetFireCount())
+    Debug:watch('FlamesCount', #FlameManager.flames)
 end
 
 -- Debug functions --
@@ -44,7 +41,6 @@ function Debug:line(p0, p1, r, g, b, a)
     if not self.enabled then
         return
     end
-    Debug:print('Drawing line!')
 
     DebugLine(p0, p1, r or 255, g or 255, b or 255, a or 1)
 end
@@ -131,21 +127,29 @@ function Debug:dump(object)
 end
 
 function Debug:dumpString(object)
-    if not self.enabled then
-        return
+    if (type(object) == "number") or (type(object) == "string") then
+        return tostring(object)
     end
 
-    if type(object) == 'table' then
-        local s = '{ '
-        for k, v in ipairs(object) do
-            if type(k) ~= 'number' then
-                k = '"' .. k .. '"'
-            end
-            s = s .. '[' .. k .. '] = ' .. self:dumpString(v) or '' .. ','
+    local toDump = "{"
+
+    for k, v in pairs(object) do
+        if (type(k) == "number") then
+            toDump = toDump .. "[" .. k .. "] = "
+        elseif (type(k) == "string") then
+            toDump = toDump .. k ..  "= "
         end
 
-        return s .. '} '
+        if (type(v) == "number") then
+            toDump = toDump .. v .. ","
+        elseif (type(v) == "string") then
+            toDump = toDump .. "\"" .. v .. "\", "
+        else
+            toDump = toDump .. self:dumpString(v) .. ", "
+        end
     end
 
-    return tostring(object)
+    toDump = toDump .. "}"
+
+    return toDump
 end

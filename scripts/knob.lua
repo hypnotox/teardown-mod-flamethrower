@@ -6,7 +6,6 @@ Knob = {
 }
 
 function Knob:tick()
-    Debug:watch('KnobDegree', degree)
     Debug:shapeOutline(knobShape)
 
     if InputPressed('usetool') then
