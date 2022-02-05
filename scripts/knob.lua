@@ -16,7 +16,7 @@ function Knob:tick()
     local knobShape = Flamethrower:getKnobShape()
 
     if InputDown('usetool') then
-        SetShapeEmissiveScale(knobShape, 0.1)
+        SetShapeEmissiveScale(knobShape, 0.25)
     else
         SetShapeEmissiveScale(knobShape, 0)
     end
