@@ -11,22 +11,31 @@ function Debug:tick()
     Debug:watch('player', Debug:dumpString(GetPlayerTransform()))
     Debug:watch('camera', Debug:dumpString(GetCameraTransform()))
 
+    -- Tool
     local tool = GetToolBody()
     local toolTransform = GetBodyTransform(tool)
     Debug:watch('tool', Debug:dumpString(toolTransform))
 
+    -- FireStarter
     local fireStarterTransform = Flamethrower:getFireStarterTransform()
     Debug:watch('fireStarter', Debug:dumpString(fireStarterTransform))
     Debug:cross(fireStarterTransform.pos, 0, 255, 0, 0.7)
 
+    -- Nozzle
     local nozzleTransform = Flamethrower:getNozzleTransform()
     Debug:watch('nozzle', Debug:dumpString(nozzleTransform))
     Debug:cross(nozzleTransform.pos, 255, 0, 0, 0.7)
 
+    local fwd = TransformToParentVec(nozzle, Vec(0, 0, -1))
+    local _, maxDist = QueryRaycast(nozzleTransform.pos, fwd, 1000)
+    Debug:line(nozzleTransform.pos, TransformToParentPoint(nozzleTransform, Vec(0, 0, -maxDist)), 255, 0, 0, 0.7)
+
+    -- Knob
     local knobTransform = Flamethrower:getKnobTransform()
     Debug:watch('knob', Debug:dumpString(knobTransform))
     Debug:cross(knobTransform.pos, 255, 0, 0, 0.7)
 
+    -- FlameVelocity
     local flameVelocity = Flamethrower:getFlameVelocity()
     Debug:watch('FlameVelocity', Debug:dumpString(flameVelocity))
     Debug:watch('FlameVelocityMagnitude', Debug:dumpString(VecLength(flameVelocity)))
