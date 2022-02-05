@@ -4,7 +4,7 @@ function Flame:new(nozzle, fwd, lifetime, hit, maxDist, normal)
     local instance = {
         transform = TransformCopy(nozzle),
         fwd = fwd * 0.8,
-        lifetime = lifetime * 0.8,
+        lifetime = lifetime * 0.9,
         dist = 0,
         hit = hit,
         maxDist = maxDist,
@@ -23,10 +23,14 @@ end
 
 function Flame:update()
     local travelledDist = self.fwd * GetTimeStep()
-    local size = ((self.dist * 2) / self.fwd) * 1.5
+    local size = (self.dist * 2) / self.fwd
 
     if size < 0 then
         size = 0.05
+    end
+
+    if self.hit and self.maxDist - self.dist < 0.2 then
+        size = (size * 5) * (self.maxDist - self.dist)
     end
 
     for _ = 1, 20, 1 do
