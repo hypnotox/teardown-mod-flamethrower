@@ -4,6 +4,7 @@ Knob = {
     flameVelocityMax = 40,
     changePerSecond = 10,
     keybinds = {},
+    angle = 0,
 }
 
 function Knob:init()
@@ -12,8 +13,7 @@ function Knob:init()
 end
 
 function Knob:tick()
-    Debug:shapeOutline(knobShape)
-    local knobShape = Flamethrower:getKnobShape()
+    local knobShape = self:getKnobShape()
 
     if InputDown('usetool') then
         SetShapeEmissiveScale(knobShape, 0.25)
@@ -37,7 +37,7 @@ function Knob:tick()
 end
 
 function Knob:rotateKnob(degree)
-    local knobShape = Flamethrower.getKnobShape()
+    local knobShape = self:getKnobShape()
     local knobTransform = GetShapeLocalTransform(knobShape)
 
     SetShapeLocalTransform(
@@ -47,4 +47,21 @@ function Knob:rotateKnob(degree)
             QuatRotateQuat(knobTransform.rot, QuatEuler(0, degree, 0))
         )
     )
+end
+
+function Knob:getKnobShape()
+    local tool = GetToolBody()
+    local shapes = GetBodyShapes(tool)
+
+    return shapes[2]
+end
+
+function Knob:getKnobTransform()
+    local tool = GetToolBody()
+    local shape = self:getKnobShape()
+    local transform = GetShapeLocalTransform(shape)
+    local center = VecAdd(transform.pos, Vec(Engine.voxelSize * 0.5, Engine.voxelSize * 0.5, -Engine.voxelSize * 0.5))
+    local toolTransform = GetBodyTransform(tool)
+
+    return Transform(center, QuatCopy(toolTransform.rot))
 end

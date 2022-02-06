@@ -12,7 +12,7 @@ function SoundManager:init()
     self.soundFlamethrowerEnd = LoadSound('src/sound/flamethrower-end.ogg')
 end
 
-function SoundManager:playSoundsIfNecessary()
+function SoundManager:tick()
     if InputPressed('usetool') and GetInt('game.tool.hypnotox_flamethrower.ammo') > 0 then
         PlaySound(self.soundFlamethrowerStart, GetPlayerTransform().pos, self.soundVolume)
         PlaySound(self.soundFlamethrowerActive, GetPlayerTransform().pos, self.soundVolume)

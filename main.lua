@@ -1,16 +1,24 @@
 --[[
-#include "src/scripts/flamethrower.lua"
-#include "src/scripts/flame.lua"
-#include "src/scripts/flameManager.lua"
-#include "src/scripts/particleManager.lua"
-#include "src/scripts/soundManager.lua"
-#include "src/scripts/knob.lua"
+-- Libraries
+#include "lib/engine.lua"
 #include "lib/debug.lua"
+
+-- Entities
+#include "src/scripts/entities/flame.lua"
+#include "src/scripts/knob.lua"
+
+-- Managers
+#include "src/scripts/managers/flameManager.lua"
+#include "src/scripts/managers/particleManager.lua"
+#include "src/scripts/managers/soundManager.lua"
+
+-- Base
+#include "src/scripts/flamethrower.lua"
 ]]
 
 function init()
     -- Must be disabled when publishing
-    --Debug:enable()
+    Debug:enable()
     Flamethrower:init()
 
     if GetBool('savegame.mod.features.fire_limit.enabled') then

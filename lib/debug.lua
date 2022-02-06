@@ -20,6 +20,7 @@ function Debug:tick()
     local fireStarterTransform = Flamethrower:getFireStarterTransform()
     Debug:watch('fireStarter', Debug:dumpString(fireStarterTransform))
     Debug:cross(fireStarterTransform.pos, 0, 255, 0, 0.7)
+    Debug:line(fireStarterTransform.pos, TransformToParentPoint(fireStarterTransform, Vec(0, 0, -1)))
 
     -- Nozzle
     local nozzleTransform = Flamethrower:getNozzleTransform()
@@ -31,8 +32,11 @@ function Debug:tick()
     Debug:line(nozzleTransform.pos, TransformToParentPoint(nozzleTransform, Vec(0, 0, -maxDist)), 255, 0, 0, 0.7)
 
     -- Knob
-    local knobTransform = Flamethrower:getKnobTransform()
+    local knobTransform = Knob:getKnobTransform()
     Debug:watch('knob', Debug:dumpString(knobTransform))
+    Debug:watch('knobAngle', Knob.angle)
+    Debug:watch('KnobDecrease', GetString('savegame.mod.features.nozzle.keybinds.decrease'))
+    Debug:watch('KnobIncrease', GetString('savegame.mod.features.nozzle.keybinds.increase'))
     Debug:cross(knobTransform.pos, 255, 0, 0, 0.7)
 
     -- FlameVelocity
@@ -40,13 +44,11 @@ function Debug:tick()
     Debug:watch('FlameVelocity', Debug:dumpString(flameVelocity))
     Debug:watch('FlameVelocityMagnitude', Debug:dumpString(VecLength(flameVelocity)))
 
-    Debug:watch('FireCount', GetFireCount())
     Debug:watch('FlamesCount', #FlameManager.flames)
+    Debug:watch('FireCount', GetFireCount())
 
-    Debug:watch('FireLimitEnabled', GetBool('savegame.mod.features.fire_limit.enabled'))
+    Debug:watch('FireLimitOverrideEnabled', GetBool('savegame.mod.features.fire_limit.enabled'))
     Debug:watch('FireLimitValue', GetInt('savegame.mod.features.fire_limit.value'))
-    Debug:watch('KnobDecrease', GetString('savegame.mod.features.nozzle.keybinds.decrease'))
-    Debug:watch('KnobIncrease', GetString('savegame.mod.features.nozzle.keybinds.increase'))
 end
 
 -- Debug functions --

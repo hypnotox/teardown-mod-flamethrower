@@ -23,7 +23,7 @@ end
 function Flamethrower:tick()
     SetBool('hud.aimdot', false)
     self:setToolPosition()
-    SoundManager:playSoundsIfNecessary()
+    SoundManager:tick()
     FlameManager:tick()
     Knob:tick()
     local fireStarterShape = Flamethrower:getFireStarterShape()
@@ -75,23 +75,6 @@ function Flamethrower:getFlameVelocity()
     direction = VecAdd(direction, TransformToParentVec(GetPlayerTransform()))
 
     return VecScale(direction, Knob.flameVelocity * 2)
-end
-
-function Flamethrower:getKnobShape()
-    local tool = GetToolBody()
-    local shapes = GetBodyShapes(tool)
-
-    return shapes[2]
-end
-
-function Flamethrower:getKnobTransform()
-    local tool = GetToolBody()
-    local shape = self:getKnobShape()
-    local min, max = GetShapeBounds(shape)
-    local center = VecLerp(min, max, 0.5)
-    local toolTransform = GetBodyTransform(tool)
-
-    return Transform(center, QuatCopy(toolTransform.rot))
 end
 
 function Flamethrower:getFireStarterShape()
