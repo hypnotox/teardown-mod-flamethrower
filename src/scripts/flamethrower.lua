@@ -2,6 +2,7 @@ Flamethrower = {
     maxAmmo = 100,
     ammoPerSecond = 5,
     flameVelocity = 30,
+    flames = {}
 }
 
 -- Teardown API methods
@@ -24,13 +25,17 @@ function Flamethrower:tick()
     SetBool('hud.aimdot', false)
     self:setToolPosition()
     SoundManager:tick()
-    FlameManager:tick()
     Knob:tick()
-    local fireStarterShape = Flamethrower:getFireStarterShape()
+
+    for i = 1, #self.flames, 1 do
+        self.flames[i]:tick()
+    end
+
+    local fireStarterShape = FireStarter:getShape()
 
     if GetInt('game.tool.hypnotox_flamethrower.ammo') > 0 then
         SetShapeEmissiveScale(fireStarterShape, 0.5)
-        ParticleManager:spawnNozzleFlameParticles()
+        FireStarter:spawnParticles()
     else
         SetShapeEmissiveScale(fireStarterShape, 0)
     end
@@ -39,13 +44,18 @@ end
 function Flamethrower:update()
     if GetInt('game.tool.hypnotox_flamethrower.ammo') > 0 and InputDown('usetool') then
         local lifetime = 1
-        local flameVelocity = self:getFlameVelocity()
+        local flameVelocity = Nozzle:getFlameVelocity()
 
-        FlameManager:throwFlames(flameVelocity, lifetime * 0.5)
-        ParticleManager:spawnFlameParticles(flameVelocity, lifetime)
+        Nozzle:throwFlames(flameVelocity, lifetime)
     end
 
-    FlameManager:update()
+    for i = #self.flames, 1, -1 do
+        self.flames[i]:update()
+
+        if not self.flames[i].isAlive then
+            table.remove(self.flames, i)
+        end
+    end
 end
 
 -- Helper methods
@@ -65,48 +75,4 @@ function Flamethrower:setToolPosition()
         local offset = Transform(Vec(0.3, -0.5, -0.68))
         SetToolTransform(offset, 0.5)
     end
-end
-
--- Getters
-
-function Flamethrower:getFlameVelocity()
-    local nozzle = Flamethrower:getNozzleTransform()
-    local direction = TransformToParentVec(nozzle, Vec(0, 0, -1))
-    direction = VecAdd(direction, TransformToParentVec(GetPlayerTransform()))
-
-    return VecScale(direction, Knob.flameVelocity * 2)
-end
-
-function Flamethrower:getFireStarterShape()
-    local tool = GetToolBody()
-    local shapes = GetBodyShapes(tool)
-
-    return shapes[3]
-end
-
-function Flamethrower:getFireStarterTransform()
-    local tool = GetToolBody()
-    local shape = self:getFireStarterShape()
-    local min, max = GetShapeBounds(shape)
-    local center = VecLerp(min, max, 0.5)
-    local toolTransform = GetBodyTransform(tool)
-
-    return Transform(center, QuatCopy(toolTransform.rot))
-end
-
-function Flamethrower:getNozzleShape()
-    local tool = GetToolBody()
-    local shapes = GetBodyShapes(tool)
-
-    return shapes[4]
-end
-
-function Flamethrower:getNozzleTransform()
-    local tool = GetToolBody()
-    local shape = self:getNozzleShape()
-    local min, max = GetShapeBounds(shape)
-    local center = VecLerp(min, max, 0.5)
-    local toolTransform = GetBodyTransform(tool)
-
-    return Transform(center, QuatCopy(toolTransform.rot))
 end
