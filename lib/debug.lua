@@ -15,6 +15,17 @@ local function dumpTransform(transform)
     return Debug:dumpString(t)
 end
 
+function Debug:init()
+    if not self.enabled then
+        return
+    end
+
+    Debug:print('KnobDecrease: ' .. GetString('savegame.mod.features.nozzle.keybinds.decrease'))
+    Debug:print('KnobIncrease: ' .. GetString('savegame.mod.features.nozzle.keybinds.increase'))
+    Debug:print('FireLimitOverrideEnabled: ' .. (GetBool('savegame.mod.features.fire_limit.enabled') and 'true' or 'false'))
+    Debug:print('FireLimitValue: ' .. GetInt('savegame.mod.features.fire_limit.value'))
+end
+
 function Debug:tick()
     Debug:watch('player', dumpTransform(GetPlayerTransform()))
     Debug:watch('camera', dumpTransform(GetCameraTransform()))
@@ -38,8 +49,8 @@ function Debug:tick()
     Debug:watch('nozzle', dumpTransform(nozzleTransform))
     Debug:cross(nozzleTransform.pos, 255, 0, 0, 0.7)
 
-    local fwd = TransformToParentVec(nozzle, Vec(0, 0, -1))
-    local _, maxDist = QueryRaycast(nozzleTransform.pos, fwd, 1000)
+    local fwd = TransformToParentVec(nozzleTransform, Vec(0, 0, -1))
+    local _, maxDist = QueryRaycast(nozzleTransform.pos, fwd, 100)
     Debug:line(nozzleTransform.pos, TransformToParentPoint(nozzleTransform, Vec(0, 0, -maxDist)), 255, 0, 0, 0.7)
 
     -- Knob
@@ -51,8 +62,6 @@ function Debug:tick()
 
     Debug:watch('knob', dumpTransform(knobTransform))
     Debug:watch('knobAngle', Knob.angle)
-    Debug:watch('KnobDecrease', GetString('savegame.mod.features.nozzle.keybinds.decrease'))
-    Debug:watch('KnobIncrease', GetString('savegame.mod.features.nozzle.keybinds.increase'))
     Debug:cross(knobTransform.pos, 255, 0, 0, 0.7)
 
     -- FlameVelocity
@@ -62,9 +71,6 @@ function Debug:tick()
 
     Debug:watch('FlamesCount', #Flamethrower.flames)
     Debug:watch('FireCount', GetFireCount())
-
-    Debug:watch('FireLimitOverrideEnabled', GetBool('savegame.mod.features.fire_limit.enabled'))
-    Debug:watch('FireLimitValue', GetInt('savegame.mod.features.fire_limit.value'))
 end
 
 -- Debug functions --
