@@ -1,10 +1,10 @@
 --[[
-#include "scripts/flamethrower.lua"
-#include "scripts/flame.lua"
-#include "scripts/flameManager.lua"
-#include "scripts/particleManager.lua"
-#include "scripts/soundManager.lua"
-#include "scripts/knob.lua"
+#include "src/scripts/flamethrower.lua"
+#include "src/scripts/flame.lua"
+#include "src/scripts/flameManager.lua"
+#include "src/scripts/particleManager.lua"
+#include "src/scripts/soundManager.lua"
+#include "src/scripts/knob.lua"
 #include "lib/debug.lua"
 ]]
 
