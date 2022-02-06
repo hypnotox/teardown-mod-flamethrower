@@ -41,11 +41,9 @@ function FireStarter:spawnParticles()
     local direction
 
     if InputDown('usetool') then
-        direction = TransformToParentVec(fireStarter, Vec(-0.3, 0.6, 0))
-        ParticleGravity(0, -10)
+        direction = TransformToParentVec(fireStarter, Vec(-0.2, 0.4, 0))
     else
-        direction = TransformToParentVec(fireStarter, Vec(0, 0.6, 0))
-        ParticleGravity(5, 10)
+        direction = TransformToParentVec(fireStarter, Vec(0, 0.4, 0))
     end
 
     nozzleFlameVelocityHigh = VecAdd(direction, VecScale(direction, 0.2))
@@ -53,12 +51,12 @@ function FireStarter:spawnParticles()
 
     ParticleSticky(0)
     ParticleCollide(0)
-    ParticleGravity(5, 10)
+    ParticleGravity(5)
     ParticleDrag(0)
     ParticleTile(5)
     ParticleStretch(10)
     ParticleEmissive(2, 0)
-    ParticleAlpha(0.7, 0)
+    ParticleAlpha(0.7, 0.1)
 
     -- white core
     ParticleColor(1, math.random(9, 10) / 10, math.random(9, 10) / 10)
@@ -68,6 +66,13 @@ function FireStarter:spawnParticles()
     -- orange tint
     ParticleColor(1, math.random(28, 44) / 100, 0)
     ParticleRadius(0.06, 0.02)
+    spawnAtPosition(fireStarter.pos, 0.1)
+    PointLight(fireStarter.pos, 1, 0.3, 0.1, 0.2)
+
+    -- orange splatter
+    ParticleColor(1, math.random(28, 44) / 100, 0)
+    ParticleRadius(0.05, 0.02)
+    ParticleAlpha(0.9, 0.01)
     spawnAtPosition(fireStarter.pos, 0.1)
     PointLight(fireStarter.pos, 1, 0.3, 0.1, 0.2)
 end
