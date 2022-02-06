@@ -1,7 +1,7 @@
 Knob = {
-    flameVelocity = 20,
+    flameVelocity = 15,
     flameVelocityMin = 5,
-    flameVelocityMax = 40,
+    flameVelocityMax = 30,
     changePerSecond = 10,
     keybinds = {},
     angle = 0,

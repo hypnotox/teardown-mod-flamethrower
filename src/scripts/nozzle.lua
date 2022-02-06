@@ -12,43 +12,46 @@ end
 
 local function spawnParticles(flameVelocity, lifetime)
     local nozzle = Nozzle:getNozzleTransform()
+    local startSize = 0.03
+    local endSize = 1
+
     flameVelocityHigh = VecAdd(flameVelocity, VecScale(direction, 30))
     flameVelocityMedium = VecAdd(flameVelocity, VecScale(direction, 25))
     flameVelocityLow = VecAdd(flameVelocity, VecScale(direction, 20))
 
     ParticleReset()
-    ParticleSticky(0.2)
-    ParticleCollide(0, 0.01)
+    ParticleSticky(0.1)
+    ParticleCollide(0, 0.001)
     ParticleGravity(5, -10)
-    ParticleDrag(0, 0.3)
-    ParticleStretch(10)
+    ParticleDrag(0)
+    ParticleStretch(3)
     ParticleTile(5)
 
     -- white core
     ParticleColor(1, math.random(9, 10) / 10, math.random(9, 10) / 10)
     ParticleEmissive(2, 0)
-    ParticleRadius(0.02, 0.7)
+    ParticleRadius(startSize, endSize)
     ParticleAlpha(0.8, 0.5)
     spawnAtPosition(nozzle.pos, lifetime)
 
     -- orange tint
     ParticleColor(1, math.random(28, 44) / 100, 0)
     ParticleEmissive(6, 0)
-    ParticleRadius(0.03, 1.2)
-    ParticleAlpha(1, 0.5)
+    ParticleRadius(startSize * 1.5, endSize * 1.5)
+    ParticleAlpha(0.8, 0.5)
     spawnAtPosition(nozzle.pos, lifetime)
 
     -- red splatter
     ParticleColor(1, math.random(5, 15) / 100, 0)
     ParticleEmissive(4, 0)
-    ParticleRadius(0.03, 1.3)
+    ParticleRadius(startSize * 1.5, endSize * 1.7)
     ParticleAlpha(0.3, 0.7)
     spawnAtPosition(nozzle.pos, lifetime)
 
     -- red cloud
     ParticleColor(1, math.random(40, 50) * 0.01, 0, 1, math.random(20, 40) * 0.01, 0)
     ParticleEmissive(3, 0)
-    ParticleRadius(0.03, 1.5)
+    ParticleRadius(startSize * 1.5, endSize * 2.5)
     ParticleAlpha(0.8, 0.5)
     spawnAtPosition(nozzle.pos, lifetime)
 end

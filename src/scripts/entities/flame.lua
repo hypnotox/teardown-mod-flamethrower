@@ -3,8 +3,8 @@ Flame = {}
 function Flame:new(nozzle, fwd, lifetime, hit, maxDist, normal)
     local instance = {
         transform = TransformCopy(nozzle),
-        fwd = fwd * 0.8,
-        lifetime = lifetime * 0.9,
+        fwd = fwd,
+        lifetime = lifetime,
         dist = 0,
         hit = hit,
         maxDist = maxDist,
@@ -29,24 +29,12 @@ function Flame:update()
         size = 0.05
     end
 
-    if self.hit then
-        local distToWall = self.maxDist - self.dist
-
-        if distToWall < 0.1 then
-            distToWall = 0.1
-        end
-
-        if distToWall < 0.2 then
-            size = size / (distToWall * 5)
-        end
-    end
-
-    local samplePoints = tonumber(size * 50)
+    local samplePoints = tonumber(size * 20)
 
     for _ = 1, samplePoints, 1 do
         local point = self:randomPoint(size)
         SpawnFire(point)
-        Debug:cross(point, 255, 0, 0, 0.7)
+        Debug:cross(point, 150, 0, 255, 1)
     end
 
     if self.lifetime < 0 or self.dist > self.maxDist then
@@ -57,6 +45,7 @@ function Flame:update()
     self.transform = TransformToParentTransform(self.transform, Transform(Vec(0, 0, -travelledDist)))
     self.dist = self.dist + travelledDist
     self.lifetime = self.lifetime - GetTimeStep()
+    self.fwd = self.fwd - ((self.fwd * 0.2) * GetTimeStep())
 end
 
 function Flame:randomPoint(r)

@@ -41,10 +41,10 @@ function FireStarter:spawnParticles()
     local direction
 
     if InputDown('usetool') then
-        direction = TransformToParentVec(fireStarter, Vec(-0.3, 0.7, 0))
+        direction = TransformToParentVec(fireStarter, Vec(-0.3, 0.6, 0))
         ParticleGravity(0, -10)
     else
-        direction = TransformToParentVec(fireStarter, Vec(0, 0.7, 0))
+        direction = TransformToParentVec(fireStarter, Vec(0, 0.6, 0))
         ParticleGravity(5, 10)
     end
 
@@ -56,6 +56,7 @@ function FireStarter:spawnParticles()
     ParticleGravity(5, 10)
     ParticleDrag(0)
     ParticleTile(5)
+    ParticleStretch(10)
     ParticleEmissive(2, 0)
     ParticleAlpha(0.7, 0)
 

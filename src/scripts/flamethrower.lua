@@ -1,7 +1,6 @@
 Flamethrower = {
     maxAmmo = 100,
     ammoPerSecond = 5,
-    flameVelocity = 30,
     flames = {}
 }
 
@@ -43,7 +42,7 @@ end
 
 function Flamethrower:update()
     if GetInt('game.tool.hypnotox_flamethrower.ammo') > 0 and InputDown('usetool') then
-        local lifetime = 1
+        local lifetime = 1.3
         local flameVelocity = Nozzle:getFlameVelocity()
 
         Nozzle:throwFlames(flameVelocity, lifetime)
