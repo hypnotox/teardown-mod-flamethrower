@@ -7,24 +7,35 @@ function Debug:enable()
     DebugPrint('Debug is enabled!')
 end
 
+local function dumpTransform(transform)
+    local t = TransformCopy(transform)
+    local x, y, z = GetQuatEuler(t.rot)
+    t.rot = {x, y, z}
+
+    return Debug:dumpString(t)
+end
+
 function Debug:tick()
-    Debug:watch('player', Debug:dumpString(GetPlayerTransform()))
-    Debug:watch('camera', Debug:dumpString(GetCameraTransform()))
+    Debug:watch('player', dumpTransform(GetPlayerTransform()))
+    Debug:watch('camera', dumpTransform(GetCameraTransform()))
 
     -- Tool
     local tool = GetToolBody()
     local toolTransform = GetBodyTransform(tool)
-    Debug:watch('tool', Debug:dumpString(toolTransform))
+    Debug:watch('tool', dumpTransform(toolTransform))
 
     -- FireStarter
-    local fireStarterTransform = Flamethrower:getFireStarterTransform()
-    Debug:watch('fireStarter', Debug:dumpString(fireStarterTransform))
+    local shape = FireStarter:getShape()
+    local fireStarterTransform = TransformToParentTransform(
+        Transform(GetShapeWorldTransform(shape).pos, toolTransform.rot),
+        Engine:voxelCenterOffset()
+    )
+    Debug:watch('fireStarter', dumpTransform(fireStarterTransform))
     Debug:cross(fireStarterTransform.pos, 0, 255, 0, 0.7)
-    Debug:line(fireStarterTransform.pos, TransformToParentPoint(fireStarterTransform, Vec(0, 0, -1)))
 
     -- Nozzle
-    local nozzleTransform = Flamethrower:getNozzleTransform()
-    Debug:watch('nozzle', Debug:dumpString(nozzleTransform))
+    local nozzleTransform = Nozzle:getNozzleTransform()
+    Debug:watch('nozzle', dumpTransform(nozzleTransform))
     Debug:cross(nozzleTransform.pos, 255, 0, 0, 0.7)
 
     local fwd = TransformToParentVec(nozzle, Vec(0, 0, -1))
@@ -32,19 +43,24 @@ function Debug:tick()
     Debug:line(nozzleTransform.pos, TransformToParentPoint(nozzleTransform, Vec(0, 0, -maxDist)), 255, 0, 0, 0.7)
 
     -- Knob
-    local knobTransform = Knob:getKnobTransform()
-    Debug:watch('knob', Debug:dumpString(knobTransform))
+    local knobShape = Knob:getShape()
+    local knobTransform = TransformToParentTransform(
+        Transform(GetShapeWorldTransform(knobShape).pos, toolTransform.rot),
+        Engine:voxelCenterOffset()
+    )
+
+    Debug:watch('knob', dumpTransform(knobTransform))
     Debug:watch('knobAngle', Knob.angle)
     Debug:watch('KnobDecrease', GetString('savegame.mod.features.nozzle.keybinds.decrease'))
     Debug:watch('KnobIncrease', GetString('savegame.mod.features.nozzle.keybinds.increase'))
     Debug:cross(knobTransform.pos, 255, 0, 0, 0.7)
 
     -- FlameVelocity
-    local flameVelocity = Flamethrower:getFlameVelocity()
+    local flameVelocity = Nozzle:getFlameVelocity()
     Debug:watch('FlameVelocity', Debug:dumpString(flameVelocity))
     Debug:watch('FlameVelocityMagnitude', Debug:dumpString(VecLength(flameVelocity)))
 
-    Debug:watch('FlamesCount', #FlameManager.flames)
+    Debug:watch('FlamesCount', #Flamethrower.flames)
     Debug:watch('FireCount', GetFireCount())
 
     Debug:watch('FireLimitOverrideEnabled', GetBool('savegame.mod.features.fire_limit.enabled'))
@@ -138,8 +154,12 @@ end
 -- Other dump functions --
 
 -- Used to dump a variable onto screen
-function Debug:dump(object)
-    self:print(self:dumpString(object))
+function Debug:dump(object, title)
+    if title then
+        self:print(title .. ': ' .. self:dumpString(object))
+    else
+        self:print(self:dumpString(object))
+    end
 end
 
 function Debug:dumpString(object)
