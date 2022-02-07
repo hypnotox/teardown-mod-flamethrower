@@ -1,5 +1,6 @@
 --[[
 -- Libraries
+#include "scripts/lib/input.lua"
 #include "scripts/lib/engine.lua"
 #include "scripts/lib/debug.lua"
 
@@ -19,8 +20,9 @@
 local initialized = false
 
 function initializeDependencies()
-    initDebug()
+    initInput()
     initEngine()
+    initDebug()
     initFlame()
     initSoundManager()
     initFlamethrower()
