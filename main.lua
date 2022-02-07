@@ -1,19 +1,19 @@
 --[[
 -- Libraries
-#include "lib/engine.lua"
-#include "lib/debug.lua"
+#include "scripts/lib/engine.lua"
+#include "scripts/lib/debug.lua"
 
 -- Entities
-#include "src/scripts/entities/flame.lua"
+#include "scripts/entities/flame.lua"
 
 -- Managers
-#include "src/scripts/managers/soundManager.lua"
+#include "scripts/managers/soundManager.lua"
 
 -- Base
-#include "src/scripts/flamethrower.lua"
-#include "src/scripts/knob.lua"
-#include "src/scripts/nozzle.lua"
-#include "src/scripts/fireStarter.lua"
+#include "scripts/flamethrower.lua"
+#include "scripts/knob.lua"
+#include "scripts/nozzle.lua"
+#include "scripts/fireStarter.lua"
 ]]
 
 function init()

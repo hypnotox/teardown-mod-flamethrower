@@ -7,9 +7,9 @@ SoundManager = {
 }
 
 function SoundManager:init()
-    self.soundFlamethrowerActive = LoadLoop('src/sound/flamethrower-active.ogg')
-    self.soundFlamethrowerStart = LoadSound('src/sound/flamethrower-start.ogg')
-    self.soundFlamethrowerEnd = LoadSound('src/sound/flamethrower-end.ogg')
+    self.soundFlamethrowerActive = LoadLoop('sound/flamethrower-active.ogg')
+    self.soundFlamethrowerStart = LoadSound('sound/flamethrower-start.ogg')
+    self.soundFlamethrowerEnd = LoadSound('sound/flamethrower-end.ogg')
 end
 
 function SoundManager:tick()
