@@ -7,10 +7,10 @@ Flamethrower = {
 -- Teardown API methods
 
 function Flamethrower:init()
-    local modelPath = 'MOD/src/vox/Flamethrower.vox'
+    local modelPath = 'MOD/vox/Flamethrower.vox'
 
     if Debug.enabled then
-        modelPath = 'MOD/src/vox/FlamethrowerDebug.vox'
+        modelPath = 'MOD/vox/FlamethrowerDebug.vox'
     end
 
     RegisterTool('hypnotox_flamethrower', 'Flamethrower', modelPath)
