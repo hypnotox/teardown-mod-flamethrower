@@ -16,7 +16,23 @@
 #include "scripts/fireStarter.lua"
 ]]
 
+local initialized = false
+
+function initializeDependencies()
+    initDebug()
+    initEngine()
+    initFlame()
+    initSoundManager()
+    initFlamethrower()
+    initKnob()
+    initNozzle()
+    initFireStarter()
+    initialized = true
+end
+
 function init()
+    initializeDependencies()
+
     -- Must be disabled when publishing
     --Debug:enable()
     Debug:init()
@@ -27,14 +43,22 @@ function init()
     end
 end
 
-function tick(dt)
-    if GetString("game.player.tool") == "hypnotox_flamethrower" and GetBool("game.player.canusetool") then
-        Flamethrower:tick(dt)
+function tick()
+    if not initialized then
+        initializeDependencies()
+    end
+
+    if GetString("game.player.tool") == "hypnotox_flamethrower" then
         Debug:tick()
+        Flamethrower:tick()
     end
 end
 
 function update()
+    if not initialized then
+        initializeDependencies()
+    end
+
     if GetString("game.player.tool") == "hypnotox_flamethrower" and GetBool("game.player.canusetool") then
         Flamethrower:update()
     end
