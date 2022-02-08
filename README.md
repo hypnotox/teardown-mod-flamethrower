@@ -10,5 +10,4 @@ The mod is in active development and subject to change.
 
 ## Todo
 
-- [ ] Implement options to adjust parameters
-- [ ] Add nozzle adjustment for short and broad or thin and long flames
+- [ ] Add deflection off surfaces to flame simulation
