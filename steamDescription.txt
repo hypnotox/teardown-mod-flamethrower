@@ -16,12 +16,10 @@ This is a list of features that I have committed to, other features might be in 
 
 [list]
 	[*]Flame deflection simulation (find inflammable voxels after deflecting from some surface)
-	[*]Better nozzle implementation
 [/list]
 
 [h2]Infos[/h2]
 
 Currently, it's using the default particle system for the flames and a custom implementation to compute which voxels should be burned.
 
-If you have any suggestions or come across any bugs/problems please comment in the respective threads.
-For feedback please comment below.
+If you have any feedback, suggestions or come across any bugs/problems please comment below.
