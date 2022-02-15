@@ -6,7 +6,7 @@ Options = {
 function init()
     local isInitialized = GetBool('savegame.mod.general.is_initialized')
 
-    if not isInitialized or true then
+    if not isInitialized then
         SetBool('savegame.mod.features.fire_limit.enabled', true)
         SetInt('savegame.mod.features.fire_limit.value', 1000000)
         SetString('savegame.mod.features.nozzle.keybinds.decrease', 'leftarrow')
