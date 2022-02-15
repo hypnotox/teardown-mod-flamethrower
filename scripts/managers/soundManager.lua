@@ -1,9 +1,6 @@
 function initSoundManager()
     SoundManager = {
         soundVolume = 0.5,
-        soundFlamethrowerActive = nil,
-        soundFlamethrowerStart = nil,
-        soundFlamethrowerEnd = nil,
         outOfAmmo = false,
         soundFlamethrowerActive = LoadLoop('sound/flamethrower-active.ogg'),
         soundFlamethrowerStart = LoadSound('sound/flamethrower-start.ogg'),
