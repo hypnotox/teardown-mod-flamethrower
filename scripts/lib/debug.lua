@@ -1,12 +1,8 @@
 function initDebug()
     Debug = {
-        enabled = false
+        enabled = false,
+        toggleKey = Input.home()
     }
-
-    function Debug:enable()
-        self.enabled = true
-        DebugPrint('Debug is enabled!')
-    end
 
     local function dumpTransform(transform)
         local t = TransformCopy(transform)
@@ -17,6 +13,8 @@ function initDebug()
     end
 
     function Debug:init()
+        self.enabled = GetBool('savegame.mod.features.debug.enabled') or false
+
         if not self.enabled then
             return
         end
@@ -62,7 +60,6 @@ function initDebug()
         )
 
         Debug:watch('knob', dumpTransform(knobTransform))
-        Debug:watch('knobAngle', Knob.angle)
         Debug:cross(knobTransform.pos, 255, 0, 0, 0.7)
 
         -- FlameVelocity

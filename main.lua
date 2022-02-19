@@ -36,7 +36,6 @@ function init()
     initializeDependencies()
 
     -- Must be disabled when publishing
-    --Debug:enable()
     Debug:init()
     Flamethrower:init()
 

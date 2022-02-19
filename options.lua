@@ -11,13 +11,14 @@ function init()
         SetInt('savegame.mod.features.fire_limit.value', 1000000)
         SetString('savegame.mod.features.nozzle.keybinds.decrease', 'leftarrow')
         SetString('savegame.mod.features.nozzle.keybinds.increase', 'rightarrow')
+        SetBool('savegame.mod.features.debug.enabled', false)
 
         SetBool('savegame.mod.general.is_initialized', true)
     end
 end
 
 function draw()
-    UiTranslate(UiCenter(), 250)
+    UiTranslate(UiCenter(), 50)
     UiAlign('center middle')
     UiFont('regular.ttf', 24)
 
@@ -26,17 +27,20 @@ function draw()
     UiFont('bold.ttf', 48)
     UiText('Flamethrower mod options')
     UiPop()
+    UiTranslate(0, 100)
 
     -- Subtitle nozzle
     Options:subtitle('Nozzle adjustment')
-
-    UiTranslate(0, 100)
     Options:keybind('Decrease nozzle velocity', 'savegame.mod.features.nozzle.keybinds.decrease')
     Options:keybind('Increase nozzle velocity', 'savegame.mod.features.nozzle.keybinds.increase')
 
     -- Subtitle fire limit
     Options:subtitle('Fire limit')
     Options:toggle('Enable fire limit', 'savegame.mod.features.fire_limit.enabled')
+
+    -- Subtitle debug
+    Options:subtitle('Debug')
+    Options:toggle('Toggle debug mode', 'savegame.mod.features.debug.enabled', false)
 
     UiTranslate(0, 100)
     if UiTextButton('Close', 200, 40) then
@@ -60,7 +64,7 @@ function Options:subtitle(title)
     UiTranslate(0, 100)
 end
 
-function Options:keybind(title, key)
+function Options:keybind(title, key, default)
     UiPush()
     UiFont('regular.ttf', 26)
 
@@ -73,6 +77,10 @@ function Options:keybind(title, key)
     UiTranslate(200, 0)
     local keybind = GetString(key)
 
+    if keybind == '' then
+        keybind = default
+    end
+
     if keybind and keybind ~= nil then
         UiPush()
         UiColor(0.5, 1, 0.5, 0.2)
@@ -80,12 +88,12 @@ function Options:keybind(title, key)
         UiPop()
     end
 
-    if Options.keybindToSet == key then
+    if self.keybindToSet == key then
         UiButtonImageBox('ui/common/box-outline-6.png', 6, 6)
     end
 
     if UiTextButton(keybind or 'not bound', 200, 40) then
-        Options.keybindToSet = key
+        self.keybindToSet = key
     end
     UiPop()
 
@@ -93,13 +101,14 @@ function Options:keybind(title, key)
     UiTranslate(0, 100)
 
     local lastPressedKey = InputLastPressedKey()
-    if Options.keybindToSet ~= nil and lastPressedKey ~= '' then
-        SetString(Options.keybindToSet, lastPressedKey)
-        Options.keybindToSet = nil
+    if self.keybindToSet ~= nil and lastPressedKey ~= '' then
+        SetString(self.keybindToSet, lastPressedKey)
+        self.keybindToSet = nil
     end
 end
 
-function Options:toggle(title, key)
+function Options:toggle(title, key, default)
+    default = default or false
     UiPush()
 
     UiPush()
@@ -112,7 +121,7 @@ function Options:toggle(title, key)
     UiButtonImageBox('ui/common/box-outline-6.png', 6, 6)
     local label = 'Off'
 
-    if GetBool(key) then
+    if GetBool(key) or default then
         UiPush()
         UiColor(0.5, 1, 0.5, 0.2)
         UiImageBox('ui/common/box-solid-6.png', 80, 40, 6, 6)

@@ -8,7 +8,6 @@ function initKnob()
             decrease = GetString('savegame.mod.features.nozzle.keybinds.decrease') or 'leftarrow',
             increase = GetString('savegame.mod.features.nozzle.keybinds.increase') or 'rightarrow'
         },
-        angle = 0,
     }
 
     function Knob:tick()

@@ -14,7 +14,7 @@ function initFlamethrower()
             modelPath = 'MOD/vox/FlamethrowerDebug.vox'
         end
 
-        RegisterTool('hypnotox_flamethrower', 'Flamethrower', modelPath)
+        RegisterTool('hypnotox_flamethrower', 'Flamethrower', modelPath, 6)
         SetBool('game.tool.hypnotox_flamethrower.enabled', true)
         SetFloat('game.tool.hypnotox_flamethrower.ammo', self.maxAmmo)
     end
