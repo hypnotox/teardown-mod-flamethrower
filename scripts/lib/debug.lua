@@ -167,7 +167,7 @@ function initDebug()
     end
 
     function Debug:dumpString(object)
-        if (type(object) == "number") or (type(object) == "string") then
+        if (type(object) == "number") or (type(object) == "string") or (type(object) == "boolean") then
             return tostring(object)
         end
 
