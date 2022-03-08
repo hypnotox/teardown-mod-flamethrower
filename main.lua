@@ -36,7 +36,7 @@ function init()
     initializeDependencies()
 
     -- Must be disabled when publishing
-    Debug:init()
+    -- Debug:init()
     Flamethrower:init()
 
     if GetBool('savegame.mod.features.fire_limit.enabled') then
