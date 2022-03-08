@@ -13,7 +13,7 @@ function initNozzle()
         local endSize = 1
 
         ParticleReset()
-        ParticleSticky(0.1)
+        ParticleSticky(0.05)
         ParticleCollide(0, 0.001)
         ParticleGravity(5, -10)
         ParticleDrag(0)
