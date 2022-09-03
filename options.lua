@@ -1,3 +1,6 @@
+---@class Options
+---@field valueToSet string?
+---@field inputBuffer number|string|nil
 Options = {
     valueToSet = nil,
     inputBuffer = nil,
@@ -36,7 +39,7 @@ function draw()
 
     -- Subtitle fire limit
     Options:subtitle('Fire limit')
-    Options:toggle('Enable fire limit', 'savegame.mod.features.fire_limit.enabled')
+    Options:toggle('Enable unlimited fire', 'savegame.mod.features.fire_limit.enabled')
 
     -- Subtitle debug
     Options:subtitle('Debug')
@@ -162,7 +165,7 @@ function Options:input(title, key)
         UiButtonImageBox('ui/common/box-outline-6.png', 6, 6)
     end
 
-    if UiTextButton(GetInt(key), 200, 40) then
+    if UiTextButton(tostring(GetInt(key)), 200, 40) then
         Options.valueToSet = key
     end
     UiPop()
@@ -174,7 +177,8 @@ function Options:input(title, key)
     if Options.valueToSet ~= nil and lastPressedKey ~= '' then
         if lastPressedKey == 'enter' then
             Options.valueToSet = nil
-            SetInt(Options.valueToSet, Options.inputBuffer)
+            local inputBuffer = Options.inputBuffer
+            SetString(Options.valueToSet, tostring(inputBuffer))
         else
             Options.inputBuffer = Options.inputBuffer .. lastPressedKey
         end
