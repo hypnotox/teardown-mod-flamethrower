@@ -52,7 +52,7 @@ function initNozzle()
     function Nozzle:getFlameVelocity()
         local nozzle = self:getNozzleTransform()
         local direction = TransformToParentVec(nozzle, Vec(0, 0, -1))
-        direction = VecAdd(direction, TransformToParentVec(GetPlayerTransform()))
+        direction = VecAdd(direction, GetPlayerTransform())
 
         return VecScale(direction, Knob.flameVelocity * 2)
     end
