@@ -13,16 +13,12 @@ function initDebug()
     end
 
     function Debug:init()
-        self.enabled = GetBool('savegame.mod.features.debug.enabled') or false
-
-        if not self.enabled then
-            return
-        end
-
+        self.enabled = true
         Debug:print('KnobDecrease: ' .. GetString('savegame.mod.features.nozzle.keybinds.decrease'))
         Debug:print('KnobIncrease: ' .. GetString('savegame.mod.features.nozzle.keybinds.increase'))
         Debug:print('FireLimitOverrideEnabled: ' .. (GetBool('savegame.mod.features.fire_limit.enabled') and 'true' or 'false'))
         Debug:print('FireLimitValue: ' .. GetInt('savegame.mod.features.fire_limit.value'))
+        Debug:print('DebugSlot: ' ..  (GetInt('savegame.mod.features.inventory.slot') or 6))
     end
 
     function Debug:tick()
