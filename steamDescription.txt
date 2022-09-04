@@ -2,12 +2,13 @@ A gasoline powered flamethrower that tries to be fairly realistic.
 
 [h2]Features[/h2]
 
+[h3]Adjustable nozzle[/h3]
+Holding "left arrow" or "right arrow" will close or open the nozzle respectively up to a limit, changing the pressure of the flames. The keybinds are adjustable in the options menu.
+
 [h3]Increased fire limit[/h3]
 This mod increases the fire limit. You can toggle this in the options menu.
 FYI: This increases the registry value for the "hard" fire limit, the engine will still put out fires if the frame rate dips too low. On my PC this translates to about 450-550 fires simultaneously. (i5-4690k, RX 5700 XT)
-
-[h3]Adjustable nozzle[/h3]
-Holding "left arrow" or "right arrow" will close or open the nozzle respectively up to a limit, changing the pressure of the flames. The keybinds are adjustable in the options menu.
+This can be disabled in the options menu.
 
 [h2]Infos[/h2]
 
