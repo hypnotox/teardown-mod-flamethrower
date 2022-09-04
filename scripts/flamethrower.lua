@@ -9,12 +9,19 @@ function initFlamethrower()
 
     function Flamethrower:init()
         local modelPath = 'MOD/vox/Flamethrower.vox'
+        local inventorySlot = GetInt('savegame.mod.features.inventory.slot')
+
+        if inventorySlot == 0 then
+            inventorySlot = 6
+        end
 
         if Debug.enabled then
             modelPath = 'MOD/vox/FlamethrowerDebug.vox'
         end
 
-        RegisterTool('hypnotox_flamethrower', 'Flamethrower', modelPath, 6)
+        Debug:dump(inventorySlot, 'Slot')
+
+        RegisterTool('hypnotox_flamethrower', 'Flamethrower', modelPath, inventorySlot)
         SetBool('game.tool.hypnotox_flamethrower.enabled', true)
         SetFloat('game.tool.hypnotox_flamethrower.ammo', self.maxAmmo)
     end

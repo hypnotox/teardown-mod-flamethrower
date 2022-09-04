@@ -2,7 +2,7 @@
 ---@field valueToSet string?
 ---@field inputBuffer number|string|nil
 Options = {
-    valueToSet = nil,
+    keyToSet = nil,
     inputBuffer = nil,
 }
 
@@ -34,16 +34,16 @@ function draw()
 
     -- Subtitle nozzle
     Options:subtitle('Nozzle adjustment')
-    Options:keybind('Decrease nozzle velocity', 'savegame.mod.features.nozzle.keybinds.decrease')
-    Options:keybind('Increase nozzle velocity', 'savegame.mod.features.nozzle.keybinds.increase')
+    Options:value('Decrease nozzle velocity', 'savegame.mod.features.nozzle.keybinds.decrease')
+    Options:value('Increase nozzle velocity', 'savegame.mod.features.nozzle.keybinds.increase')
+
+    -- Inventory slot
+    Options:subtitle('Inventory slot')
+    Options:value('Set inventory slot (1-6)', 'savegame.mod.features.inventory.slot', 6, true)
 
     -- Subtitle fire limit
     Options:subtitle('Fire limit')
     Options:toggle('Enable unlimited fire', 'savegame.mod.features.fire_limit.enabled')
-
-    -- Subtitle debug
-    Options:subtitle('Debug')
-    Options:toggle('Toggle debug mode', 'savegame.mod.features.debug.enabled', false)
 
     UiTranslate(0, 100)
     if UiTextButton('Close', 200, 40) then
@@ -67,7 +67,11 @@ function Options:subtitle(title)
     UiTranslate(0, 100)
 end
 
-function Options:keybind(title, key, default)
+---@param title string
+---@param key string
+---@param default number|string|nil
+---@param isInventorySlot boolean|nil
+function Options:value(title, key, default, isInventorySlot)
     UiPush()
     UiFont('regular.ttf', 26)
 
@@ -78,25 +82,27 @@ function Options:keybind(title, key, default)
 
     UiPush()
     UiTranslate(200, 0)
-    local keybind = GetString(key)
 
-    if keybind == '' then
-        keybind = default
+    ---@type string|number|nil
+    local value = GetString(key)
+
+    if value == '' then
+        value = default
     end
 
-    if keybind and keybind ~= nil then
+    if value and value ~= nil then
         UiPush()
         UiColor(0.5, 1, 0.5, 0.2)
         UiImageBox('ui/common/box-solid-6.png', 200, 40, 6, 6)
         UiPop()
     end
 
-    if self.keybindToSet == key then
+    if self.keyToSet == key then
         UiButtonImageBox('ui/common/box-outline-6.png', 6, 6)
     end
 
-    if UiTextButton(keybind or 'not bound', 200, 40) then
-        self.keybindToSet = key
+    if UiTextButton(tostring(value) or 'not bound', 200, 40) then
+        self.keyToSet = key
     end
     UiPop()
 
@@ -104,9 +110,15 @@ function Options:keybind(title, key, default)
     UiTranslate(0, 100)
 
     local lastPressedKey = InputLastPressedKey()
-    if self.keybindToSet ~= nil and lastPressedKey ~= '' then
-        SetString(self.keybindToSet, lastPressedKey)
-        self.keybindToSet = nil
+    if self.keyToSet == key and lastPressedKey ~= '' then
+        local number = tonumber(lastPressedKey)
+
+        if isInventorySlot == true and (number == nil or number == 0 or number > 6) then
+            return
+        end
+
+        SetString(self.keyToSet, lastPressedKey)
+        self.keyToSet = nil
     end
 end
 
@@ -152,21 +164,21 @@ function Options:input(title, key)
 
     UiPush()
     UiTranslate(200, 0)
-    local keybind = GetString(key)
+    local value = GetString(key)
 
-    if keybind and keybind ~= nil then
+    if value and value ~= nil then
         UiPush()
         UiColor(0.5, 1, 0.5, 0.2)
         UiImageBox('ui/common/box-solid-6.png', 200, 40, 6, 6)
         UiPop()
     end
 
-    if Options.valueToSet == key then
+    if Options.keyToSet == key then
         UiButtonImageBox('ui/common/box-outline-6.png', 6, 6)
     end
 
     if UiTextButton(tostring(GetInt(key)), 200, 40) then
-        Options.valueToSet = key
+        Options.keyToSet = key
     end
     UiPop()
 
@@ -174,11 +186,11 @@ function Options:input(title, key)
     UiTranslate(0, 100)
 
     local lastPressedKey = InputLastPressedKey()
-    if Options.valueToSet ~= nil and lastPressedKey ~= '' then
+    if Options.keyToSet == key and lastPressedKey ~= '' then
         if lastPressedKey == 'enter' then
-            Options.valueToSet = nil
+            Options.keyToSet = nil
             local inputBuffer = Options.inputBuffer
-            SetString(Options.valueToSet, tostring(inputBuffer))
+            SetString(Options.keyToSet, tostring(inputBuffer))
         else
             Options.inputBuffer = Options.inputBuffer .. lastPressedKey
         end
