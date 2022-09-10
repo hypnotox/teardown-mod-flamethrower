@@ -19,18 +19,18 @@ function initFlame()
     end
 
     function Flame:tick()
-        local size = ((self.dist * 2) / self.fwd) * 1.5
+        local size = ((self.dist * 2) / self.fwd)
         PointLight(self.transform.pos, 1, 0.2, 0.01, size)
     end
 
     function Flame:update()
-        local size = (self.dist * 2) / self.fwd
+        local size = (self.dist * 1.3) / self.fwd
 
         if size < 0 then
             size = 0.05
         end
 
-        local samplePoints = tonumber(size * 20)
+        local samplePoints = math.ceil(size * 10)
 
         for _ = 1, samplePoints, 1 do
             local point = self:randomPoint(size)

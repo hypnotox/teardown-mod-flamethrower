@@ -9,15 +9,15 @@ function initNozzle()
 
     local function spawnParticles(flameVelocity, lifetime)
         local nozzle = Nozzle:getNozzleTransform()
-        local startSize = 0.03
-        local endSize = 1
+        local startSize = 0.02
+        local endSize = 0.6
 
         ParticleReset()
-        ParticleSticky(0.05)
-        ParticleCollide(0, 0.001)
+        ParticleSticky(0.1, 1, 'easein')
+        ParticleCollide(0, 0.001, 'easein')
         ParticleGravity(5, -10)
         ParticleDrag(0)
-        ParticleStretch(3)
+        ParticleStretch(5)
         ParticleTile(5)
 
         -- white core
@@ -29,21 +29,21 @@ function initNozzle()
 
         -- orange tint
         ParticleColor(1, math.random(28, 44) / 100, 0)
-        ParticleEmissive(6, 0)
+        ParticleEmissive(6, 3)
         ParticleRadius(startSize * 1.5, endSize * 1.5)
         ParticleAlpha(0.8, 0.5)
         spawnAtPosition(nozzle.pos, lifetime, flameVelocity)
 
         -- red splatter
         ParticleColor(1, math.random(5, 15) / 100, 0)
-        ParticleEmissive(4, 0)
+        ParticleEmissive(4, 2)
         ParticleRadius(startSize * 1.5, endSize * 1.7)
         ParticleAlpha(0.3, 0.7)
         spawnAtPosition(nozzle.pos, lifetime, flameVelocity)
 
         -- red cloud
         ParticleColor(1, math.random(40, 50) * 0.01, 0, 1, math.random(20, 40) * 0.01, 0)
-        ParticleEmissive(3, 0)
+        ParticleEmissive(3, 1)
         ParticleRadius(startSize * 1.5, endSize * 2.5)
         ParticleAlpha(0.8, 0.5)
         spawnAtPosition(nozzle.pos, lifetime, flameVelocity)
