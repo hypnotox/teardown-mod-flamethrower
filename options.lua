@@ -12,9 +12,9 @@ function init()
     if not isInitialized then
         SetBool('savegame.mod.features.fire_limit.enabled', true)
         SetInt('savegame.mod.features.fire_limit.value', 1000000)
+        SetInt('savegame.mod.features.inventory.slot', 6)
         SetString('savegame.mod.features.nozzle.keybinds.decrease', 'leftarrow')
         SetString('savegame.mod.features.nozzle.keybinds.increase', 'rightarrow')
-        SetBool('savegame.mod.features.debug.enabled', false)
 
         SetBool('savegame.mod.general.is_initialized', true)
     end
