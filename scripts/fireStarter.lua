@@ -29,7 +29,6 @@ function initFireStarter()
     end
 
     function FireStarter:spawnParticles()
-        ParticleReset()
         local shape = self:getShape()
         local transform = GetShapeWorldTransform(shape)
         local tool = GetToolBody()
@@ -50,6 +49,7 @@ function initFireStarter()
         nozzleFlameVelocityHigh = VecAdd(direction, VecScale(direction, 0.2))
         nozzleFlameVelocityLow = VecAdd(direction, VecScale(direction, 0.05))
 
+        ParticleReset()
         ParticleSticky(0)
         ParticleCollide(0)
         ParticleGravity(5)
@@ -68,13 +68,13 @@ function initFireStarter()
         ParticleColor(1, math.random(28, 44) / 100, 0)
         ParticleRadius(0.06, 0.02)
         spawnAtPosition(fireStarter.pos, 0.1)
-        PointLight(fireStarter.pos, 1, 0.3, 0.1, 0.2)
 
         -- orange splatter
         ParticleColor(1, math.random(28, 44) / 100, 0)
         ParticleRadius(0.05, 0.02)
         ParticleAlpha(0.9, 0.01)
         spawnAtPosition(fireStarter.pos, 0.1)
+
         PointLight(fireStarter.pos, 1, 0.3, 0.1, 0.2)
     end
 end
