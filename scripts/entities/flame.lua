@@ -20,7 +20,7 @@ function initFlame()
 
     function Flame:tick()
         local size = ((self.dist * 2) / self.fwd) * 1.5
-        PointLight(self.transform.pos, 1, 0.3, 0.1, size)
+        PointLight(self.transform.pos, 1, 0.2, 0.01, size)
     end
 
     function Flame:update()
