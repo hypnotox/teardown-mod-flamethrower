@@ -24,7 +24,7 @@ function initFlame()
     end
 
     function Flame:update()
-        local size = (self.dist * 1.3) / self.fwd
+        local size = (self.dist * 1.5) / self.fwd
 
         if size < 0 then
             size = 0.05

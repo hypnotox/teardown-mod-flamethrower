@@ -9,8 +9,8 @@ function initNozzle()
 
     local function spawnParticles(flameVelocity, lifetime)
         local nozzle = Nozzle:getNozzleTransform()
-        local startSize = 0.02
-        local endSize = 0.6
+        local startSize = 0.03
+        local endSize = 0.8
 
         ParticleReset()
         ParticleSticky(0.1, 1, 'easein')
