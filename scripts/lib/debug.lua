@@ -9,7 +9,7 @@ function initDebug()
         local x, y, z = GetQuatEuler(t.rot)
         t.rot = {x, y, z}
 
-        return Debug:dumpString(t)
+        return Debug:toString(t)
     end
 
     function Debug:init()
@@ -18,17 +18,31 @@ function initDebug()
         Debug:print('KnobIncrease: ' .. GetString('savegame.mod.features.nozzle.keybinds.increase'))
         Debug:print('FireLimitOverrideEnabled: ' .. (GetBool('savegame.mod.features.fire_limit.enabled') and 'true' or 'false'))
         Debug:print('FireLimitValue: ' .. GetInt('savegame.mod.features.fire_limit.value'))
-        Debug:print('DebugSlot: ' ..  (GetInt('savegame.mod.features.inventory.slot') or 6))
+        Debug:print('DebugSlot: ' ..  GetInt('savegame.mod.features.inventory.slot'))
     end
 
     function Debug:tick()
-        Debug:watch('player', dumpTransform(GetPlayerTransform()))
-        Debug:watch('camera', dumpTransform(GetCameraTransform()))
+        local playerTransform = GetPlayerTransform()
+        local cameraTransform = GetCameraTransform()
+        local toolTransform = GetBodyTransform(GetToolBody())
 
-        -- Tool
-        local tool = GetToolBody()
-        local toolTransform = GetBodyTransform(tool)
-        Debug:watch('tool', dumpTransform(toolTransform))
+        local dir = TransformToParentVec(cameraTransform, {0, 0, -1})
+        local hit, dist, normal, _ = QueryRaycast(cameraTransform.pos, dir, 10)
+
+        if hit then
+            local hitPoint = VecAdd(cameraTransform.pos, VecScale(dir, dist))
+            local hitTransform = Transform(hitPoint, QuatLookAt(hitPoint, VecAdd(hitPoint, normal)))
+            self:line(hitPoint, TransformToParentPoint(hitTransform, Vec(-1, 0, 0)), 0, 1, 0)
+            self:line(hitPoint, TransformToParentPoint(hitTransform, Vec(0, 1, 0)), 0, 0, 1)
+            self:line(hitPoint, TransformToParentPoint(hitTransform, Vec(0, 0, -1)), 1, 0, 0)
+        end
+
+        self:watch('player position', self:toString(playerTransform.pos))
+        self:watch('camera rotation', self:toString(Vec(GetQuatEuler(playerTransform.rot))))
+        self:watch('camera position', self:toString(cameraTransform.pos))
+        self:watch('camera rotation', self:toString(Vec(GetQuatEuler(cameraTransform.rot))))
+        self:watch('tool position', self:toString(toolTransform.pos))
+        self:watch('tool rotation', self:toString(Vec(GetQuatEuler(toolTransform.rot))))
 
         -- FireStarter
         local shape = FireStarter:getShape()
@@ -60,8 +74,8 @@ function initDebug()
 
         -- FlameVelocity
         local flameVelocity = Nozzle:getFlameVelocity()
-        Debug:watch('FlameVelocity', Debug:dumpString(flameVelocity))
-        Debug:watch('FlameVelocityMagnitude', Debug:dumpString(VecLength(flameVelocity)))
+        Debug:watch('FlameVelocity', Debug:toString(flameVelocity))
+        Debug:watch('FlameVelocityMagnitude', Debug:toString(VecLength(flameVelocity)))
 
         Debug:watch('FlamesCount', #Flamethrower.flames)
         Debug:watch('FireCount', GetFireCount())
@@ -156,13 +170,13 @@ function initDebug()
     -- Used to dump a variable onto screen
     function Debug:dump(object, title)
         if title then
-            self:print(title .. ': ' .. self:dumpString(object))
+            self:print(title .. ': ' .. self:toString(object))
         else
-            self:print(self:dumpString(object))
+            self:print(self:toString(object))
         end
     end
 
-    function Debug:dumpString(object)
+    function Debug:toString(object)
         if (type(object) == "number") or (type(object) == "string") or (type(object) == "boolean") then
             return tostring(object)
         end
@@ -181,7 +195,7 @@ function initDebug()
             elseif (type(v) == "string") then
                 toDump = toDump .. "\"" .. v .. "\", "
             else
-                toDump = toDump .. self:dumpString(v) .. ", "
+                toDump = toDump .. self:toString(v) .. ", "
             end
         end
 
