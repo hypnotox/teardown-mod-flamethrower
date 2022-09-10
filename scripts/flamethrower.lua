@@ -24,6 +24,8 @@ function initFlamethrower()
         RegisterTool('hypnotox_flamethrower', 'Flamethrower', modelPath, inventorySlot)
         SetBool('game.tool.hypnotox_flamethrower.enabled', true)
         SetFloat('game.tool.hypnotox_flamethrower.ammo', self.maxAmmo)
+
+        Knob:init()
     end
 
     function Flamethrower:tick()

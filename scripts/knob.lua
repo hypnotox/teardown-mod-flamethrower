@@ -5,10 +5,26 @@ function initKnob()
         flameVelocityMax = 25,
         changePerSecond = 10,
         keybinds = {
-            decrease = GetString('savegame.mod.features.nozzle.keybinds.decrease') or 'leftarrow',
-            increase = GetString('savegame.mod.features.nozzle.keybinds.increase') or 'rightarrow'
+            decrease = nil,
+            increase = nil
         },
     }
+
+    function Knob:init()
+        local decreaseKeybind = GetString('savegame.mod.features.nozzle.keybinds.decrease')
+        local increaseKeybind = GetString('savegame.mod.features.nozzle.keybinds.increase')
+
+        if decreaseKeybind == '' then
+            decreaseKeybind = 'leftarrow'
+        end
+
+        if increaseKeybind == '' then
+            increaseKeybind = 'rightarrow'
+        end
+
+        self.keybinds.decrease = decreaseKeybind
+        self.keybinds.increase = increaseKeybind
+    end
 
     function Knob:tick()
         local knobShape = self:getShape()
