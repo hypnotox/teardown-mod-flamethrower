@@ -5,28 +5,22 @@ function initFlamethrower()
         flames = {}
     }
 
-    -- Teardown API methods
+    local modelPath = 'MOD/vox/Flamethrower.vox'
+    local inventorySlot = GetInt('savegame.mod.features.inventory.slot')
 
-    function Flamethrower:init()
-        local modelPath = 'MOD/vox/Flamethrower.vox'
-        local inventorySlot = GetInt('savegame.mod.features.inventory.slot')
-
-        if inventorySlot == 0 then
-            inventorySlot = 6
-        end
-
-        if Debug.enabled then
-            modelPath = 'MOD/vox/FlamethrowerDebug.vox'
-        end
-
-        Debug:dump(inventorySlot, 'Slot')
-
-        RegisterTool('hypnotox_flamethrower', 'Flamethrower', modelPath, inventorySlot)
-        SetBool('game.tool.hypnotox_flamethrower.enabled', true)
-        SetFloat('game.tool.hypnotox_flamethrower.ammo', self.maxAmmo)
-
-        Knob:init()
+    if inventorySlot == 0 then
+        inventorySlot = 6
     end
+
+    if Debug.enabled then
+        modelPath = 'MOD/vox/FlamethrowerDebug.vox'
+    end
+
+    Debug:dump(inventorySlot, 'Slot')
+
+    RegisterTool('hypnotox_flamethrower', 'Flamethrower', modelPath, inventorySlot)
+    SetBool('game.tool.hypnotox_flamethrower.enabled', true)
+    SetFloat('game.tool.hypnotox_flamethrower.ammo', Flamethrower.maxAmmo)
 
     function Flamethrower:tick()
         SetBool('hud.aimdot', false)
