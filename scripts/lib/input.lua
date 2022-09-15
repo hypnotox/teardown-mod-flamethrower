@@ -190,77 +190,77 @@ function initInput()
 
     -- Logical
 
-    ---@return number Move forward / Accelerate
+    ---@return string Move forward / Accelerate
     function Input.up()
         return 'up'
     end
 
-    ---@return number Move backward / Brake
+    ---@return string Move backward / Brake
     function Input.down()
         return 'down'
     end
 
-    ---@return number Move left
+    ---@return string Move left
     function Input.left()
         return 'left'
     end
 
-    ---@return number Move right
+    ---@return string Move right
     function Input.right()
         return 'right'
     end
 
-    ---@return number Interact
+    ---@return string Interact
     function Input.interact()
         return 'interact'
     end
 
-    ---@return number Flashlight
+    ---@return string Flashlight
     function Input.flashlight()
         return 'flashlight'
     end
 
-    ---@return number Jump
+    ---@return string Jump
     function Input.jump()
         return 'jump'
     end
 
-    ---@return number Crouch
+    ---@return string Crouch
     function Input.crouch()
         return 'crouch'
     end
 
-    ---@return number Use tool
+    ---@return string Use tool
     function Input.usetool()
         return 'usetool'
     end
 
-    ---@return number Grab
+    ---@return string Grab
     function Input.grab()
         return 'grab'
     end
 
-    ---@return number Handbrake
+    ---@return string Handbrake
     function Input.handbrake()
         return 'handbrake'
     end
 
-    ---@return number Map
+    ---@return string Map
     function Input.map()
         return 'map'
     end
 
-    ---@return number Pause game (escape)
+    ---@return string Pause game (escape)
     function Input.pause()
         return 'pause'
     end
 
-    ---@return number Camera x movement, scaled by sensitivity. Only valid in InputValue.
+    ---@return string Camera x movement, scaled by sensitivity. Only valid in InputValue.
     function Input.cameraX()
         return 'cameraX'
     end
 
-    ---@return number Camera y movement, scaled by sensitivity. Only valid in InputValue.
+    ---@return string Camera y movement, scaled by sensitivity. Only valid in InputValue.
     function Input.cameraY()
         return 'cameraY'
     end
