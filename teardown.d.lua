@@ -29,48 +29,28 @@ local defaultTransform = {
 --[[ Functions ]]
 
 ---@param name string Parameter name
----@param default number _optional_ Default parameter value
+---@param default number Default parameter value
 ---@return number value Parameter value
 ---@see @https://www.teardowngame.com/modding/api.html#GetIntParam
 function GetIntParam(name, default) end
 
 ---@param name string Parameter name
----@return number value Parameter value
----@see @https://www.teardowngame.com/modding/api.html#GetIntParam
-function GetIntParam(name) end
-
----@param name string Parameter name
----@param default number _optional_ Default parameter value
+---@param default number Default parameter value
 ---@return number value Parameter value
 ---@see @https://www.teardowngame.com/modding/api.html#GetFloatParam
 function GetFloatParam(name, default) end
 
 ---@param name string Parameter name
----@return number value Parameter value
----@see @https://www.teardowngame.com/modding/api.html#GetFloatParam
-function GetFloatParam(name) end
-
----@param name string Parameter name
----@param default boolean _optional_ Default parameter value
+---@param default boolean Default parameter value
 ---@return boolean value Parameter value
 ---@see @https://www.teardowngame.com/modding/api.html#GetBoolParam
 function GetBoolParam(name, default) end
 
 ---@param name string Parameter name
----@return boolean value Parameter value
----@see @https://www.teardowngame.com/modding/api.html#GetBoolParam
-function GetBoolParam(name) end
-
----@param name string Parameter name
----@param default string _optional_ Default parameter value
+---@param default string Default parameter value
 ---@return string value Parameter value
 ---@see @https://www.teardowngame.com/modding/api.html#GetStringParam
 function GetStringParam(name, default) end
-
----@param name string Parameter name
----@return string value Parameter value
----@see @https://www.teardowngame.com/modding/api.html#GetStringParam
-function GetStringParam(name) end
 
 ---@return string version Dot separated string of current version of the game
 ---@see @https://www.teardowngame.com/modding/api.html#GetVersion
@@ -115,44 +95,23 @@ function InputValue(input) end
 
 ---@param variable string Name of number variable in the global context
 ---@param value number The new value
----@param transition string _optional_ Transition type. See description.
----@param time number _optional_ Transition time (seconds)
+---@param transition string|nil Transition type. See description.
+---@param time number|nil Transition time (seconds)
 ---@see @https://www.teardowngame.com/modding/api.html#SetValue
 function SetValue(variable, value, transition, time) end
 
----@param variable string Name of number variable in the global context
----@param value number The new value
----@param transition string _optional_ Transition type. See description.
----@see @https://www.teardowngame.com/modding/api.html#SetValue
-function SetValue(variable, value, transition) end
-
----@param variable string Name of number variable in the global context
----@param value number The new value
----@see @https://www.teardowngame.com/modding/api.html#SetValue
-function SetValue(variable, value) end
-
 ---@param title string Text on button
+---@param primary bool|nil Primary button
 ---@return boolean clicked True if clicked, false otherwise
 ---@see @https://www.teardowngame.com/modding/api.html#PauseMenuButton
-function PauseMenuButton(title) end
+function PauseMenuButton(title, primary) end
 
 ---@param mission string An identifier of your choice
 ---@param path string Path to level XML file
----@param layers string _optional_ Active layers. Default is no layers.
----@param passThrough boolean _optional_ If set, loading screen will have no text and music will keep playing
+---@param layers string|nil Active layers. Default is no layers.
+---@param passThrough boolean|nil If set, loading screen will have no text and music will keep playing
 ---@see @https://www.teardowngame.com/modding/api.html#StartLevel
 function StartLevel(mission, path, layers, passThrough) end
-
----@param mission string An identifier of your choice
----@param path string Path to level XML file
----@param layers string _optional_ Active layers. Default is no layers.
----@see @https://www.teardowngame.com/modding/api.html#StartLevel
-function StartLevel(mission, path, layers) end
-
----@param mission string An identifier of your choice
----@param path string Path to level XML file
----@see @https://www.teardowngame.com/modding/api.html#StartLevel
-function StartLevel(mission, path) end
 
 ---@param paused boolean True if game should be paused
 ---@see @https://www.teardowngame.com/modding/api.html#SetPaused
@@ -169,7 +128,7 @@ function Menu() end
 function ClearKey(key) end
 
 ---@param parent string The parent registry key
----@return table children Indexed table of strings with child keys
+---@return table<string> children Indexed table of strings with child keys
 ---@see @https://www.teardowngame.com/modding/api.html#ListKeys
 function ListKeys(parent) end
 
@@ -218,27 +177,12 @@ function SetString(key, value) end
 ---@see @https://www.teardowngame.com/modding/api.html#GetString
 function GetString(key) end
 
----@param x number _optional_ X value
----@param y number _optional_ Y value
----@param z number _optional_ Z value
+---@param x number|nil X value
+---@param y number|nil Y value
+---@param z number|nil Z value
 ---@return VectorType vec New vector
 ---@see @https://www.teardowngame.com/modding/api.html#Vec
 function Vec(x, y, z) end
-
----@param x number _optional_ X value
----@param y number _optional_ Y value
----@return VectorType vec New vector
----@see @https://www.teardowngame.com/modding/api.html#Vec
-function Vec(x, y) end
-
----@param x number _optional_ X value
----@return VectorType vec New vector
----@see @https://www.teardowngame.com/modding/api.html#Vec
-function Vec(x) end
-
----@return VectorType vec New vector
----@see @https://www.teardowngame.com/modding/api.html#Vec
-function Vec() end
 
 ---@param org VectorType A vector
 ---@return VectorType new Copy of org vector
@@ -292,35 +236,13 @@ function VecCross(a, b) end
 ---@see @https://www.teardowngame.com/modding/api.html#VecLerp
 function VecLerp(a, b, t) end
 
----@param x number _optional_ X value
----@param y number _optional_ Y value
----@param z number _optional_ Z value
----@param w number _optional_ W value
+---@param x number|nil X value
+---@param y number|nil Y value
+---@param z number|nil Z value
+---@param w number|nil W value
 ---@return QuaternionType quat New quaternion
 ---@see @https://www.teardowngame.com/modding/api.html#Quat
 function Quat(x, y, z, w) end
-
----@param x number _optional_ X value
----@param y number _optional_ Y value
----@param z number _optional_ Z value
----@return QuaternionType quat New quaternion
----@see @https://www.teardowngame.com/modding/api.html#Quat
-function Quat(x, y, z) end
-
----@param x number _optional_ X value
----@param y number _optional_ Y value
----@return QuaternionType quat New quaternion
----@see @https://www.teardowngame.com/modding/api.html#Quat
-function Quat(x, y) end
-
----@param x number _optional_ X value
----@return QuaternionType quat New quaternion
----@see @https://www.teardowngame.com/modding/api.html#Quat
-function Quat(x) end
-
----@return QuaternionType quat New quaternion
----@see @https://www.teardowngame.com/modding/api.html#Quat
-function Quat() end
 
 ---@param org QuaternionType Quaternion
 ---@return QuaternionType new Copy of org quaternion
@@ -372,20 +294,11 @@ function QuatRotateQuat(a, b) end
 ---@see @https://www.teardowngame.com/modding/api.html#QuatRotateVec
 function QuatRotateVec(a, vec) end
 
----@param pos VectorType _optional_ Vector representing transform position
----@param rot QuaternionType _optional_ Quaternion representing transform rotation
+---@param pos VectorType|nil Vector representing transform position
+---@param rot QuaternionType|nil Quaternion representing transform rotation
 ---@return TransformType transform New transform
 ---@see @https://www.teardowngame.com/modding/api.html#Transform
 function Transform(pos, rot) end
-
----@param pos VectorType _optional_ Vector representing transform position
----@return TransformType transform New transform
----@see @https://www.teardowngame.com/modding/api.html#Transform
-function Transform(pos) end
-
----@return TransformType transform New transform
----@see @https://www.teardowngame.com/modding/api.html#Transform
-function Transform() end
 
 ---@param org TransformType Transform
 ---@return TransformType new Copy of org transform
@@ -430,14 +343,9 @@ function TransformToLocalPoint(t, p) end
 
 ---@param handle integer Entity handle
 ---@param tag string Tag name
----@param value string _optional_ Tag value
+---@param value string|nil Tag value
 ---@see @https://www.teardowngame.com/modding/api.html#SetTag
 function SetTag(handle, tag, value) end
-
----@param handle integer Entity handle
----@param tag string Tag name
----@see @https://www.teardowngame.com/modding/api.html#SetTag
-function SetTag(handle, tag) end
 
 ---@param handle integer Entity handle
 ---@param tag string Tag name
@@ -481,26 +389,16 @@ function IsHandleValid(handle) end
 function GetEntityType(handle) end
 
 ---@param tag string Tag name
----@param global boolean _optional_ Search in entire scene
+---@param global boolean|nil Search in entire scene
 ---@return integer handle Handle to first body with specified tag or zero if not found
 ---@see @https://www.teardowngame.com/modding/api.html#FindBody
 function FindBody(tag, global) end
 
 ---@param tag string Tag name
----@return integer handle Handle to first body with specified tag or zero if not found
----@see @https://www.teardowngame.com/modding/api.html#FindBody
-function FindBody(tag) end
-
----@param tag string Tag name
----@param global boolean _optional_ Search in entire scene
+---@param global boolean|nil Search in entire scene
 ---@return table<integer> list Indexed table with handles to all bodies with specified tag
 ---@see @https://www.teardowngame.com/modding/api.html#FindBodies
 function FindBodies(tag, global) end
-
----@param tag string Tag name
----@return table<integer> list Indexed table with handles to all bodies with specified tag
----@see @https://www.teardowngame.com/modding/api.html#FindBodies
-function FindBodies(tag) end
 
 ---@param handle integer Body handle
 ---@return TransformType transform Transform of the body
@@ -592,16 +490,10 @@ function GetBodyCenterOfMass(handle) end
 
 ---@param handle integer Body handle
 ---@param maxDist number Maximum visible distance
----@param rejectTransparent boolean _optional_ See through transparent materials. Default false.
+---@param rejectTransparent boolean|nil See through transparent materials. Default false.
 ---@return boolean visible Return true if body is visible
 ---@see @https://www.teardowngame.com/modding/api.html#IsBodyVisible
 function IsBodyVisible(handle, maxDist, rejectTransparent) end
-
----@param handle integer Body handle
----@param maxDist number Maximum visible distance
----@return boolean visible Return true if body is visible
----@see @https://www.teardowngame.com/modding/api.html#IsBodyVisible
-function IsBodyVisible(handle, maxDist) end
 
 ---@param handle integer Body handle
 ---@return boolean broken Return true if body is broken
@@ -614,30 +506,12 @@ function IsBodyBroken(handle) end
 function IsBodyJointedToStatic(handle) end
 
 ---@param handle integer Body handle
+---@param r number|nil Red
+---@param g number|nil Green
+---@param b number|nil Blue
 ---@param a number Alpha
 ---@see @https://www.teardowngame.com/modding/api.html#DrawBodyOutline
-function DrawBodyOutline(handle, a) end
-
----@param handle integer Body handle
----@param r number Red
----@param g number Green
----@param b number _optional_ Blue
----@param a number _optional_ Alpha
----@see @https://www.teardowngame.com/modding/api.html#DrawBodyOutline
 function DrawBodyOutline(handle, r, g, b, a) end
-
----@param handle integer Body handle
----@param r number Red
----@param g number Green
----@param b number _optional_ Blue
----@see @https://www.teardowngame.com/modding/api.html#DrawBodyOutline
-function DrawBodyOutline(handle, r, g, b) end
-
----@param handle integer Body handle
----@param r number Red
----@param g number Green
----@see @https://www.teardowngame.com/modding/api.html#DrawBodyOutline
-function DrawBodyOutline(handle, r, g) end
 
 ---@param handle integer Body handle
 ---@param amount number Amount
@@ -658,125 +532,53 @@ function GetBodyClosestPoint(body, origin) end
 ---@param point VectorType World space point
 ---@param dir VectorType World space direction
 ---@param relVel number Desired relative velocity along the provided direction
----@param min number _optional_ Minimum impulse (default: -infinity)
----@param max number _optional_ Maximum impulse (default: infinity)
+---@param min number|nil Minimum impulse (default: -infinity)
+---@param max number|nil Maximum impulse (default: infinity)
 ---@see @https://www.teardowngame.com/modding/api.html#ConstrainVelocity
 function ConstrainVelocity(bodyA, bodyB, point, dir, relVel, min, max) end
 
 ---@param bodyA integer First body handle (zero for static)
 ---@param bodyB integer Second body handle (zero for static)
----@param point VectorType World space point
----@param dir VectorType World space direction
----@param relVel number Desired relative velocity along the provided direction
----@param min number _optional_ Minimum impulse (default: -infinity)
----@see @https://www.teardowngame.com/modding/api.html#ConstrainVelocity
-function ConstrainVelocity(bodyA, bodyB, point, dir, relVel, min) end
-
----@param bodyA integer First body handle (zero for static)
----@param bodyB integer Second body handle (zero for static)
----@param point VectorType World space point
----@param dir VectorType World space direction
----@param relVel number Desired relative velocity along the provided direction
----@see @https://www.teardowngame.com/modding/api.html#ConstrainVelocity
-function ConstrainVelocity(bodyA, bodyB, point, dir, relVel) end
-
----@param bodyA integer First body handle (zero for static)
----@param bodyB integer Second body handle (zero for static)
 ---@param dir VectorType World space direction
 ---@param relAngVel number Desired relative angular velocity along the provided direction
----@param min number _optional_ Minimum angular impulse (default: -infinity)
----@param max number _optional_ Maximum angular impulse (default: infinity)
+---@param min number|nil Minimum angular impulse (default: -infinity)
+---@param max number|nil Maximum angular impulse (default: infinity)
 ---@see @https://www.teardowngame.com/modding/api.html#ConstrainAngularVelocity
 function ConstrainAngularVelocity(bodyA, bodyB, dir, relAngVel, min, max) end
 
 ---@param bodyA integer First body handle (zero for static)
 ---@param bodyB integer Second body handle (zero for static)
----@param dir VectorType World space direction
----@param relAngVel number Desired relative angular velocity along the provided direction
----@param min number _optional_ Minimum angular impulse (default: -infinity)
----@see @https://www.teardowngame.com/modding/api.html#ConstrainAngularVelocity
-function ConstrainAngularVelocity(bodyA, bodyB, dir, relAngVel, min) end
-
----@param bodyA integer First body handle (zero for static)
----@param bodyB integer Second body handle (zero for static)
----@param dir VectorType World space direction
----@param relAngVel number Desired relative angular velocity along the provided direction
----@see @https://www.teardowngame.com/modding/api.html#ConstrainAngularVelocity
-function ConstrainAngularVelocity(bodyA, bodyB, dir, relAngVel) end
-
----@param bodyA integer First body handle (zero for static)
----@param bodyB integer Second body handle (zero for static)
 ---@param pointA VectorType World space point for first body
 ---@param pointB VectorType World space point for second body
----@param maxVel number _optional_ Maximum relative velocity (default: infinite)
----@param maxImpulse number _optional_ Maximum impulse (default: infinite)
+---@param maxVel number|nil Maximum relative velocity (default: infinite)
+---@param maxImpulse number|nil Maximum impulse (default: infinite)
 ---@see @https://www.teardowngame.com/modding/api.html#ConstrainPosition
 function ConstrainPosition(bodyA, bodyB, pointA, pointB, maxVel, maxImpulse) end
 
 ---@param bodyA integer First body handle (zero for static)
 ---@param bodyB integer Second body handle (zero for static)
----@param pointA VectorType World space point for first body
----@param pointB VectorType World space point for second body
----@param maxVel number _optional_ Maximum relative velocity (default: infinite)
----@see @https://www.teardowngame.com/modding/api.html#ConstrainPosition
-function ConstrainPosition(bodyA, bodyB, pointA, pointB, maxVel) end
-
----@param bodyA integer First body handle (zero for static)
----@param bodyB integer Second body handle (zero for static)
----@param pointA VectorType World space point for first body
----@param pointB VectorType World space point for second body
----@see @https://www.teardowngame.com/modding/api.html#ConstrainPosition
-function ConstrainPosition(bodyA, bodyB, pointA, pointB) end
-
----@param bodyA integer First body handle (zero for static)
----@param bodyB integer Second body handle (zero for static)
 ---@param quatA VectorType World space orientation for first body
 ---@param quatB VectorType World space orientation for second body
----@param maxAngVel number _optional_ Maximum relative angular velocity (default: infinite)
----@param maxAngImpulse number _optional_ Maximum angular impulse (default: infinite)
+---@param maxAngVel number|nil Maximum relative angular velocity (default: infinite)
+---@param maxAngImpulse number|nil Maximum angular impulse (default: infinite)
 ---@see @https://www.teardowngame.com/modding/api.html#ConstrainOrientation
 function ConstrainOrientation(bodyA, bodyB, quatA, quatB, maxAngVel, maxAngImpulse) end
-
----@param bodyA integer First body handle (zero for static)
----@param bodyB integer Second body handle (zero for static)
----@param quatA VectorType World space orientation for first body
----@param quatB VectorType World space orientation for second body
----@param maxAngVel number _optional_ Maximum relative angular velocity (default: infinite)
----@see @https://www.teardowngame.com/modding/api.html#ConstrainOrientation
-function ConstrainOrientation(bodyA, bodyB, quatA, quatB, maxAngVel) end
-
----@param bodyA integer First body handle (zero for static)
----@param bodyB integer Second body handle (zero for static)
----@param quatA VectorType World space orientation for first body
----@param quatB VectorType World space orientation for second body
----@see @https://www.teardowngame.com/modding/api.html#ConstrainOrientation
-function ConstrainOrientation(bodyA, bodyB, quatA, quatB) end
 
 ---@return integer body Handle to the static world body
 ---@see @https://www.teardowngame.com/modding/api.html#GetWorldBody
 function GetWorldBody() end
 
 ---@param tag string Tag name
----@param global boolean _optional_ Search in entire scene
+---@param global boolean|nil Search in entire scene
 ---@return integer handle Handle to first shape with specified tag or zero if not found
 ---@see @https://www.teardowngame.com/modding/api.html#FindShape
 function FindShape(tag, global) end
 
 ---@param tag string Tag name
----@return integer handle Handle to first shape with specified tag or zero if not found
----@see @https://www.teardowngame.com/modding/api.html#FindShape
-function FindShape(tag) end
-
----@param tag string Tag name
----@param global boolean _optional_ Search in entire scene
----@return table list Indexed table with handles to all shapes with specified tag
+---@param global boolean|nil Search in entire scene
+---@return table<number> list Indexed table with handles to all shapes with specified tag
 ---@see @https://www.teardowngame.com/modding/api.html#FindShapes
 function FindShapes(tag, global) end
-
----@param tag string Tag name
----@return table list Indexed table with handles to all shapes with specified tag
----@see @https://www.teardowngame.com/modding/api.html#FindShapes
-function FindShapes(tag) end
 
 ---@param handle integer Shape handle
 ---@return TransformType transform Return shape transform in body space
@@ -799,12 +601,12 @@ function GetShapeWorldTransform(handle) end
 function GetShapeBody(handle) end
 
 ---@param shape number Shape handle
----@return table list Indexed table with joints connected to shape
+---@return table<number> list Indexed table with joints connected to shape
 ---@see @https://www.teardowngame.com/modding/api.html#GetShapeJoints
 function GetShapeJoints(shape) end
 
 ---@param shape number Shape handle
----@return table list Indexed table of lights owned by shape
+---@return table<number> list Indexed table of lights owned by shape
 ---@see @https://www.teardowngame.com/modding/api.html#GetShapeLights
 function GetShapeLights(shape) end
 
@@ -856,16 +658,10 @@ function GetShapeVoxelCount(handle) end
 
 ---@param handle integer Shape handle
 ---@param maxDist number Maximum visible distance
----@param rejectTransparent boolean _optional_ See through transparent materials. Default false.
+---@param rejectTransparent boolean|nil See through transparent materials. Default false.
 ---@return boolean visible Return true if shape is visible
 ---@see @https://www.teardowngame.com/modding/api.html#IsShapeVisible
 function IsShapeVisible(handle, maxDist, rejectTransparent) end
-
----@param handle integer Shape handle
----@param maxDist number Maximum visible distance
----@return boolean visible Return true if shape is visible
----@see @https://www.teardowngame.com/modding/api.html#IsShapeVisible
-function IsShapeVisible(handle, maxDist) end
 
 ---@param handle integer Shape handle
 ---@return boolean broken Return true if shape is broken
@@ -878,9 +674,9 @@ function IsShapeBroken(handle) end
 function DrawShapeOutline(handle, a) end
 
 ---@param handle integer Shape handle
----@param r number _optional_ Red
----@param g number _optional_ Green
----@param b number _optional_ Blue
+---@param r number|nil Red
+---@param g number|nil Green
+---@param b number|nil Blue
 ---@param a number Alpha
 ---@see @https://www.teardowngame.com/modding/api.html#DrawShapeOutline
 function DrawShapeOutline(handle, r, g, b, a) end
@@ -911,26 +707,16 @@ function GetShapeClosestPoint(shape, origin) end
 function IsShapeTouching(a, b) end
 
 ---@param tag string Tag name
----@param global boolean _optional_ Search in entire scene
+---@param global boolean|nil Search in entire scene
 ---@return integer handle Handle to first location with specified tag or zero if not found
 ---@see @https://www.teardowngame.com/modding/api.html#FindLocation
 function FindLocation(tag, global) end
 
 ---@param tag string Tag name
----@return integer handle Handle to first location with specified tag or zero if not found
----@see @https://www.teardowngame.com/modding/api.html#FindLocation
-function FindLocation(tag) end
-
----@param tag string Tag name
----@param global boolean _optional_ Search in entire scene
+---@param global boolean|nil Search in entire scene
 ---@return table<integer> list Indexed table with handles to all locations with specified tag
 ---@see @https://www.teardowngame.com/modding/api.html#FindLocations
 function FindLocations(tag, global) end
-
----@param tag string Tag name
----@return table<integer> list Indexed table with handles to all locations with specified tag
----@see @https://www.teardowngame.com/modding/api.html#FindLocations
-function FindLocations(tag) end
 
 ---@param handle integer Location handle
 ---@return TransformType transform Transform of the location
@@ -938,26 +724,16 @@ function FindLocations(tag) end
 function GetLocationTransform(handle) end
 
 ---@param tag string Tag name
----@param global boolean _optional_ Search in entire scene
+---@param global boolean|nil Search in entire scene
 ---@return integer handle Handle to first joint with specified tag or zero if not found
 ---@see @https://www.teardowngame.com/modding/api.html#FindJoint
 function FindJoint(tag, global) end
 
 ---@param tag string Tag name
----@return integer handle Handle to first joint with specified tag or zero if not found
----@see @https://www.teardowngame.com/modding/api.html#FindJoint
-function FindJoint(tag) end
-
----@param tag string Tag name
----@param global boolean _optional_ Search in entire scene
+---@param global boolean|nil Search in entire scene
 ---@return table<integer> list Indexed table with handles to all joints with specified tag
 ---@see @https://www.teardowngame.com/modding/api.html#FindJoints
 function FindJoints(tag, global) end
-
----@param tag string Tag name
----@return table<integer> list Indexed table with handles to all joints with specified tag
----@see @https://www.teardowngame.com/modding/api.html#FindJoints
-function FindJoints(tag) end
 
 ---@param joint integer Joint handle
 ---@return boolean broken True if joint is broken
@@ -976,33 +752,22 @@ function GetJointType(joint) end
 function GetJointOtherShape(joint, shape) end
 
 ---@param joint integer Joint handle
+---@return number shapes Shape handles
+---@see @https://www.teardowngame.com/modding/api.html#GetJointShapes
+function GetJointShapes(joint) end
+
+---@param joint number Joint handle
 ---@param velocity number Desired velocity
----@param strength number _optional_ Desired strength. Default is infinite. Zero to disable.
+---@param strength number|nil Desired strength. Default is infinite. Zero to disable.
 ---@see @https://www.teardowngame.com/modding/api.html#SetJointMotor
 function SetJointMotor(joint, velocity, strength) end
 
 ---@param joint integer Joint handle
----@param velocity number Desired velocity
----@see @https://www.teardowngame.com/modding/api.html#SetJointMotor
-function SetJointMotor(joint, velocity) end
-
----@param joint integer Joint handle
 ---@param target number Desired movement target
----@param maxVel number _optional_ Maximum velocity to reach target. Default is infinite.
----@param strength number _optional_ Desired strength. Default is infinite. Zero to disable.
+---@param maxVel number|nil Maximum velocity to reach target. Default is infinite.
+---@param strength number|nil Desired strength. Default is infinite. Zero to disable.
 ---@see @https://www.teardowngame.com/modding/api.html#SetJointMotorTarget
 function SetJointMotorTarget(joint, target, maxVel, strength) end
-
----@param joint integer Joint handle
----@param target number Desired movement target
----@param maxVel number _optional_ Maximum velocity to reach target. Default is infinite.
----@see @https://www.teardowngame.com/modding/api.html#SetJointMotorTarget
-function SetJointMotorTarget(joint, target, maxVel) end
-
----@param joint integer Joint handle
----@param target number Desired movement target
----@see @https://www.teardowngame.com/modding/api.html#SetJointMotorTarget
-function SetJointMotorTarget(joint, target) end
 
 ---@param joint integer Joint handle
 ---@return number min Minimum joint limit (angle or distance)
@@ -1026,26 +791,16 @@ function GetJointedBodies(body) end
 function DetachJointFromShape(joint, shape) end
 
 ---@param tag string Tag name
----@param global boolean _optional_ Search in entire scene
+---@param global boolean|nil Search in entire scene
 ---@return integer handle Handle to first light with specified tag or zero if not found
 ---@see @https://www.teardowngame.com/modding/api.html#FindLight
 function FindLight(tag, global) end
 
 ---@param tag string Tag name
----@return integer handle Handle to first light with specified tag or zero if not found
----@see @https://www.teardowngame.com/modding/api.html#FindLight
-function FindLight(tag) end
-
----@param tag string Tag name
----@param global boolean _optional_ Search in entire scene
+---@param global boolean|nil Search in entire scene
 ---@return table<integer> list Indexed table with handles to all lights with specified tag
 ---@see @https://www.teardowngame.com/modding/api.html#FindLights
 function FindLights(tag, global) end
-
----@param tag string Tag name
----@return table<integer> list Indexed table with handles to all lights with specified tag
----@see @https://www.teardowngame.com/modding/api.html#FindLights
-function FindLights(tag) end
 
 ---@param handle integer Light handle
 ---@param enabled boolean Set to true if light should be enabled
@@ -1086,26 +841,16 @@ function IsLightActive(handle) end
 function IsPointAffectedByLight(handle, point) end
 
 ---@param tag string Tag name
----@param global boolean _optional_ Search in entire scene
+---@param global boolean|nil Search in entire scene
 ---@return integer handle Handle to first trigger with specified tag or zero if not found
 ---@see @https://www.teardowngame.com/modding/api.html#FindTrigger
 function FindTrigger(tag, global) end
 
 ---@param tag string Tag name
----@return integer handle Handle to first trigger with specified tag or zero if not found
----@see @https://www.teardowngame.com/modding/api.html#FindTrigger
-function FindTrigger(tag) end
-
----@param tag string Tag name
----@param global boolean _optional_ Search in entire scene
+---@param global boolean|nil Search in entire scene
 ---@return table<integer> list Indexed table with handles to all triggers with specified tag
 ---@see @https://www.teardowngame.com/modding/api.html#FindTriggers
 function FindTriggers(tag, global) end
-
----@param tag string Tag name
----@return table<integer> list Indexed table with handles to all triggers with specified tag
----@see @https://www.teardowngame.com/modding/api.html#FindTriggers
-function FindTriggers(tag) end
 
 ---@param handle integer Trigger handle
 ---@return TransformType transform Current trigger transform in world space
@@ -1148,17 +893,11 @@ function IsShapeInTrigger(trigger, shape) end
 function IsPointInTrigger(trigger, point) end
 
 ---@param handle integer Trigger handle
----@param demolision boolean _optional_ If true, small debris and vehicles are ignored
+---@param demolision boolean|nil If true, small debris and vehicles are ignored
 ---@return boolean empty True if trigger is empty
 ---@return VectorType maxpoint World space point of highest point (largest Y coordinate) if not empty
 ---@see @https://www.teardowngame.com/modding/api.html#IsTriggerEmpty
 function IsTriggerEmpty(handle, demolision) end
-
----@param handle integer Trigger handle
----@return boolean empty True if trigger is empty
----@return VectorType maxpoint World space point of highest point (largest Y coordinate) if not empty
----@see @https://www.teardowngame.com/modding/api.html#IsTriggerEmpty
-function IsTriggerEmpty(handle) end
 
 ---@param trigger integer Trigger handle
 ---@param point VectorType Word space point as vector
@@ -1173,26 +912,16 @@ function GetTriggerDistance(trigger, point) end
 function GetTriggerClosestPoint(trigger, point) end
 
 ---@param tag string Tag name
----@param global boolean _optional_ Search in entire scene
+---@param global boolean|nil Search in entire scene
 ---@return integer handle Handle to first screen with specified tag or zero if not found
 ---@see @https://www.teardowngame.com/modding/api.html#FindScreen
 function FindScreen(tag, global) end
 
 ---@param tag string Tag name
----@return integer handle Handle to first screen with specified tag or zero if not found
----@see @https://www.teardowngame.com/modding/api.html#FindScreen
-function FindScreen(tag) end
-
----@param tag string Tag name
----@param global boolean _optional_ Search in entire scene
+---@param global boolean|nil Search in entire scene
 ---@return table<integer> list Indexed table with handles to all screens with specified tag
 ---@see @https://www.teardowngame.com/modding/api.html#FindScreens
 function FindScreens(tag, global) end
-
----@param tag string Tag name
----@return table<integer> list Indexed table with handles to all screens with specified tag
----@see @https://www.teardowngame.com/modding/api.html#FindScreens
-function FindScreens(tag) end
 
 ---@param screen integer Screen handle
 ---@param enabled boolean True if screen should be enabled
@@ -1210,26 +939,16 @@ function IsScreenEnabled(screen) end
 function GetScreenShape(screen) end
 
 ---@param tag string Tag name
----@param global boolean _optional_ Search in entire scene
+---@param global boolean|nil Search in entire scene
 ---@return integer handle Handle to first vehicle with specified tag or zero if not found
 ---@see @https://www.teardowngame.com/modding/api.html#FindVehicle
 function FindVehicle(tag, global) end
 
 ---@param tag string Tag name
----@return integer handle Handle to first vehicle with specified tag or zero if not found
----@see @https://www.teardowngame.com/modding/api.html#FindVehicle
-function FindVehicle(tag) end
-
----@param tag string Tag name
----@param global boolean _optional_ Search in entire scene
----@return table list Indexed table with handles to all vehicles with specified tag
+---@param global boolean|nil Search in entire scene
+---@return table<number> list Indexed table with handles to all vehicles with specified tag
 ---@see @https://www.teardowngame.com/modding/api.html#FindVehicles
 function FindVehicles(tag, global) end
-
----@param tag string Tag name
----@return table list Indexed table with handles to all vehicles with specified tag
----@see @https://www.teardowngame.com/modding/api.html#FindVehicles
-function FindVehicles(tag) end
 
 ---@param vehicle integer Vehicle handle
 ---@return TransformType transform Transform of vehicle
@@ -1262,23 +981,15 @@ function DriveVehicle(vehicle, drive, steering, handbrake) end
 ---@see @https://www.teardowngame.com/modding/api.html#GetPlayerPos
 function GetPlayerPos() end
 
----@param includePitch boolean _optional_ Include the player pitch (look up/down) in transform
+---@param includePitch boolean|nil Include the player pitch (look up/down) in transform
 ---@return TransformType transform Current player transform
 ---@see @https://www.teardowngame.com/modding/api.html#GetPlayerTransform
 function GetPlayerTransform(includePitch) end
 
----@return TransformType transform Current player transform
----@see @https://www.teardowngame.com/modding/api.html#GetPlayerTransform
-function GetPlayerTransform() end
-
 ---@param transform TransformType Desired player transform
----@param includePitch boolean _optional_ Set player pitch (look up/down) as well
+---@param includePitch boolean|nil Set player pitch (look up/down) as well
 ---@see @https://www.teardowngame.com/modding/api.html#SetPlayerTransform
 function SetPlayerTransform(transform, includePitch) end
-
----@param transform TransformType Desired player transform
----@see @https://www.teardowngame.com/modding/api.html#SetPlayerTransform
-function SetPlayerTransform(transform) end
 
 ---@param vel VectorType Desired ground velocity
 ---@see @https://www.teardowngame.com/modding/api.html#SetPlayerGroundVelocity
@@ -1287,6 +998,10 @@ function SetPlayerGroundVelocity(vel) end
 ---@return TransformType transform Current player camera transform
 ---@see @https://www.teardowngame.com/modding/api.html#GetPlayerCameraTransform
 function GetPlayerCameraTransform() end
+
+---@param transform TransformType Desired player camera offset transform
+---@see @https://www.teardowngame.com/modding/api.html#SetPlayerCameraOffsetTransform
+function SetPlayerCameraOffsetTransform(transform) end
 
 ---@param transform TransformType Desired player spawn transform
 ---@see @https://www.teardowngame.com/modding/api.html#SetPlayerSpawnTransform
@@ -1357,15 +1072,9 @@ function RespawnPlayer() end
 ---@param id string Tool unique identifier
 ---@param name string Tool name to show in hud
 ---@param file string Path to vox file
----@param group number _optional_ Tool group for this tool (1-6) Default is 6.
+---@param group number|nil Tool group for this tool (1-6) Default is 6.
 ---@see @https://www.teardowngame.com/modding/api.html#RegisterTool
 function RegisterTool(id, name, file, group) end
-
----@param id string Tool unique identifier
----@param name string Tool name to show in hud
----@param file string Path to vox file
----@see @https://www.teardowngame.com/modding/api.html#RegisterTool
-function RegisterTool(id, name, file) end
 
 ---@return integer handle Handle to currently visible tool body or zero if none
 ---@see @https://www.teardowngame.com/modding/api.html#GetToolBody
@@ -1377,56 +1086,28 @@ function GetToolBody() end
 function SetToolTransform(transform, sway) end
 
 ---@param path string Path to ogg sound file
----@param nominalDistance number _optional_ The distance in meters this sound is recorded at. Affects attenuation, default is 10.0
+---@param nominalDistance number|nil The distance in meters this sound is recorded at. Affects attenuation, default is 10.0
 ---@return integer handle Sound handle
 ---@see @https://www.teardowngame.com/modding/api.html#LoadSound
 function LoadSound(path, nominalDistance) end
 
 ---@param path string Path to ogg sound file
----@return integer handle Sound handle
----@see @https://www.teardowngame.com/modding/api.html#LoadSound
-function LoadSound(path) end
-
----@param path string Path to ogg sound file
----@param nominalDistance number _optional_ The distance in meters this sound is recorded at. Affects attenuation, default is 10.0
+---@param nominalDistance number|nil The distance in meters this sound is recorded at. Affects attenuation, default is 10.0
 ---@return integer handle Loop handle
 ---@see @https://www.teardowngame.com/modding/api.html#LoadLoop
 function LoadLoop(path, nominalDistance) end
 
----@param path string Path to ogg sound file
----@return integer handle Loop handle
----@see @https://www.teardowngame.com/modding/api.html#LoadLoop
-function LoadLoop(path) end
-
 ---@param handle integer Sound handle
----@param pos VectorType _optional_ World position as vector. Default is player position.
----@param volume number _optional_ Playback volume. Default is 1.0
+---@param pos VectorType|nil World position as vector. Default is player position.
+---@param volume number|nil Playback volume. Default is 1.0
 ---@see @https://www.teardowngame.com/modding/api.html#PlaySound
 function PlaySound(handle, pos, volume) end
 
----@param handle integer Sound handle
----@param pos VectorType _optional_ World position as vector. Default is player position.
----@see @https://www.teardowngame.com/modding/api.html#PlaySound
-function PlaySound(handle, pos) end
-
----@param handle integer Sound handle
----@see @https://www.teardowngame.com/modding/api.html#PlaySound
-function PlaySound(handle) end
-
 ---@param handle integer Loop handle
----@param pos VectorType _optional_ World position as vector. Default is player position.
----@param volume number _optional_ Playback volume. Default is 1.0
+---@param pos VectorType|nil World position as vector. Default is player position.
+---@param volume number|nil Playback volume. Default is 1.0
 ---@see @https://www.teardowngame.com/modding/api.html#PlayLoop
 function PlayLoop(handle, pos, volume) end
-
----@param handle integer Loop handle
----@param pos VectorType _optional_ World position as vector. Default is player position.
----@see @https://www.teardowngame.com/modding/api.html#PlayLoop
-function PlayLoop(handle, pos) end
-
----@param handle integer Loop handle
----@see @https://www.teardowngame.com/modding/api.html#PlayLoop
-function PlayLoop(handle) end
 
 ---@param path string Music path
 ---@see @https://www.teardowngame.com/modding/api.html#PlayMusic
@@ -1444,71 +1125,14 @@ function LoadSprite(path) end
 ---@param transform TransformType Transform
 ---@param width number Width in meters
 ---@param height number Height in meters
----@param r number _optional_ Red color. Default 1.0.
----@param g number _optional_ Green color. Default 1.0.
----@param b number _optional_ Blue color. Default 1.0.
----@param a number _optional_ Alpha. Default 1.0.
----@param depthTest boolean _optional_ Depth test enabled. Default false.
----@param additive boolean _optional_ Additive blending enabled. Default false.
+---@param r number|nil Red color. Default 1.0.
+---@param g number|nil Green color. Default 1.0.
+---@param b number|nil Blue color. Default 1.0.
+---@param a number|nil Alpha. Default 1.0.
+---@param depthTest boolean|nil Depth test enabled. Default false.
+---@param additive boolean|nil Additive blending enabled. Default false.
 ---@see @https://www.teardowngame.com/modding/api.html#DrawSprite
 function DrawSprite(handle, transform, width, height, r, g, b, a, depthTest, additive) end
-
----@param handle integer Sprite handle
----@param transform TransformType Transform
----@param width number Width in meters
----@param height number Height in meters
----@param r number _optional_ Red color. Default 1.0.
----@param g number _optional_ Green color. Default 1.0.
----@param b number _optional_ Blue color. Default 1.0.
----@param a number _optional_ Alpha. Default 1.0.
----@param depthTest boolean _optional_ Depth test enabled. Default false.
----@see @https://www.teardowngame.com/modding/api.html#DrawSprite
-function DrawSprite(handle, transform, width, height, r, g, b, a, depthTest) end
-
----@param handle integer Sprite handle
----@param transform TransformType Transform
----@param width number Width in meters
----@param height number Height in meters
----@param r number _optional_ Red color. Default 1.0.
----@param g number _optional_ Green color. Default 1.0.
----@param b number _optional_ Blue color. Default 1.0.
----@param a number _optional_ Alpha. Default 1.0.
----@see @https://www.teardowngame.com/modding/api.html#DrawSprite
-function DrawSprite(handle, transform, width, height, r, g, b, a) end
-
----@param handle integer Sprite handle
----@param transform TransformType Transform
----@param width number Width in meters
----@param height number Height in meters
----@param r number _optional_ Red color. Default 1.0.
----@param g number _optional_ Green color. Default 1.0.
----@param b number _optional_ Blue color. Default 1.0.
----@see @https://www.teardowngame.com/modding/api.html#DrawSprite
-function DrawSprite(handle, transform, width, height, r, g, b) end
-
----@param handle integer Sprite handle
----@param transform TransformType Transform
----@param width number Width in meters
----@param height number Height in meters
----@param r number _optional_ Red color. Default 1.0.
----@param g number _optional_ Green color. Default 1.0.
----@see @https://www.teardowngame.com/modding/api.html#DrawSprite
-function DrawSprite(handle, transform, width, height, r, g) end
-
----@param handle integer Sprite handle
----@param transform TransformType Transform
----@param width number Width in meters
----@param height number Height in meters
----@param r number _optional_ Red color. Default 1.0.
----@see @https://www.teardowngame.com/modding/api.html#DrawSprite
-function DrawSprite(handle, transform, width, height, r) end
-
----@param handle integer Sprite handle
----@param transform TransformType Transform
----@param width number Width in meters
----@param height number Height in meters
----@see @https://www.teardowngame.com/modding/api.html#DrawSprite
-function DrawSprite(handle, transform, width, height) end
 
 ---@param layers string Space separate list of layers
 ---@see @https://www.teardowngame.com/modding/api.html#QueryRequire
@@ -1529,35 +1153,14 @@ function QueryRejectShape(shape) end
 ---@param origin VectorType Raycast origin as world space vector
 ---@param direction VectorType Unit length raycast direction as world space vector
 ---@param maxDist number Raycast maximum distance. Keep this as low as possible for good performance.
----@param radius number _optional_ Raycast thickness. Default zero.
----@param rejectTransparent boolean _optional_ Raycast through transparent materials. Default false.
+---@param radius number|nil Raycast thickness. Default zero.
+---@param rejectTransparent boolean|nil Raycast through transparent materials. Default false.
 ---@return boolean hit True if raycast hit something
 ---@return number dist Hit distance from origin
----@return table normal World space normal at hit point
+---@return VectorType normal World space normal at hit point
 ---@return integer shape Handle to hit shape
 ---@see @https://www.teardowngame.com/modding/api.html#QueryRaycast
 function QueryRaycast(origin, direction, maxDist, radius, rejectTransparent) end
-
----@param origin VectorType Raycast origin as world space vector
----@param direction VectorType Unit length raycast direction as world space vector
----@param maxDist number Raycast maximum distance. Keep this as low as possible for good performance.
----@param radius number _optional_ Raycast thickness. Default zero.
----@return boolean hit True if raycast hit something
----@return number dist Hit distance from origin
----@return table normal World space normal at hit point
----@return integer shape Handle to hit shape
----@see @https://www.teardowngame.com/modding/api.html#QueryRaycast
-function QueryRaycast(origin, direction, maxDist, radius) end
-
----@param origin VectorType Raycast origin as world space vector
----@param direction VectorType Unit length raycast direction as world space vector
----@param maxDist number Raycast maximum distance. Keep this as low as possible for good performance.
----@return boolean hit True if raycast hit something
----@return number dist Hit distance from origin
----@return table normal World space normal at hit point
----@return integer shape Handle to hit shape
----@see @https://www.teardowngame.com/modding/api.html#QueryRaycast
-function QueryRaycast(origin, direction, maxDist) end
 
 ---@param origin VectorType World space point
 ---@param maxDist number Maximum distance. Keep this as low as possible for good performance.
@@ -1582,21 +1185,10 @@ function QueryAabbBodies(min, max) end
 
 ---@param startValue VectorType World space start point
 ---@param endValue VectorType World space target point
----@param maxDist number _optional_ Maximum path length before giving up. Default is infinite.
----@param targetRadius number _optional_ Maximum allowed distance to target in meters. Default is 2.0
+---@param maxDist number|nil Maximum path length before giving up. Default is infinite.
+---@param targetRadius number|nil Maximum allowed distance to target in meters. Default is 2.0
 ---@see @https://www.teardowngame.com/modding/api.html#QueryPath
 function QueryPath(startValue, endValue, maxDist, targetRadius) end
-
----@param startValue VectorType World space start point
----@param endValue VectorType World space target point
----@param maxDist number _optional_ Maximum path length before giving up. Default is infinite.
----@see @https://www.teardowngame.com/modding/api.html#QueryPath
-function QueryPath(startValue, endValue, maxDist) end
-
----@param startValue VectorType World space start point
----@param endValue VectorType World space target point
----@see @https://www.teardowngame.com/modding/api.html#QueryPath
-function QueryPath(startValue, endValue) end
 
 ---@see @https://www.teardowngame.com/modding/api.html#AbortPath
 function AbortPath() end
@@ -1637,309 +1229,90 @@ function ParticleReset() end
 ---@see @https://www.teardowngame.com/modding/api.html#ParticleType
 function ParticleType(type) end
 
----@param type number Tile in the particle texture atlas (0-15)
+---@param type integer Tile in the particle texture atlas (0-15)
 ---@see @https://www.teardowngame.com/modding/api.html#ParticleTile
 function ParticleTile(type) end
 
 ---@param r0 number Red value
 ---@param g0 number Green value
 ---@param b0 number Blue value
----@param r1 number _optional_ Red value at end
----@param g1 number _optional_ Green value at end
----@param b1 number _optional_ Blue value at end
+---@param r1 number|nil Red value at end
+---@param g1 number|nil Green value at end
+---@param b1 number|nil Blue value at end
 ---@see @https://www.teardowngame.com/modding/api.html#ParticleColor
 function ParticleColor(r0, g0, b0, r1, g1, b1) end
 
----@param r0 number Red value
----@param g0 number Green value
----@param b0 number Blue value
----@param r1 number _optional_ Red value at end
----@param g1 number _optional_ Green value at end
----@see @https://www.teardowngame.com/modding/api.html#ParticleColor
-function ParticleColor(r0, g0, b0, r1, g1) end
-
----@param r0 number Red value
----@param g0 number Green value
----@param b0 number Blue value
----@param r1 number _optional_ Red value at end
----@see @https://www.teardowngame.com/modding/api.html#ParticleColor
-function ParticleColor(r0, g0, b0, r1) end
-
----@param r0 number Red value
----@param g0 number Green value
----@param b0 number Blue value
----@see @https://www.teardowngame.com/modding/api.html#ParticleColor
-function ParticleColor(r0, g0, b0) end
-
 ---@param r0 number Radius
----@param r1 number _optional_ End radius
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@param fadein number _optional_ Fade in between t=0 and t=fadein. Default is zero.
----@param fadeout number _optional_ Fade out between t=fadeout and t=1. Default is one.
+---@param r1 number|nil End radius
+---@param interpolation string|nil Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
+---@param fadein number|nil Fade in between t=0 and t=fadein. Default is zero.
+---@param fadeout number|nil Fade out between t=fadeout and t=1. Default is one.
 ---@see @https://www.teardowngame.com/modding/api.html#ParticleRadius
 function ParticleRadius(r0, r1, interpolation, fadein, fadeout) end
 
----@param r0 number Radius
----@param r1 number _optional_ End radius
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@param fadein number _optional_ Fade in between t=0 and t=fadein. Default is zero.
----@see @https://www.teardowngame.com/modding/api.html#ParticleRadius
-function ParticleRadius(r0, r1, interpolation, fadein) end
-
----@param r0 number Radius
----@param r1 number _optional_ End radius
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@see @https://www.teardowngame.com/modding/api.html#ParticleRadius
-function ParticleRadius(r0, r1, interpolation) end
-
----@param r0 number Radius
----@param r1 number _optional_ End radius
----@see @https://www.teardowngame.com/modding/api.html#ParticleRadius
-function ParticleRadius(r0, r1) end
-
----@param r0 number Radius
----@see @https://www.teardowngame.com/modding/api.html#ParticleRadius
-function ParticleRadius(r0) end
-
 ---@param a0 number Alpha (0.0 - 1.0)
----@param a1 number _optional_ End alpha (0.0 - 1.0)
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@param fadein number _optional_ Fade in between t=0 and t=fadein. Default is zero.
----@param fadeout number _optional_ Fade out between t=fadeout and t=1. Default is one.
+---@param a1 number|nil End alpha (0.0 - 1.0)
+---@param interpolation string|nil Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
+---@param fadein number|nil Fade in between t=0 and t=fadein. Default is zero.
+---@param fadeout number|nil Fade out between t=fadeout and t=1. Default is one.
 ---@see @https://www.teardowngame.com/modding/api.html#ParticleAlpha
 function ParticleAlpha(a0, a1, interpolation, fadein, fadeout) end
 
----@param a0 number Alpha (0.0 - 1.0)
----@param a1 number _optional_ End alpha (0.0 - 1.0)
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@param fadein number _optional_ Fade in between t=0 and t=fadein. Default is zero.
----@see @https://www.teardowngame.com/modding/api.html#ParticleAlpha
-function ParticleAlpha(a0, a1, interpolation, fadein) end
-
----@param a0 number Alpha (0.0 - 1.0)
----@param a1 number _optional_ End alpha (0.0 - 1.0)
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@see @https://www.teardowngame.com/modding/api.html#ParticleAlpha
-function ParticleAlpha(a0, a1, interpolation) end
-
----@param a0 number Alpha (0.0 - 1.0)
----@param a1 number _optional_ End alpha (0.0 - 1.0)
----@see @https://www.teardowngame.com/modding/api.html#ParticleAlpha
-function ParticleAlpha(a0, a1) end
-
----@param a0 number Alpha (0.0 - 1.0)
----@see @https://www.teardowngame.com/modding/api.html#ParticleAlpha
-function ParticleAlpha(a0) end
-
 ---@param g0 number Gravity
----@param g1 number _optional_ End gravity
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@param fadein number _optional_ Fade in between t=0 and t=fadein. Default is zero.
----@param fadeout number _optional_ Fade out between t=fadeout and t=1. Default is one.
+---@param g1 number|nil End gravity
+---@param interpolation string|nil Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
+---@param fadein number|nil Fade in between t=0 and t=fadein. Default is zero.
+---@param fadeout number|nil Fade out between t=fadeout and t=1. Default is one.
 ---@see @https://www.teardowngame.com/modding/api.html#ParticleGravity
 function ParticleGravity(g0, g1, interpolation, fadein, fadeout) end
 
----@param g0 number Gravity
----@param g1 number _optional_ End gravity
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@param fadein number _optional_ Fade in between t=0 and t=fadein. Default is zero.
----@see @https://www.teardowngame.com/modding/api.html#ParticleGravity
-function ParticleGravity(g0, g1, interpolation, fadein) end
-
----@param g0 number Gravity
----@param g1 number _optional_ End gravity
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@see @https://www.teardowngame.com/modding/api.html#ParticleGravity
-function ParticleGravity(g0, g1, interpolation) end
-
----@param g0 number Gravity
----@param g1 number _optional_ End gravity
----@see @https://www.teardowngame.com/modding/api.html#ParticleGravity
-function ParticleGravity(g0, g1) end
-
----@param g0 number Gravity
----@see @https://www.teardowngame.com/modding/api.html#ParticleGravity
-function ParticleGravity(g0) end
-
 ---@param d0 number Drag
----@param d1 number _optional_ End drag
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@param fadein number _optional_ Fade in between t=0 and t=fadein. Default is zero.
----@param fadeout number _optional_ Fade out between t=fadeout and t=1. Default is one.
+---@param d1 number|nil End drag
+---@param interpolation string|nil Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
+---@param fadein number|nil Fade in between t=0 and t=fadein. Default is zero.
+---@param fadeout number|nil Fade out between t=fadeout and t=1. Default is one.
 ---@see @https://www.teardowngame.com/modding/api.html#ParticleDrag
 function ParticleDrag(d0, d1, interpolation, fadein, fadeout) end
 
----@param d0 number Drag
----@param d1 number _optional_ End drag
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@param fadein number _optional_ Fade in between t=0 and t=fadein. Default is zero.
----@see @https://www.teardowngame.com/modding/api.html#ParticleDrag
-function ParticleDrag(d0, d1, interpolation, fadein) end
-
----@param d0 number Drag
----@param d1 number _optional_ End drag
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@see @https://www.teardowngame.com/modding/api.html#ParticleDrag
-function ParticleDrag(d0, d1, interpolation) end
-
----@param d0 number Drag
----@param d1 number _optional_ End drag
----@see @https://www.teardowngame.com/modding/api.html#ParticleDrag
-function ParticleDrag(d0, d1) end
-
----@param d0 number Drag
----@see @https://www.teardowngame.com/modding/api.html#ParticleDrag
-function ParticleDrag(d0) end
-
 ---@param d0 number Emissive
----@param d1 number _optional_ End emissive
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@param fadein number _optional_ Fade in between t=0 and t=fadein. Default is zero.
----@param fadeout number _optional_ Fade out between t=fadeout and t=1. Default is one.
+---@param d1 number|nil End emissive
+---@param interpolation string|nil Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
+---@param fadein number|nil Fade in between t=0 and t=fadein. Default is zero.
+---@param fadeout number|nil Fade out between t=fadeout and t=1. Default is one.
 ---@see @https://www.teardowngame.com/modding/api.html#ParticleEmissive
 function ParticleEmissive(d0, d1, interpolation, fadein, fadeout) end
 
----@param d0 number Emissive
----@param d1 number _optional_ End emissive
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@param fadein number _optional_ Fade in between t=0 and t=fadein. Default is zero.
----@see @https://www.teardowngame.com/modding/api.html#ParticleEmissive
-function ParticleEmissive(d0, d1, interpolation, fadein) end
-
----@param d0 number Emissive
----@param d1 number _optional_ End emissive
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@see @https://www.teardowngame.com/modding/api.html#ParticleEmissive
-function ParticleEmissive(d0, d1, interpolation) end
-
----@param d0 number Emissive
----@param d1 number _optional_ End emissive
----@see @https://www.teardowngame.com/modding/api.html#ParticleEmissive
-function ParticleEmissive(d0, d1) end
-
----@param d0 number Emissive
----@see @https://www.teardowngame.com/modding/api.html#ParticleEmissive
-function ParticleEmissive(d0) end
-
 ---@param r0 number Rotation speed in radians per second.
----@param r1 number _optional_ End rotation speed in radians per second.
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@param fadein number _optional_ Fade in between t=0 and t=fadein. Default is zero.
----@param fadeout number _optional_ Fade out between t=fadeout and t=1. Default is one.
+---@param r1 number|nil End rotation speed in radians per second.
+---@param interpolation string|nil Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
+---@param fadein number|nil Fade in between t=0 and t=fadein. Default is zero.
+---@param fadeout number|nil Fade out between t=fadeout and t=1. Default is one.
 ---@see @https://www.teardowngame.com/modding/api.html#ParticleRotation
 function ParticleRotation(r0, r1, interpolation, fadein, fadeout) end
 
----@param r0 number Rotation speed in radians per second.
----@param r1 number _optional_ End rotation speed in radians per second.
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@param fadein number _optional_ Fade in between t=0 and t=fadein. Default is zero.
----@see @https://www.teardowngame.com/modding/api.html#ParticleRotation
-function ParticleRotation(r0, r1, interpolation, fadein) end
-
----@param r0 number Rotation speed in radians per second.
----@param r1 number _optional_ End rotation speed in radians per second.
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@see @https://www.teardowngame.com/modding/api.html#ParticleRotation
-function ParticleRotation(r0, r1, interpolation) end
-
----@param r0 number Rotation speed in radians per second.
----@param r1 number _optional_ End rotation speed in radians per second.
----@see @https://www.teardowngame.com/modding/api.html#ParticleRotation
-function ParticleRotation(r0, r1) end
-
----@param r0 number Rotation speed in radians per second.
----@see @https://www.teardowngame.com/modding/api.html#ParticleRotation
-function ParticleRotation(r0) end
-
 ---@param s0 number Stretch
----@param s1 number _optional_ End stretch
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@param fadein number _optional_ Fade in between t=0 and t=fadein. Default is zero.
----@param fadeout number _optional_ Fade out between t=fadeout and t=1. Default is one.
+---@param s1 number|nil End stretch
+---@param interpolation string|nil Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
+---@param fadein number|nil Fade in between t=0 and t=fadein. Default is zero.
+---@param fadeout number|nil Fade out between t=fadeout and t=1. Default is one.
 ---@see @https://www.teardowngame.com/modding/api.html#ParticleStretch
 function ParticleStretch(s0, s1, interpolation, fadein, fadeout) end
 
----@param s0 number Stretch
----@param s1 number _optional_ End stretch
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@param fadein number _optional_ Fade in between t=0 and t=fadein. Default is zero.
----@see @https://www.teardowngame.com/modding/api.html#ParticleStretch
-function ParticleStretch(s0, s1, interpolation, fadein) end
-
----@param s0 number Stretch
----@param s1 number _optional_ End stretch
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@see @https://www.teardowngame.com/modding/api.html#ParticleStretch
-function ParticleStretch(s0, s1, interpolation) end
-
----@param s0 number Stretch
----@param s1 number _optional_ End stretch
----@see @https://www.teardowngame.com/modding/api.html#ParticleStretch
-function ParticleStretch(s0, s1) end
-
----@param s0 number Stretch
----@see @https://www.teardowngame.com/modding/api.html#ParticleStretch
-function ParticleStretch(s0) end
-
 ---@param s0 number Sticky (0.0 - 1.0)
----@param s1 number _optional_ End sticky (0.0 - 1.0)
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@param fadein number _optional_ Fade in between t=0 and t=fadein. Default is zero.
----@param fadeout number _optional_ Fade out between t=fadeout and t=1. Default is one.
+---@param s1 number|nil End sticky (0.0 - 1.0)
+---@param interpolation string|nil Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
+---@param fadein number|nil Fade in between t=0 and t=fadein. Default is zero.
+---@param fadeout number|nil Fade out between t=fadeout and t=1. Default is one.
 ---@see @https://www.teardowngame.com/modding/api.html#ParticleSticky
 function ParticleSticky(s0, s1, interpolation, fadein, fadeout) end
 
----@param s0 number Sticky (0.0 - 1.0)
----@param s1 number _optional_ End sticky (0.0 - 1.0)
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@param fadein number _optional_ Fade in between t=0 and t=fadein. Default is zero.
----@see @https://www.teardowngame.com/modding/api.html#ParticleSticky
-function ParticleSticky(s0, s1, interpolation, fadein) end
-
----@param s0 number Sticky (0.0 - 1.0)
----@param s1 number _optional_ End sticky (0.0 - 1.0)
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@see @https://www.teardowngame.com/modding/api.html#ParticleSticky
-function ParticleSticky(s0, s1, interpolation) end
-
----@param s0 number Sticky (0.0 - 1.0)
----@param s1 number _optional_ End sticky (0.0 - 1.0)
----@see @https://www.teardowngame.com/modding/api.html#ParticleSticky
-function ParticleSticky(s0, s1) end
-
----@param s0 number Sticky (0.0 - 1.0)
----@see @https://www.teardowngame.com/modding/api.html#ParticleSticky
-function ParticleSticky(s0) end
-
 ---@param c0 number Collide (0.0 - 1.0)
----@param c1 number _optional_ End collide (0.0 - 1.0)
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@param fadein number _optional_ Fade in between t=0 and t=fadein. Default is zero.
----@param fadeout number _optional_ Fade out between t=fadeout and t=1. Default is one.
+---@param c1 number|nil End collide (0.0 - 1.0)
+---@param interpolation string|nil Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
+---@param fadein number|nil Fade in between t=0 and t=fadein. Default is zero.
+---@param fadeout number|nil Fade out between t=fadeout and t=1. Default is one.
 ---@see @https://www.teardowngame.com/modding/api.html#ParticleCollide
 function ParticleCollide(c0, c1, interpolation, fadein, fadeout) end
-
----@param c0 number Collide (0.0 - 1.0)
----@param c1 number _optional_ End collide (0.0 - 1.0)
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@param fadein number _optional_ Fade in between t=0 and t=fadein. Default is zero.
----@see @https://www.teardowngame.com/modding/api.html#ParticleCollide
-function ParticleCollide(c0, c1, interpolation, fadein) end
-
----@param c0 number Collide (0.0 - 1.0)
----@param c1 number _optional_ End collide (0.0 - 1.0)
----@param interpolation string _optional_ Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
----@see @https://www.teardowngame.com/modding/api.html#ParticleCollide
-function ParticleCollide(c0, c1, interpolation) end
-
----@param c0 number Collide (0.0 - 1.0)
----@param c1 number _optional_ End collide (0.0 - 1.0)
----@see @https://www.teardowngame.com/modding/api.html#ParticleCollide
-function ParticleCollide(c0, c1) end
-
----@param c0 number Collide (0.0 - 1.0)
----@see @https://www.teardowngame.com/modding/api.html#ParticleCollide
-function ParticleCollide(c0) end
 
 ---@param bitmask number Particle flags (bitmask 0-65535)
 ---@see @https://www.teardowngame.com/modding/api.html#ParticleFlags
@@ -1952,99 +1325,36 @@ function ParticleFlags(bitmask) end
 function SpawnParticle(pos, velocity, lifetime) end
 
 ---@param xml string File name or xml string
----@param transform table Spawn transform
----@param allowStatic boolean _optional_ Allow spawning static shapes and bodies (default false)
----@param jointExisting boolean _optional_ Allow joints to connect to existing scene geometry (default false)
+---@param transform TransformType Spawn transform
+---@param allowStatic boolean|nil Allow spawning static shapes and bodies (default false)
+---@param jointExisting boolean|nil Allow joints to connect to existing scene geometry (default false)
 ---@return table<integer> entities Indexed table with handles to all spawned entities
 ---@see @https://www.teardowngame.com/modding/api.html#Spawn
 function Spawn(xml, transform, allowStatic, jointExisting) end
 
----@param xml string File name or xml string
----@param transform table Spawn transform
----@param allowStatic boolean _optional_ Allow spawning static shapes and bodies (default false)
----@return table<integer> entities Indexed table with handles to all spawned entities
----@see @https://www.teardowngame.com/modding/api.html#Spawn
-function Spawn(xml, transform, allowStatic) end
-
----@param xml string File name or xml string
----@param transform table Spawn transform
----@return table<integer> entities Indexed table with handles to all spawned entities
----@see @https://www.teardowngame.com/modding/api.html#Spawn
-function Spawn(xml, transform) end
-
 ---@param origin VectorType Origin in world space as vector
 ---@param direction VectorType Unit length direction as world space vector
----@param type string _optional_ Shot type, see description, default is 'bullet'
----@param strength number _optional_ Strength scaling, default is 1.0
----@param maxDist number _optional_ Maximum distance, default is 100.0
+---@param type string|nil Shot type, see description, default is 'bullet'
+---@param strength number|nil Strength scaling, default is 1.0
+---@param maxDist number|nil Maximum distance, default is 100.0
 ---@see @https://www.teardowngame.com/modding/api.html#Shoot
 function Shoot(origin, direction, type, strength, maxDist) end
 
 ---@param origin VectorType Origin in world space as vector
----@param direction VectorType Unit length direction as world space vector
----@param type string _optional_ Shot type, see description, default is 'bullet'
----@param strength number _optional_ Strength scaling, default is 1.0
----@see @https://www.teardowngame.com/modding/api.html#Shoot
-function Shoot(origin, direction, type, strength) end
-
----@param origin VectorType Origin in world space as vector
----@param direction VectorType Unit length direction as world space vector
----@param type string _optional_ Shot type, see description, default is 'bullet'
----@see @https://www.teardowngame.com/modding/api.html#Shoot
-function Shoot(origin, direction, type) end
-
----@param origin VectorType Origin in world space as vector
----@param direction VectorType Unit length direction as world space vector
----@see @https://www.teardowngame.com/modding/api.html#Shoot
-function Shoot(origin, direction) end
-
----@param origin table Origin in world space as vector
 ---@param radius number Affected radius, in range 0.0 to 5.0
----@param type string _optional_ Paint type. Can be 'explosion' or 'spraycan'. Default is spraycan.
----@param probability number _optional_ Dithering probability between zero and one, default is 1.0
+---@param type string|nil Paint type. Can be 'explosion' or 'spraycan'. Default is spraycan.
+---@param probability number|nil Dithering probability between zero and one, default is 1.0
 ---@see @https://www.teardowngame.com/modding/api.html#Paint
 function Paint(origin, radius, type, probability) end
 
----@param origin table Origin in world space as vector
----@param radius number Affected radius, in range 0.0 to 5.0
----@param type string _optional_ Paint type. Can be 'explosion' or 'spraycan'. Default is spraycan.
----@see @https://www.teardowngame.com/modding/api.html#Paint
-function Paint(origin, radius, type) end
-
----@param origin table Origin in world space as vector
----@param radius number Affected radius, in range 0.0 to 5.0
----@see @https://www.teardowngame.com/modding/api.html#Paint
-function Paint(origin, radius) end
-
 ---@param position VectorType Hole center point
 ---@param r0 number Hole radius for soft materials
----@param r1 number _optional_ Hole radius for medium materials. May not be bigger than r0. Default zero.
----@param r2 number _optional_ Hole radius for hard materials. May not be bigger than r1. Default zero.
----@param silent boolean _optional_ Make hole without playing any break sounds.
+---@param r1 number|nil Hole radius for medium materials. May not be bigger than r0. Default zero.
+---@param r2 number|nil Hole radius for hard materials. May not be bigger than r1. Default zero.
+---@param silent boolean|nil Make hole without playing any break sounds.
 ---@return number count Number of voxels that was cut out. This will be zero if there were no changes to any shape.
 ---@see @https://www.teardowngame.com/modding/api.html#MakeHole
 function MakeHole(position, r0, r1, r2, silent) end
-
----@param position VectorType Hole center point
----@param r0 number Hole radius for soft materials
----@param r1 number _optional_ Hole radius for medium materials. May not be bigger than r0. Default zero.
----@param r2 number _optional_ Hole radius for hard materials. May not be bigger than r1. Default zero.
----@return number count Number of voxels that was cut out. This will be zero if there were no changes to any shape.
----@see @https://www.teardowngame.com/modding/api.html#MakeHole
-function MakeHole(position, r0, r1, r2) end
-
----@param position VectorType Hole center point
----@param r0 number Hole radius for soft materials
----@param r1 number _optional_ Hole radius for medium materials. May not be bigger than r0. Default zero.
----@return number count Number of voxels that was cut out. This will be zero if there were no changes to any shape.
----@see @https://www.teardowngame.com/modding/api.html#MakeHole
-function MakeHole(position, r0, r1) end
-
----@param position VectorType Hole center point
----@param r0 number Hole radius for soft materials
----@return number count Number of voxels that was cut out. This will be zero if there were no changes to any shape.
----@see @https://www.teardowngame.com/modding/api.html#MakeHole
-function MakeHole(position, r0) end
 
 ---@param pos VectorType Position in world space as vector
 ---@param size number Explosion size from 0.5 to 4.0
@@ -2078,46 +1388,31 @@ function QueryAabbFireCount(min, max) end
 ---@see @https://www.teardowngame.com/modding/api.html#RemoveAabbFires
 function RemoveAabbFires(min, max) end
 
----@return TransformType transform Current camera transform
+---@return table transform Current camera transform
 ---@see @https://www.teardowngame.com/modding/api.html#GetCameraTransform
 function GetCameraTransform() end
 
----@param transform TransformType Desired camera transform
----@param fov number _optional_ Optional horizontal field of view in degrees (default: 90)
+---@param transform table Desired camera transform
+---@param fov number|nil Optional horizontal field of view in degrees (default: 90)
 ---@see @https://www.teardowngame.com/modding/api.html#SetCameraTransform
 function SetCameraTransform(transform, fov) end
-
----@param transform TransformType Desired camera transform
----@see @https://www.teardowngame.com/modding/api.html#SetCameraTransform
-function SetCameraTransform(transform) end
 
 ---@param degrees number Horizontal field of view in degrees (10-170)
 ---@see @https://www.teardowngame.com/modding/api.html#SetCameraFov
 function SetCameraFov(degrees) end
 
 ---@param distance number Depth of field distance
----@param amount number _optional_ Optional amount of blur (default 1.0)
+---@param amount number|nil Optional amount of blur (default 1.0)
 ---@see @https://www.teardowngame.com/modding/api.html#SetCameraDof
 function SetCameraDof(distance, amount) end
 
----@param distance number Depth of field distance
----@see @https://www.teardowngame.com/modding/api.html#SetCameraDof
-function SetCameraDof(distance) end
-
----@param pos VectorType World space light position
+---@param pos table World space light position
 ---@param r number Red
 ---@param g number Green
 ---@param b number Blue
----@param intensity number _optional_ Intensity. Default is 1.0.
+---@param intensity number|nil Intensity. Default is 1.0.
 ---@see @https://www.teardowngame.com/modding/api.html#PointLight
 function PointLight(pos, r, g, b, intensity) end
-
----@param pos VectorType World space light position
----@param r number Red
----@param g number Green
----@param b number Blue
----@see @https://www.teardowngame.com/modding/api.html#PointLight
-function PointLight(pos, r, g, b) end
 
 ---@param scale number Time scale 0.1 to 1.0
 ---@see @https://www.teardowngame.com/modding/api.html#SetTimeScale
@@ -2128,29 +1423,11 @@ function SetEnvironmentDefault() end
 
 ---@param name string Property name
 ---@param value0 any Property value (type depends on property)
----@param value1 any _optional_ Extra property value (only some properties)
----@param value2 any _optional_ Extra property value (only some properties)
----@param value3 any _optional_ Extra property value (only some properties)
+---@param value1 any|nil Extra property value (only some properties)
+---@param value2 any|nil Extra property value (only some properties)
+---@param value3 any|nil Extra property value (only some properties)
 ---@see @https://www.teardowngame.com/modding/api.html#SetEnvironmentProperty
 function SetEnvironmentProperty(name, value0, value1, value2, value3) end
-
----@param name string Property name
----@param value0 any Property value (type depends on property)
----@param value1 any _optional_ Extra property value (only some properties)
----@param value2 any _optional_ Extra property value (only some properties)
----@see @https://www.teardowngame.com/modding/api.html#SetEnvironmentProperty
-function SetEnvironmentProperty(name, value0, value1, value2) end
-
----@param name string Property name
----@param value0 any Property value (type depends on property)
----@param value1 any _optional_ Extra property value (only some properties)
----@see @https://www.teardowngame.com/modding/api.html#SetEnvironmentProperty
-function SetEnvironmentProperty(name, value0, value1) end
-
----@param name string Property name
----@param value0 any Property value (type depends on property)
----@see @https://www.teardowngame.com/modding/api.html#SetEnvironmentProperty
-function SetEnvironmentProperty(name, value0) end
 
 ---@param name string Property name
 ---@return any value0 Property value (type depends on property)
@@ -2166,21 +1443,10 @@ function SetPostProcessingDefault() end
 
 ---@param name string Property name
 ---@param value0 number Property value
----@param value1 number _optional_ Extra property value (only some properties)
----@param value2 number _optional_ Extra property value (only some properties)
+---@param value1 number|nil Extra property value (only some properties)
+---@param value2 number|nil Extra property value (only some properties)
 ---@see @https://www.teardowngame.com/modding/api.html#SetPostProcessingProperty
 function SetPostProcessingProperty(name, value0, value1, value2) end
-
----@param name string Property name
----@param value0 number Property value
----@param value1 number _optional_ Extra property value (only some properties)
----@see @https://www.teardowngame.com/modding/api.html#SetPostProcessingProperty
-function SetPostProcessingProperty(name, value0, value1) end
-
----@param name string Property name
----@param value0 number Property value
----@see @https://www.teardowngame.com/modding/api.html#SetPostProcessingProperty
-function SetPostProcessingProperty(name, value0) end
 
 ---@param name string Property name
 ---@return number value0 Property value
@@ -2191,103 +1457,29 @@ function GetPostProcessingProperty(name) end
 
 ---@param p0 VectorType World space point as vector
 ---@param p1 VectorType World space point as vector
----@param r number _optional_ Red
----@param g number _optional_ Green
----@param b number _optional_ Blue
----@param a number _optional_ Alpha
+---@param r number|nil Red
+---@param g number|nil Green
+---@param b number|nil Blue
+---@param a number|nil Alpha
 ---@see @https://www.teardowngame.com/modding/api.html#DrawLine
 function DrawLine(p0, p1, r, g, b, a) end
 
 ---@param p0 VectorType World space point as vector
 ---@param p1 VectorType World space point as vector
----@param r number _optional_ Red
----@param g number _optional_ Green
----@param b number _optional_ Blue
----@see @https://www.teardowngame.com/modding/api.html#DrawLine
-function DrawLine(p0, p1, r, g, b) end
-
----@param p0 VectorType World space point as vector
----@param p1 VectorType World space point as vector
----@param r number _optional_ Red
----@param g number _optional_ Green
----@see @https://www.teardowngame.com/modding/api.html#DrawLine
-function DrawLine(p0, p1, r, g) end
-
----@param p0 VectorType World space point as vector
----@param p1 VectorType World space point as vector
----@param r number _optional_ Red
----@see @https://www.teardowngame.com/modding/api.html#DrawLine
-function DrawLine(p0, p1, r) end
-
----@param p0 VectorType World space point as vector
----@param p1 VectorType World space point as vector
----@see @https://www.teardowngame.com/modding/api.html#DrawLine
-function DrawLine(p0, p1) end
-
----@param p0 VectorType World space point as vector
----@param p1 VectorType World space point as vector
----@param r number _optional_ Red
----@param g number _optional_ Green
----@param b number _optional_ Blue
----@param a number _optional_ Alpha
+---@param r number|nil Red
+---@param g number|nil Green
+---@param b number|nil Blue
+---@param a number|nil Alpha
 ---@see @https://www.teardowngame.com/modding/api.html#DebugLine
 function DebugLine(p0, p1, r, g, b, a) end
 
 ---@param p0 VectorType World space point as vector
----@param p1 VectorType World space point as vector
----@param r number _optional_ Red
----@param g number _optional_ Green
----@param b number _optional_ Blue
----@see @https://www.teardowngame.com/modding/api.html#DebugLine
-function DebugLine(p0, p1, r, g, b) end
-
----@param p0 VectorType World space point as vector
----@param p1 VectorType World space point as vector
----@param r number _optional_ Red
----@param g number _optional_ Green
----@see @https://www.teardowngame.com/modding/api.html#DebugLine
-function DebugLine(p0, p1, r, g) end
-
----@param p0 VectorType World space point as vector
----@param p1 VectorType World space point as vector
----@param r number _optional_ Red
----@see @https://www.teardowngame.com/modding/api.html#DebugLine
-function DebugLine(p0, p1, r) end
-
----@param p0 VectorType World space point as vector
----@param p1 VectorType World space point as vector
----@see @https://www.teardowngame.com/modding/api.html#DebugLine
-function DebugLine(p0, p1) end
-
----@param p0 VectorType World space point as vector
----@param r number _optional_ Red
----@param g number _optional_ Green
----@param b number _optional_ Blue
----@param a number _optional_ Alpha
+---@param r number|nil Red
+---@param g number|nil Green
+---@param b number|nil Blue
+---@param a number|nil Alpha
 ---@see @https://www.teardowngame.com/modding/api.html#DebugCross
 function DebugCross(p0, r, g, b, a) end
-
----@param p0 VectorType World space point as vector
----@param r number _optional_ Red
----@param g number _optional_ Green
----@param b number _optional_ Blue
----@see @https://www.teardowngame.com/modding/api.html#DebugCross
-function DebugCross(p0, r, g, b) end
-
----@param p0 VectorType World space point as vector
----@param r number _optional_ Red
----@param g number _optional_ Green
----@see @https://www.teardowngame.com/modding/api.html#DebugCross
-function DebugCross(p0, r, g) end
-
----@param p0 VectorType World space point as vector
----@param r number _optional_ Red
----@see @https://www.teardowngame.com/modding/api.html#DebugCross
-function DebugCross(p0, r) end
-
----@param p0 VectorType World space point as vector
----@see @https://www.teardowngame.com/modding/api.html#DebugCross
-function DebugCross(p0) end
 
 ---@param name string Name
 ---@param value string Value
@@ -2326,28 +1518,16 @@ function UiMiddle() end
 ---@param r number Red channel
 ---@param g number Green channel
 ---@param b number Blue channel
----@param a number _optional_ Alpha channel. Default 1.0
+---@param a number|nil Alpha channel. Default 1.0
 ---@see @https://www.teardowngame.com/modding/api.html#UiColor
 function UiColor(r, g, b, a) end
 
 ---@param r number Red channel
 ---@param g number Green channel
 ---@param b number Blue channel
----@see @https://www.teardowngame.com/modding/api.html#UiColor
-function UiColor(r, g, b) end
-
----@param r number Red channel
----@param g number Green channel
----@param b number Blue channel
----@param a number _optional_ Alpha channel. Default 1.0
+---@param a number|nil Alpha channel. Default 1.0
 ---@see @https://www.teardowngame.com/modding/api.html#UiColorFilter
 function UiColorFilter(r, g, b, a) end
-
----@param r number Red channel
----@param g number Green channel
----@param b number Blue channel
----@see @https://www.teardowngame.com/modding/api.html#UiColorFilter
-function UiColorFilter(r, g, b) end
 
 ---@param x number X component
 ---@param y number Y component
@@ -2359,31 +1539,16 @@ function UiTranslate(x, y) end
 function UiRotate(angle) end
 
 ---@param x number X component
----@param y number _optional_ Y component. Default value is x.
+---@param y number|nil Y component. Default value is x.
 ---@see @https://www.teardowngame.com/modding/api.html#UiScale
 function UiScale(x, y) end
 
----@param x number X component
----@see @https://www.teardowngame.com/modding/api.html#UiScale
-function UiScale(x) end
-
 ---@param width number Window width
 ---@param height number Window height
----@param clip boolean _optional_ Clip content outside window. Default is false.
----@param inherit boolean _optional_ Inherit current clip region (for nested clip regions)
+---@param clip boolean|nil Clip content outside window. Default is false.
+---@param inherit boolean|nil Inherit current clip region (for nested clip regions)
 ---@see @https://www.teardowngame.com/modding/api.html#UiWindow
 function UiWindow(width, height, clip, inherit) end
-
----@param width number Window width
----@param height number Window height
----@param clip boolean _optional_ Clip content outside window. Default is false.
----@see @https://www.teardowngame.com/modding/api.html#UiWindow
-function UiWindow(width, height, clip) end
-
----@param width number Window width
----@param height number Window height
----@see @https://www.teardowngame.com/modding/api.html#UiWindow
-function UiWindow(width, height) end
 
 ---@return number x0 Left
 ---@return number y0 Top
@@ -2450,17 +1615,11 @@ function UiFont(path, size) end
 function UiFontHeight() end
 
 ---@param text string Print text at cursor location
----@param move boolean _optional_ Automatically move cursor vertically. Default false.
+---@param move boolean|nil Automatically move cursor vertically. Default false.
 ---@return number w Width of text
 ---@return number h Height of text
 ---@see @https://www.teardowngame.com/modding/api.html#UiText
 function UiText(text, move) end
-
----@param text string Print text at cursor location
----@return number w Width of text
----@return number h Height of text
----@see @https://www.teardowngame.com/modding/api.html#UiText
-function UiText(text) end
 
 ---@param text string A text string
 ---@return number w Width of text
@@ -2476,7 +1635,7 @@ function UiWordWrap(width) end
 ---@param g number Green channel
 ---@param b number Blue channel
 ---@param a number Alpha channel
----@param thickness number _optional_ Outline thickness. Default is 0.1
+---@param thickness number|nil Outline thickness. Default is 0.1
 ---@see @https://www.teardowngame.com/modding/api.html#UiTextOutline
 function UiTextOutline(r, g, b, a, thickness) end
 
@@ -2484,32 +1643,10 @@ function UiTextOutline(r, g, b, a, thickness) end
 ---@param g number Green channel
 ---@param b number Blue channel
 ---@param a number Alpha channel
----@see @https://www.teardowngame.com/modding/api.html#UiTextOutline
-function UiTextOutline(r, g, b, a) end
-
----@param r number Red channel
----@param g number Green channel
----@param b number Blue channel
----@param a number Alpha channel
----@param distance number _optional_ Shadow distance. Default is 1.0
----@param blur number _optional_ Shadow blur. Default is 0.5
+---@param distance number|nil Shadow distance. Default is 1.0
+---@param blur number|nil Shadow blur. Default is 0.5
 ---@see @https://www.teardowngame.com/modding/api.html#UiTextShadow
 function UiTextShadow(r, g, b, a, distance, blur) end
-
----@param r number Red channel
----@param g number Green channel
----@param b number Blue channel
----@param a number Alpha channel
----@param distance number _optional_ Shadow distance. Default is 1.0
----@see @https://www.teardowngame.com/modding/api.html#UiTextShadow
-function UiTextShadow(r, g, b, a, distance) end
-
----@param r number Red channel
----@param g number Green channel
----@param b number Blue channel
----@param a number Alpha channel
----@see @https://www.teardowngame.com/modding/api.html#UiTextShadow
-function UiTextShadow(r, g, b, a) end
 
 ---@param w number Width
 ---@param h number Height
@@ -2517,44 +1654,14 @@ function UiTextShadow(r, g, b, a) end
 function UiRect(w, h) end
 
 ---@param path string Path to image (PNG or JPG format)
----@param x0 number _optional_ Lower x coordinate (default is 0)
----@param y0 number _optional_ Lower y coordinate (default is 0)
----@param x1 number _optional_ Upper x coordinate (default is image width)
----@param y1 number _optional_ Upper y coordinate (default is image height)
+---@param x0 number|nil Lower x coordinate (default is 0)
+---@param y0 number|nil Lower y coordinate (default is 0)
+---@param x1 number|nil Upper x coordinate (default is image width)
+---@param y1 number|nil Upper y coordinate (default is image height)
 ---@return number w Width of drawn image
 ---@return number h Height of drawn image
 ---@see @https://www.teardowngame.com/modding/api.html#UiImage
 function UiImage(path, x0, y0, x1, y1) end
-
----@param path string Path to image (PNG or JPG format)
----@param x0 number _optional_ Lower x coordinate (default is 0)
----@param y0 number _optional_ Lower y coordinate (default is 0)
----@param x1 number _optional_ Upper x coordinate (default is image width)
----@return number w Width of drawn image
----@return number h Height of drawn image
----@see @https://www.teardowngame.com/modding/api.html#UiImage
-function UiImage(path, x0, y0, x1) end
-
----@param path string Path to image (PNG or JPG format)
----@param x0 number _optional_ Lower x coordinate (default is 0)
----@param y0 number _optional_ Lower y coordinate (default is 0)
----@return number w Width of drawn image
----@return number h Height of drawn image
----@see @https://www.teardowngame.com/modding/api.html#UiImage
-function UiImage(path, x0, y0) end
-
----@param path string Path to image (PNG or JPG format)
----@param x0 number _optional_ Lower x coordinate (default is 0)
----@return number w Width of drawn image
----@return number h Height of drawn image
----@see @https://www.teardowngame.com/modding/api.html#UiImage
-function UiImage(path, x0) end
-
----@param path string Path to image (PNG or JPG format)
----@return number w Width of drawn image
----@return number h Height of drawn image
----@see @https://www.teardowngame.com/modding/api.html#UiImage
-function UiImage(path) end
 
 ---@param path string Path to image (PNG or JPG format)
 ---@return number w Image width
@@ -2571,132 +1678,56 @@ function UiGetImageSize(path) end
 function UiImageBox(path, width, height, borderWidth, borderHeight) end
 
 ---@param path string Path to sound file (OGG format)
----@param volume number _optional_ Playback volume. Default 1.0
----@param pitch number _optional_ Playback pitch. Default 1.0
----@param pan number _optional_ Playback stereo panning (-1.0 to 1.0). Default 0.0.
+---@param volume number|nil Playback volume. Default 1.0
+---@param pitch number|nil Playback pitch. Default 1.0
+---@param pan number|nil Playback stereo panning (-1.0 to 1.0). Default 0.0.
 ---@see @https://www.teardowngame.com/modding/api.html#UiSound
 function UiSound(path, volume, pitch, pan) end
 
----@param path string Path to sound file (OGG format)
----@param volume number _optional_ Playback volume. Default 1.0
----@param pitch number _optional_ Playback pitch. Default 1.0
----@see @https://www.teardowngame.com/modding/api.html#UiSound
-function UiSound(path, volume, pitch) end
-
----@param path string Path to sound file (OGG format)
----@param volume number _optional_ Playback volume. Default 1.0
----@see @https://www.teardowngame.com/modding/api.html#UiSound
-function UiSound(path, volume) end
-
----@param path string Path to sound file (OGG format)
----@see @https://www.teardowngame.com/modding/api.html#UiSound
-function UiSound(path) end
-
 ---@param path string Path to looping sound file (OGG format)
----@param volume number _optional_ Playback volume. Default 1.0
+---@param volume number|nil Playback volume. Default 1.0
 ---@see @https://www.teardowngame.com/modding/api.html#UiSoundLoop
 function UiSoundLoop(path, volume) end
 
----@param path string Path to looping sound file (OGG format)
----@see @https://www.teardowngame.com/modding/api.html#UiSoundLoop
-function UiSoundLoop(path) end
-
 ---@param amount number Mute by this amount (0.0 to 1.0)
----@param music boolean _optional_ Mute music as well
+---@param music boolean|nil Mute music as well
 ---@see @https://www.teardowngame.com/modding/api.html#UiMute
 function UiMute(amount, music) end
 
----@param amount number Mute by this amount (0.0 to 1.0)
----@see @https://www.teardowngame.com/modding/api.html#UiMute
-function UiMute(amount) end
-
 ---@param path string Path to image (PNG or JPG format)
 ---@param borderWidth number Border width
 ---@param borderHeight number Border height
----@param r number _optional_ Red multiply. Default 1.0
----@param g number _optional_ Green multiply. Default 1.0
----@param b number _optional_ Blue multiply. Default 1.0
----@param a number _optional_ Alpha channel. Default 1.0
+---@param r number|nil Red multiply. Default 1.0
+---@param g number|nil Green multiply. Default 1.0
+---@param b number|nil Blue multiply. Default 1.0
+---@param a number|nil Alpha channel. Default 1.0
 ---@see @https://www.teardowngame.com/modding/api.html#UiButtonImageBox
 function UiButtonImageBox(path, borderWidth, borderHeight, r, g, b, a) end
-
----@param path string Path to image (PNG or JPG format)
----@param borderWidth number Border width
----@param borderHeight number Border height
----@param r number _optional_ Red multiply. Default 1.0
----@param g number _optional_ Green multiply. Default 1.0
----@param b number _optional_ Blue multiply. Default 1.0
----@see @https://www.teardowngame.com/modding/api.html#UiButtonImageBox
-function UiButtonImageBox(path, borderWidth, borderHeight, r, g, b) end
-
----@param path string Path to image (PNG or JPG format)
----@param borderWidth number Border width
----@param borderHeight number Border height
----@param r number _optional_ Red multiply. Default 1.0
----@param g number _optional_ Green multiply. Default 1.0
----@see @https://www.teardowngame.com/modding/api.html#UiButtonImageBox
-function UiButtonImageBox(path, borderWidth, borderHeight, r, g) end
-
----@param path string Path to image (PNG or JPG format)
----@param borderWidth number Border width
----@param borderHeight number Border height
----@param r number _optional_ Red multiply. Default 1.0
----@see @https://www.teardowngame.com/modding/api.html#UiButtonImageBox
-function UiButtonImageBox(path, borderWidth, borderHeight, r) end
-
----@param path string Path to image (PNG or JPG format)
----@param borderWidth number Border width
----@param borderHeight number Border height
----@see @https://www.teardowngame.com/modding/api.html#UiButtonImageBox
-function UiButtonImageBox(path, borderWidth, borderHeight) end
 
 ---@param r number Red multiply
 ---@param g number Green multiply
 ---@param b number Blue multiply
----@param a number _optional_ Alpha channel. Default 1.0
+---@param a number|nil Alpha channel. Default 1.0
 ---@see @https://www.teardowngame.com/modding/api.html#UiButtonHoverColor
 function UiButtonHoverColor(r, g, b, a) end
 
 ---@param r number Red multiply
 ---@param g number Green multiply
 ---@param b number Blue multiply
----@see @https://www.teardowngame.com/modding/api.html#UiButtonHoverColor
-function UiButtonHoverColor(r, g, b) end
-
----@param r number Red multiply
----@param g number Green multiply
----@param b number Blue multiply
----@param a number _optional_ Alpha channel. Default 1.0
+---@param a number|nil Alpha channel. Default 1.0
 ---@see @https://www.teardowngame.com/modding/api.html#UiButtonPressColor
 function UiButtonPressColor(r, g, b, a) end
-
----@param r number Red multiply
----@param g number Green multiply
----@param b number Blue multiply
----@see @https://www.teardowngame.com/modding/api.html#UiButtonPressColor
-function UiButtonPressColor(r, g, b) end
 
 ---@param dist number Press distance
 ---@see @https://www.teardowngame.com/modding/api.html#UiButtonPressDist
 function UiButtonPressDist(dist) end
 
 ---@param text string Text on button
----@param w number _optional_ Button width
----@param h number _optional_ Button height
+---@param w number|nil Button width
+---@param h number|nil Button height
 ---@return boolean pressed True if user clicked button
 ---@see @https://www.teardowngame.com/modding/api.html#UiTextButton
 function UiTextButton(text, w, h) end
-
----@param text string Text on button
----@param w number _optional_ Button width
----@return boolean pressed True if user clicked button
----@see @https://www.teardowngame.com/modding/api.html#UiTextButton
-function UiTextButton(text, w) end
-
----@param text string Text on button
----@return boolean pressed True if user clicked button
----@see @https://www.teardowngame.com/modding/api.html#UiTextButton
-function UiTextButton(text) end
 
 ---@param path number Image path (PNG or JPG file)
 ---@return boolean pressed True if user clicked button
