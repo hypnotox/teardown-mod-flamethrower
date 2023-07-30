@@ -75,10 +75,10 @@ function initFlamethrower()
 
     function Flamethrower:setToolPosition()
         if InputDown('usetool') and GetInt('game.tool.hypnotox_flamethrower.ammo') > 0 and GetBool("game.player.canusetool") then
-            local offset = Transform(Vec(0.3, -0.5, -0.65))
+            local offset = Transform(Vec(0.3, -0.5, -0.9))
             SetToolTransform(offset, 0.1)
         else
-            local offset = Transform(Vec(0.3, -0.5, -0.68))
+            local offset = Transform(Vec(0.3, -0.5, -0.95))
             SetToolTransform(offset, 0.5)
         end
     end
