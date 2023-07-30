@@ -23,6 +23,10 @@ function initializeDependencies()
     initInput()
     initEngine()
     initDebug()
+
+    -- Must be disabled when publishing
+    -- Debug:init()
+
     initFlame()
     initSoundManager()
     initFlamethrower()
@@ -34,9 +38,6 @@ end
 
 function init()
     initializeDependencies()
-
-    -- Must be disabled when publishing
-    -- Debug:init()
 
     if GetBool('savegame.mod.features.fire_limit.enabled') then
         SetInt("game.fire.maxcount", GetInt('savegame.mod.features.fire_limit.value') or 1000000)
