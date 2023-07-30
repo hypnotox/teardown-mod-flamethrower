@@ -71,8 +71,11 @@ function initNozzle()
         local toolTransform = GetBodyTransform(tool)
 
         return TransformToParentTransform(
-            Transform(transform.pos, toolTransform.rot),
-            Engine:voxelCenterOffset()
+            TransformToParentTransform(
+                Transform(transform.pos, toolTransform.rot),
+                Engine:voxelCenterOffset()
+            ),
+            Transform(Vec(0, 0, -0.05))
         )
     end
 
