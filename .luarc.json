@@ -1,8 +1,11 @@
 {
     "runtime.version": "Lua 5.1",
     "workspace.checkThirdParty": false,
-    "workspace.ignoreDir": ["teardown.d.lua"],
     "workspace.library": ["teardown.d.lua"],
+    "workspace.ignoreDir": ["teardown.d.lua"],
     "diagnostics.libraryFiles": "Disable",
-    "diagnostics.disable": ["luadoc-miss-see-name"]
+    "diagnostics.severity": {
+        "undefined-global": "Error!",
+        "param-type-mismatch": "Error!"
+    }
 }
