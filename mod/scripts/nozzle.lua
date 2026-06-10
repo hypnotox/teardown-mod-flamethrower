@@ -51,8 +51,9 @@ end
 function Nozzle:getFlameVelocity()
     local nozzle = self:getNozzleTransform()
     local direction = TransformToParentVec(nozzle, Vec(0, 0, -1))
-    direction = VecAdd(direction, GetPlayerTransform())
 
+    -- Shot flames travel straight along the nozzle: player velocity is NOT
+    -- added here, or the jet would curve sideways while moving.
     return VecScale(direction, Knob.flameVelocity * 2)
 end
 

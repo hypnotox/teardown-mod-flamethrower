@@ -45,6 +45,14 @@ function FireStarter:spawnParticles()
     local velocityHigh = VecAdd(direction, VecScale(direction, 0.2))
     local velocityLow = VecAdd(direction, VecScale(direction, 0.05))
 
+    -- Carry a fraction of the player's velocity so the pilot flame stays
+    -- roughly attached when moving instead of trailing far behind. Partial
+    -- (not 1:1) so it still reads as a flame, not a rigidly-pinned jet.
+    local playerVelocityCarry = 0.5
+    local carriedVelocity = VecScale(GetPlayerVelocity(), playerVelocityCarry)
+    velocityHigh = VecAdd(velocityHigh, carriedVelocity)
+    velocityLow = VecAdd(velocityLow, carriedVelocity)
+
     ParticleReset()
     ParticleSticky(0)
     ParticleCollide(0)
