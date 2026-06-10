@@ -1,71 +1,62 @@
-function initKnob()
-    Knob = {
-        flameVelocity = 15,
-        flameVelocityMin = 5,
-        flameVelocityMax = 25,
-        changePerSecond = 10,
-        keybinds = {
-            decrease = 'leftarrow',
-            increase = 'rightarrow'
-        },
-    }
+Knob = {
+    flameVelocity = 15,
+    flameVelocityMin = 5,
+    flameVelocityMax = 25,
+    changePerSecond = 10,
+    keybinds = {
+        decrease = 'leftarrow',
+        increase = 'rightarrow'
+    },
+}
 
-    local decreaseKeybind = GetString('savegame.mod.features.nozzle.keybinds.decrease')
-    local increaseKeybind = GetString('savegame.mod.features.nozzle.keybinds.increase')
+-- Reads keybinds from the registry, falling back to defaults. Does not reset
+-- flameVelocity: the saved value is restored over the file-scope default.
+function Knob:loadConfig()
+    self.keybinds.decrease = Registry.getStringOr('savegame.mod.features.nozzle.keybinds.decrease', 'leftarrow')
+    self.keybinds.increase = Registry.getStringOr('savegame.mod.features.nozzle.keybinds.increase', 'rightarrow')
+end
 
-    if decreaseKeybind == '' then
-        decreaseKeybind = 'leftarrow'
+function Knob:tick()
+    local knobShape = self:getShape()
+
+    if InputDown('usetool') and GetBool("game.player.canusetool") then
+        SetShapeEmissiveScale(knobShape, 0.25)
+    else
+        SetShapeEmissiveScale(knobShape, 0)
     end
 
-    if increaseKeybind == '' then
-        increaseKeybind = 'rightarrow'
+    if InputDown(self.keybinds.decrease) and not InputDown(self.keybinds.increase) and self.flameVelocity >= self.flameVelocityMin then
+        local change = self.changePerSecond * GetTimeStep()
+
+        self.flameVelocity = self.flameVelocity - change
+        self:rotateKnob(change)
     end
 
-    Knob.keybinds.decrease = decreaseKeybind
-    Knob.keybinds.increase = increaseKeybind
+    if InputDown(self.keybinds.increase) and not InputDown(self.keybinds.decrease) and self.flameVelocity <= self.flameVelocityMax then
+        local change = self.changePerSecond * GetTimeStep()
 
-    function Knob:tick()
-        local knobShape = self:getShape()
-
-        if InputDown('usetool') and GetBool("game.player.canusetool") then
-            SetShapeEmissiveScale(knobShape, 0.25)
-        else
-            SetShapeEmissiveScale(knobShape, 0)
-        end
-
-        if InputDown(self.keybinds.decrease) and not InputDown(self.keybinds.increase) and self.flameVelocity >= self.flameVelocityMin then
-            local change = self.changePerSecond * GetTimeStep()
-
-            self.flameVelocity = self.flameVelocity - change
-            self:rotateKnob(change)
-        end
-
-        if InputDown(self.keybinds.increase) and not InputDown(self.keybinds.decrease) and self.flameVelocity <= self.flameVelocityMax then
-            local change = self.changePerSecond * GetTimeStep()
-
-            self.flameVelocity = self.flameVelocity + change
-            self:rotateKnob(-change)
-        end
+        self.flameVelocity = self.flameVelocity + change
+        self:rotateKnob(-change)
     end
+end
 
-    function Knob:rotateKnob(angle)
-        local shape = self:getShape()
-        local axisTransform = Transform(Vec(Engine.voxelSize * 0.5, Engine.voxelSize * 6.5, 0))
-        local shapeTransform = TransformToLocalTransform(axisTransform, GetShapeLocalTransform(shape))
+function Knob:rotateKnob(angle)
+    local shape = self:getShape()
+    local axisTransform = Transform(Vec(Engine.voxelSize * 0.5, Engine.voxelSize * 6.5, 0))
+    local shapeTransform = TransformToLocalTransform(axisTransform, GetShapeLocalTransform(shape))
 
-        axisTransform.rot = QuatEuler(0, 0, angle)
-        shapeTransform = TransformToParentTransform(axisTransform, shapeTransform)
+    axisTransform.rot = QuatEuler(0, 0, angle)
+    shapeTransform = TransformToParentTransform(axisTransform, shapeTransform)
 
-        SetShapeLocalTransform(
-            shape,
-            shapeTransform
-        )
-    end
+    SetShapeLocalTransform(
+        shape,
+        shapeTransform
+    )
+end
 
-    function Knob:getShape()
-        local tool = GetToolBody()
-        local shapes = GetBodyShapes(tool)
+function Knob:getShape()
+    local tool = GetToolBody()
+    local shapes = GetBodyShapes(tool)
 
-        return shapes[2]
-    end
+    return shapes[2]
 end
