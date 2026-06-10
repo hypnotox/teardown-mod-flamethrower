@@ -117,14 +117,6 @@ function initDebug()
 
     -- Body and shape functions --
 
-    function Debug:bodyOutline(handle, a)
-        if not self.enabled then
-            return
-        end
-
-        DrawBodyOutline(handle, a or 1)
-    end
-
     function Debug:bodyOutline(handle, r, g, b, a)
         if not self.enabled then
             return
@@ -139,14 +131,6 @@ function initDebug()
         end
 
         DrawShapeHighlight(handle, amount)
-    end
-
-    function Debug:shapeOutline(handle, a)
-        if not self.enabled then
-            return
-        end
-
-        DrawBodyOutline(handle, a or 1)
     end
 
     function Debug:shapeOutline(handle, r, g, b, a)
