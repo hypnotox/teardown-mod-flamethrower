@@ -25,9 +25,9 @@ local engineSetupDone = false
 local function setup()
     engineSetupDone = true
 
-    -- Uncomment to enable the debug overlay (HOME toggles in-game).
-    -- Must be disabled when publishing.
-    -- Debug:init()
+    -- Driven by the options toggle. Read before Flamethrower:register() so the
+    -- debug voxel model is picked up. Applies on (re)load, not mid-session.
+    Debug.enabled = GetBool('savegame.mod.features.debug.enabled')
 
     SoundManager:load()
     Knob:loadConfig()

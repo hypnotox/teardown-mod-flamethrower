@@ -15,6 +15,7 @@ function init()
         SetInt('savegame.mod.features.inventory.slot', 6)
         SetString('savegame.mod.features.nozzle.keybinds.decrease', 'leftarrow')
         SetString('savegame.mod.features.nozzle.keybinds.increase', 'rightarrow')
+        SetBool('savegame.mod.features.debug.enabled', false)
 
         SetBool('savegame.mod.general.is_initialized', true)
     end
@@ -44,6 +45,10 @@ function draw()
     -- Subtitle fire limit
     Options:subtitle('Fire limit')
     Options:toggle('Enable unlimited fire', 'savegame.mod.features.fire_limit.enabled')
+
+    -- Subtitle debug
+    Options:subtitle('Debug')
+    Options:toggle('Enable debug overlay (applies on reload)', 'savegame.mod.features.debug.enabled')
 
     UiTranslate(0, 100)
     if UiTextButton('Close', 200, 40) then
