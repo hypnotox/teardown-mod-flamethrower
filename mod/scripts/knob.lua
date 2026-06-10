@@ -9,8 +9,10 @@ Knob = {
     },
 }
 
--- Reads keybinds from the registry, falling back to defaults. Does not reset
--- flameVelocity: the saved value is restored over the file-scope default.
+-- Reads keybinds from the registry, falling back to defaults. Does not touch
+-- flameVelocity: it is a field on the global Knob table, so Teardown's
+-- quicksave _G snapshot restores the player's value over the file-scope
+-- default on quickload (no registry key is involved).
 function Knob:loadConfig()
     self.keybinds.decrease = Registry.getStringOr('savegame.mod.features.nozzle.keybinds.decrease', 'leftarrow')
     self.keybinds.increase = Registry.getStringOr('savegame.mod.features.nozzle.keybinds.increase', 'rightarrow')
