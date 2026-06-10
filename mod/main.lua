@@ -37,6 +37,10 @@ end
 function init()
     setup()
 
+    -- Re-capture the knob's model default fresh each session (init does not run
+    -- on quickload), self-healing a stale stored value after a .vox change.
+    Knob:clearStoredDefault()
+
     -- Fresh-start gameplay state: only on a new level, never re-applied on
     -- quickload, so a restored partial-ammo save is preserved.
     SetFloat('game.tool.hypnotox_flamethrower.ammo', Flamethrower.maxAmmo)

@@ -10,12 +10,19 @@ Knob = {
     },
 }
 
--- Physical knob rotation (degrees) currently applied relative to the model's
--- default orientation. A file-scope local so it resets to 0 on re-execution —
--- exactly when a quickload re-registers the tool and the knob shape snaps back
--- to its model default. The shape transform and this value therefore share a
--- lifecycle, keeping the visual in lockstep with the persisted flameVelocity.
-local appliedAngle = 0
+-- Registry keys storing the knob shape's model-default local transform.
+local DEFAULT_KEY = 'savegame.mod.nozzle.knob_default'
+
+-- Cached model-default local transform (file-scope: re-resolved after a quickload
+-- re-execution). Teardown does not serialize the shape transform — it reverts to
+-- this default on save/load while flameVelocity persists via the _G snapshot — so
+-- we re-derive the rotation from the value every tick and self-correct. The base
+-- itself is resolved from the registry (which DOES survive quickload), captured
+-- once from the live shape; capturing it after a load is unreliable because the
+-- shape reads as origin (no tool body yet) and then settles through intermediate
+-- poses before reaching the real default.
+local defaultTransform = nil
+local lastPos = nil
 
 -- Reads keybinds from the registry, falling back to defaults. Does not touch
 -- flameVelocity: it is a field on the global Knob table, so Teardown's
@@ -27,7 +34,17 @@ function Knob:loadConfig()
 end
 
 function Knob:tick()
-    local knobShape = self:getShape()
+    local tool = GetToolBody()
+
+    if tool == 0 then
+        return
+    end
+
+    local knobShape = GetBodyShapes(tool)[2]
+
+    if not knobShape then
+        return
+    end
 
     if InputDown('usetool') and GetBool("game.player.canusetool") then
         SetShapeEmissiveScale(knobShape, 0.25)
@@ -43,36 +60,83 @@ function Knob:tick()
         self.flameVelocity = math.min(self.flameVelocityMax, self.flameVelocity + change)
     end
 
-    self:syncRotation()
+    self:applyRotation(knobShape)
 end
 
--- Drives the physical knob from the value rather than accumulating per-frame
--- nudges, so it stays correct after a quickload (where flameVelocity persists
--- but the shape resets to its model default). desiredAngle is measured from the
--- default orientation; the sign matches the original (lower velocity turns the
--- knob one way, higher the other).
-function Knob:syncRotation()
-    local desiredAngle = self.flameVelocityDefault - self.flameVelocity
-    local delta = desiredAngle - appliedAngle
+-- Sets the knob's absolute rotation from the value: the model default rotated by
+-- (default - value) degrees about the knob axis. Re-asserted every tick so a
+-- shape the engine reset on save/load is corrected next frame.
+function Knob:applyRotation(shape)
+    if not defaultTransform then
+        defaultTransform = self:resolveDefault(shape)
 
-    if delta ~= 0 then
-        self:rotateKnob(delta)
-        appliedAngle = desiredAngle
+        if not defaultTransform then
+            return
+        end
     end
+
+    local axisTransform = Transform(Vec(Engine.voxelSize * 0.5, Engine.voxelSize * 6.5, 0))
+    local base = TransformToLocalTransform(axisTransform, defaultTransform)
+
+    axisTransform.rot = QuatEuler(0, 0, self.flameVelocityDefault - self.flameVelocity)
+
+    SetShapeLocalTransform(shape, TransformToParentTransform(axisTransform, base))
 end
 
-function Knob:rotateKnob(angle)
-    local shape = self:getShape()
-    local axisTransform = Transform(Vec(Engine.voxelSize * 0.5, Engine.voxelSize * 6.5, 0))
-    local shapeTransform = TransformToLocalTransform(axisTransform, GetShapeLocalTransform(shape))
+-- Returns the model-default transform: the stored registry value if present
+-- (survives quickload), otherwise captures it from the shape once it has settled
+-- (stopped moving at a non-origin pose) and stores it for all future loads.
+-- Returns nil while still waiting for the shape to settle.
+function Knob:resolveDefault(shape)
+    if HasKey(DEFAULT_KEY .. '.qw') then
+        return Transform(
+            Vec(GetFloat(DEFAULT_KEY .. '.px'), GetFloat(DEFAULT_KEY .. '.py'), GetFloat(DEFAULT_KEY .. '.pz')),
+            Quat(GetFloat(DEFAULT_KEY .. '.qx'), GetFloat(DEFAULT_KEY .. '.qy'), GetFloat(DEFAULT_KEY .. '.qz'), GetFloat(DEFAULT_KEY .. '.qw'))
+        )
+    end
 
-    axisTransform.rot = QuatEuler(0, 0, angle)
-    shapeTransform = TransformToParentTransform(axisTransform, shapeTransform)
+    local current = GetShapeLocalTransform(shape)
 
-    SetShapeLocalTransform(
-        shape,
-        shapeTransform
-    )
+    -- Not-ready state right after a load: shape sits at the origin.
+    if VecLength(current.pos) < 0.001 then
+        lastPos = nil
+        return nil
+    end
+
+    -- Wait for the pose to stop changing before trusting it as the default.
+    if not lastPos then
+        lastPos = current.pos
+        return nil
+    end
+
+    local dx = current.pos[1] - lastPos[1]
+    local dy = current.pos[2] - lastPos[2]
+    local dz = current.pos[3] - lastPos[3]
+    lastPos = current.pos
+
+    if (dx * dx + dy * dy + dz * dz) > 0.0000001 then
+        return nil
+    end
+
+    SetFloat(DEFAULT_KEY .. '.px', current.pos[1])
+    SetFloat(DEFAULT_KEY .. '.py', current.pos[2])
+    SetFloat(DEFAULT_KEY .. '.pz', current.pos[3])
+    SetFloat(DEFAULT_KEY .. '.qx', current.rot[1])
+    SetFloat(DEFAULT_KEY .. '.qy', current.rot[2])
+    SetFloat(DEFAULT_KEY .. '.qz', current.rot[3])
+    SetFloat(DEFAULT_KEY .. '.qw', current.rot[4])
+
+    return current
+end
+
+-- Forgets the stored default so it is re-captured fresh. Called from init()
+-- (fresh level load only, never quickload), so the default is re-derived from
+-- the current model each session — self-healing after a .vox change — while
+-- quickloads within a session keep reusing the stored value.
+function Knob:clearStoredDefault()
+    ClearKey(DEFAULT_KEY)
+    defaultTransform = nil
+    lastPos = nil
 end
 
 function Knob:getShape()
