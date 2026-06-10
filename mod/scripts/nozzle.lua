@@ -84,7 +84,7 @@ function Nozzle:throwFlames(flameVelocity, lifetime)
         local fwd = TransformToParentVec(nozzle, Vec(0, 0, -1))
         local hit, maxDist, normal = QueryRaycast(nozzle.pos, fwd, 100)
 
-        table.insert(Flamethrower.flames, Flame:new(nozzle, VecLength(flameVelocity), lifetime * 0.5, hit, maxDist, normal))
+        table.insert(Flamethrower.flames, Flame.new(nozzle, VecLength(flameVelocity), lifetime * 0.5, hit, maxDist, normal))
         Flamethrower:ammoTick()
         spawnParticles(flameVelocity, lifetime)
     end

@@ -28,7 +28,7 @@ function Flamethrower:tick()
     Knob:tick()
 
     for i = 1, #self.flames, 1 do
-        self.flames[i]:tick()
+        Flame.tick(self.flames[i])
     end
 
     if not GetBool("game.player.canusetool") then
@@ -54,7 +54,7 @@ function Flamethrower:update()
     end
 
     for i = #self.flames, 1, -1 do
-        self.flames[i]:update()
+        Flame.update(self.flames[i])
 
         if not self.flames[i].isAlive then
             table.remove(self.flames, i)
