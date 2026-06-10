@@ -18,27 +18,29 @@
 #include "scripts/fireStarter.lua"
 ]]
 
-local initialized = false
+local engineSetupDone = false
 
-function initializeDependencies()
-    initInput()
-    initEngine()
-    initDebug()
+-- Re-establishes engine-side bindings that do not survive serialization.
+-- Safe to run on every script (re-)execution, including quickload; must never
+-- touch gameplay-progress state (see init()).
+local function setup()
+    engineSetupDone = true
 
-    -- Must be disabled when publishing
+    -- Uncomment to enable the debug overlay (HOME toggles in-game).
+    -- Must be disabled when publishing.
     -- Debug:init()
 
-    initFlame()
-    initSoundManager()
-    initFlamethrower()
-    initKnob()
-    initNozzle()
-    initFireStarter()
-    initialized = true
+    SoundManager:load()
+    Knob:loadConfig()
+    Flamethrower:register()
 end
 
 function init()
-    initializeDependencies()
+    setup()
+
+    -- Fresh-start gameplay state: only on a new level, never re-applied on
+    -- quickload, so a restored partial-ammo save is preserved.
+    SetFloat('game.tool.hypnotox_flamethrower.ammo', Flamethrower.maxAmmo)
 
     if GetBool('savegame.mod.features.fire_limit.enabled') then
         SetInt("game.fire.maxcount", GetInt('savegame.mod.features.fire_limit.value') or 1000000)
@@ -46,8 +48,8 @@ function init()
 end
 
 function tick()
-    if not initialized then
-        initializeDependencies()
+    if not engineSetupDone then
+        setup()
     end
 
     if GetString("game.player.tool") == "hypnotox_flamethrower" then
@@ -57,8 +59,8 @@ function tick()
 end
 
 function update()
-    if not initialized then
-        initializeDependencies()
+    if not engineSetupDone then
+        setup()
     end
 
     if GetString("game.player.tool") == "hypnotox_flamethrower" and GetBool("game.player.canusetool") then
