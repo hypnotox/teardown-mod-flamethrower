@@ -1,5 +1,6 @@
 --[[
 -- Libraries
+#include "scripts/lib/registry.lua"
 #include "scripts/lib/input.lua"
 #include "scripts/lib/engine.lua"
 #include "scripts/lib/debug.lua"
