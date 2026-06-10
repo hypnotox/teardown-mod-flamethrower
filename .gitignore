@@ -1,0 +1,2 @@
+# The global ~/.gitignore excludes CLAUDE.md; track it in this repo
+!CLAUDE.md
