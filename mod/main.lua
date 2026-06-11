@@ -4,6 +4,9 @@
 #include "scripts/lib/engine.lua"
 #include "scripts/lib/debug.lua"
 
+-- State (shared seam)
+#include "scripts/state.lua"
+
 -- Entities
 #include "scripts/entities/flame.lua"
 
