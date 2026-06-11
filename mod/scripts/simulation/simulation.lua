@@ -58,16 +58,17 @@ end
 
 -- Future ServerCall target. Spawn a flame from client-supplied firing params:
 --   { transform = <nozzle world transform>, speed = <scalar>, lifetime = <seconds> }
--- The server derives direction from the transform, raycasts, and consumes ammo.
+-- Builds a velocity vector from the transform's forward direction; the flame
+-- raycasts for collisions itself, per step.
 function Simulation:fire(params)
     if not State:hasAmmo() then
         return
     end
 
     local dir = TransformToParentVec(params.transform, Vec(0, 0, -1))
-    local hit, maxDist, normal = QueryRaycast(params.transform.pos, dir, 100)
+    local vel = VecScale(dir, params.speed)
 
-    table.insert(self.flames, Flame.new(params.transform, params.speed, params.lifetime * 0.5, hit, maxDist, normal))
+    table.insert(self.flames, Flame.new(params.transform.pos, vel, params.lifetime * 0.5))
     self:consumeAmmo()
 end
 

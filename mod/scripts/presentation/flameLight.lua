@@ -8,7 +8,13 @@ function FlameLight:tick()
 
     for i = 1, #flames, 1 do
         local flame = flames[i]
-        local size = (flame.dist * 2) / flame.speed
-        PointLight(flame.transform.pos, 1, 0.2, 0.01, size)
+        local speed = VecLength(flame.vel)
+
+        if speed < 0.001 then
+            speed = 0.001
+        end
+
+        local size = (flame.dist * 2) / speed
+        PointLight(flame.pos, 1, 0.2, 0.01, size)
     end
 end
