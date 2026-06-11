@@ -11,6 +11,10 @@ Simulation = {
 -- bloom itself comes from the per-step wander in flame.lua.
 local DISPERSION_ANGLE = 4
 
+-- Scales the flame's launch speed down from the shared firing-params speed (which
+-- the jet particles also use, untouched) so the simulated fire travels less far.
+local FLAME_SPEED_SCALE = 0.8
+
 -- Idempotent engine-side setup, safe to re-run on quickload. Registers and
 -- enables the tool. Does NOT set ammo (that is fresh-start state in :init()).
 function Simulation:setup()
@@ -74,7 +78,7 @@ function Simulation:fire(params)
         Vec(0, 0, -1)
     )
     local dir = TransformToParentVec(params.transform, localDir)
-    local vel = VecScale(dir, params.speed)
+    local vel = VecScale(dir, params.speed * FLAME_SPEED_SCALE)
 
     table.insert(self.flames, Flame.new(params.transform.pos, vel, params.lifetime * 0.5))
     self:consumeAmmo()

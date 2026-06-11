@@ -13,14 +13,14 @@ Flame = {}
 -- === Tunable physics constants ===
 local GRAVITY_STRENGTH = 5      -- m/s^2 downward (gentle droop; real gravity is 9.81)
 local DRAG             = 0.2    -- per-second velocity decay (the original 0.2/s, now on the vector)
-local SIZE_GROWTH      = 1.5    -- spawn-sphere radius growth factor (matches the original)
+local SIZE_GROWTH      = 1.3    -- spawn-sphere radius growth factor
 local MAX_FIRE_POINTS  = 6      -- per-flame-per-frame SpawnFire cap (cost guard)
 local MIN_SPEED        = 2      -- m/s; below this the flame dies
 local SURFACE_OFFSET   = 0.05   -- m; nudge out of a surface on impact
 local MAX_BOUNCES               = 2      -- reflection depth cap
 local RESTITUTION               = 0.2    -- speed retained per bounce (draggy/inelastic)
 local BOUNCE_LIFETIME_RETENTION = 0.5    -- lifetime retained per bounce
-local TURBULENCE                = 8      -- per-step wander strength (m/s^2-ish); the trumpet-bloom driver
+local TURBULENCE                = 5      -- per-step wander strength (m/s^2-ish); the trumpet-bloom driver
 
 -- A random point inside a sphere of radius r around center.
 local function randomSpherePoint(center, r)
