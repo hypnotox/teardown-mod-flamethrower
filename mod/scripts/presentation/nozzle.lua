@@ -3,10 +3,18 @@
 -- renders the flame-jet particles. No world mutation here.
 Nozzle = {}
 
-local function spawnAtPosition(pos, lifetime, flameVelocity)
-    SpawnParticle(pos, flameVelocity, lifetime)
-    SpawnParticle(pos, flameVelocity, lifetime * 0.8)
-    SpawnParticle(pos, flameVelocity, lifetime * 0.7)
+-- Emit a layer's three particles, each with a cone-jittered velocity in the
+-- nozzle's local frame, then transformed to world. The cone widens per layer
+-- (tight core -> wide cloud), producing the velocity-divergence trumpet bloom.
+local function spawnJet(transform, pos, speed, lifetime, coneDeg)
+    for _, lt in ipairs({lifetime, lifetime * 0.8, lifetime * 0.7}) do
+        local localDir = QuatRotateVec(
+            QuatEuler(math.random(-coneDeg, coneDeg), math.random(-coneDeg, coneDeg), 0),
+            Vec(0, 0, -1)
+        )
+        local vel = VecScale(TransformToParentVec(transform, localDir), speed)
+        SpawnParticle(pos, vel, lt)
+    end
 end
 
 function Nozzle:getNozzleShape()
@@ -44,9 +52,9 @@ end
 
 -- Render the flame jet for a shot. Pure local FX.
 function Nozzle:spawnJetParticles(params)
-    local nozzle = params.transform
-    local direction = TransformToParentVec(nozzle, Vec(0, 0, -1))
-    local flameVelocity = VecScale(direction, params.speed)
+    local transform = params.transform
+    local pos = transform.pos
+    local speed = params.speed
     local lifetime = params.lifetime
     local startSize = 0.03
     local endSize = 0.8
@@ -54,36 +62,39 @@ function Nozzle:spawnJetParticles(params)
     ParticleReset()
     ParticleSticky(0.1, 1, 'easein')
     ParticleCollide(0, 0.001, 'easein')
-    ParticleGravity(5, -10)
-    ParticleDrag(0)
+    ParticleDrag(0.25)
     ParticleStretch(5)
     ParticleTile(5)
 
-    -- white core
+    -- white core (tight cone, droops with the flames)
+    ParticleGravity(-2, -8)
     ParticleColor(1, math.random(9, 10) / 10, math.random(9, 10) / 10)
     ParticleEmissive(2, 0)
     ParticleRadius(startSize, endSize)
     ParticleAlpha(0.8, 0.5)
-    spawnAtPosition(nozzle.pos, lifetime, flameVelocity)
+    spawnJet(transform, pos, speed, lifetime, 2)
 
-    -- orange tint
+    -- orange tint (droops)
+    ParticleGravity(-2, -8)
     ParticleColor(1, math.random(28, 44) / 100, 0)
     ParticleEmissive(6, 3)
     ParticleRadius(startSize * 1.5, endSize * 1.5)
     ParticleAlpha(0.8, 0.5)
-    spawnAtPosition(nozzle.pos, lifetime, flameVelocity)
+    spawnJet(transform, pos, speed, lifetime, 4)
 
-    -- red splatter
+    -- red splatter (droops, wider cone)
+    ParticleGravity(-2, -8)
     ParticleColor(1, math.random(5, 15) / 100, 0)
     ParticleEmissive(4, 2)
     ParticleRadius(startSize * 1.5, endSize * 1.7)
     ParticleAlpha(0.3, 0.7)
-    spawnAtPosition(nozzle.pos, lifetime, flameVelocity)
+    spawnJet(transform, pos, speed, lifetime, 6)
 
-    -- red cloud
+    -- red cloud (rising smoke, widest cone)
+    ParticleGravity(4, -2)
     ParticleColor(1, math.random(40, 50) * 0.01, 0, 1, math.random(20, 40) * 0.01, 0)
     ParticleEmissive(3, 1)
     ParticleRadius(startSize * 1.5, endSize * 2.5)
     ParticleAlpha(0.8, 0.5)
-    spawnAtPosition(nozzle.pos, lifetime, flameVelocity)
+    spawnJet(transform, pos, speed, lifetime, 10)
 end
