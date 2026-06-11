@@ -72,11 +72,11 @@ function Debug:tick()
     Debug:cross(knobTransform.pos, 255, 0, 0, 0.7)
 
     -- FlameVelocity
-    local flameVelocity = Nozzle:getFlameVelocity()
+    local flameVelocity = VecScale(TransformToParentVec(nozzleTransform, Vec(0, 0, -1)), State:getFlameVelocity() * 2)
     Debug:watch('FlameVelocity', Debug:toString(flameVelocity))
     Debug:watch('FlameVelocityMagnitude', Debug:toString(VecLength(flameVelocity)))
 
-    Debug:watch('FlamesCount', #Flamethrower.flames)
+    Debug:watch('FlamesCount', #Simulation:getFlames())
     Debug:watch('FireCount', GetFireCount())
 end
 
