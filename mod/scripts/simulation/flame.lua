@@ -17,12 +17,42 @@ local SIZE_GROWTH      = 1.5    -- spawn-sphere radius growth factor (matches th
 local MAX_FIRE_POINTS  = 20     -- per-flame-per-frame SpawnFire cap (cost guard)
 local MIN_SPEED        = 2      -- m/s; below this the flame dies
 local SURFACE_OFFSET   = 0.05   -- m; nudge out of a surface on impact
+local MAX_BOUNCES               = 3      -- reflection depth cap
+local RESTITUTION               = 0.5    -- speed retained per bounce
+local BOUNCE_LIFETIME_RETENTION = 0.6    -- lifetime retained per bounce
+local CREEP_RADIUS              = 0.4    -- m; surface-creep disk radius
+local CREEP_POINTS              = 6      -- fires spawned per impact
 
 -- A random point inside a sphere of radius r around center.
 local function randomSpherePoint(center, r)
     local offsetRotation = QuatEuler(math.random(0, 360), math.random(0, 360), math.random(0, 360))
     local offsetLength = math.random(0, math.floor(r * 100)) / 100
     return VecAdd(center, QuatRotateVec(offsetRotation, Vec(0, 0, offsetLength)))
+end
+
+-- Reflect a velocity vector about a unit surface normal: v - 2*(v.n)*n.
+local function reflect(vel, n)
+    return VecSub(vel, VecScale(n, 2 * VecDot(vel, n)))
+end
+
+-- Spawn a fan of fires across the surface plane at an impact point, so fire
+-- creeps along floors / up walls. Builds an orthonormal tangent basis from the
+-- normal and scatters points in that tangent disk.
+local function spawnCreep(center, n)
+    local ref = Vec(0, 1, 0)
+    if math.abs(VecDot(n, ref)) > 0.9 then
+        ref = Vec(1, 0, 0)
+    end
+
+    local t1 = VecNormalize(VecCross(n, ref))
+    local t2 = VecCross(n, t1)
+
+    for _ = 1, CREEP_POINTS, 1 do
+        local angle = math.rad(math.random(0, 360))
+        local radius = math.random(0, math.floor(CREEP_RADIUS * 100)) / 100
+        local offset = VecAdd(VecScale(t1, radius * math.cos(angle)), VecScale(t2, radius * math.sin(angle)))
+        SpawnFire(VecAdd(center, offset))
+    end
 end
 
 -- Spawn this flame's fires in a growing sphere around its position.
@@ -66,13 +96,25 @@ function Flame.advance(flame)
     -- Per-step collision: raycast along this frame's displacement.
     if stepLen > 0 then
         local dir = VecScale(step, 1 / stepLen)
-        local hit, hitDist = QueryRaycast(flame.pos, dir, stepLen)
+        local hit, hitDist, normal = QueryRaycast(flame.pos, dir, stepLen)
 
         if hit then
-            -- Stop at the surface and die (reflection is added in Task 2).
-            flame.pos = VecAdd(flame.pos, VecScale(dir, hitDist))
-            flame.isAlive = false
+            local hitPos = VecAdd(flame.pos, VecScale(dir, hitDist))
             moved = hitDist
+            spawnCreep(hitPos, normal)
+
+            if flame.bounces < MAX_BOUNCES then
+                -- Reflect about the surface normal, losing speed and lifetime,
+                -- nudged out of the surface so it doesn't immediately re-hit.
+                flame.pos = VecAdd(hitPos, VecScale(normal, SURFACE_OFFSET))
+                flame.vel = VecScale(reflect(flame.vel, normal), RESTITUTION)
+                flame.lifetime = flame.lifetime * BOUNCE_LIFETIME_RETENTION
+                flame.bounces = flame.bounces + 1
+            else
+                -- Spent: stop at the surface and die (after the final creep burst).
+                flame.pos = hitPos
+                flame.isAlive = false
+            end
         else
             flame.pos = VecAdd(flame.pos, step)
         end
