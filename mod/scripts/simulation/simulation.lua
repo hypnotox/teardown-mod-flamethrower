@@ -7,6 +7,10 @@ Simulation = {
     flames = {}
 }
 
+-- Emission jitter half-cone (degrees) for the flame stream's core; the trumpet
+-- bloom itself comes from the per-step wander in flame.lua.
+local DISPERSION_ANGLE = 4
+
 -- Idempotent engine-side setup, safe to re-run on quickload. Registers and
 -- enables the tool. Does NOT set ammo (that is fresh-start state in :init()).
 function Simulation:setup()
@@ -65,7 +69,11 @@ function Simulation:fire(params)
         return
     end
 
-    local dir = TransformToParentVec(params.transform, Vec(0, 0, -1))
+    local localDir = QuatRotateVec(
+        QuatEuler(math.random(-DISPERSION_ANGLE, DISPERSION_ANGLE), math.random(-DISPERSION_ANGLE, DISPERSION_ANGLE), 0),
+        Vec(0, 0, -1)
+    )
+    local dir = TransformToParentVec(params.transform, localDir)
     local vel = VecScale(dir, params.speed)
 
     table.insert(self.flames, Flame.new(params.transform.pos, vel, params.lifetime * 0.5))

@@ -22,6 +22,7 @@ local RESTITUTION               = 0.5    -- speed retained per bounce
 local BOUNCE_LIFETIME_RETENTION = 0.6    -- lifetime retained per bounce
 local CREEP_RADIUS              = 0.4    -- m; surface-creep disk radius
 local CREEP_POINTS              = 6      -- fires spawned per impact
+local TURBULENCE                = 8      -- per-step wander strength (m/s^2-ish); the trumpet-bloom driver
 
 -- A random point inside a sphere of radius r around center.
 local function randomSpherePoint(center, r)
@@ -120,8 +121,18 @@ function Flame.advance(flame)
         end
     end
 
-    -- Forces: gravity droop, then drag.
+    -- Forces: gravity droop, turbulent wander, then drag.
     flame.vel = VecAdd(flame.vel, Vec(0, -GRAVITY_STRENGTH * dt, 0))
+
+    -- Turbulent wander: a small random-direction velocity nudge each step.
+    -- Negligible vs forward speed near the nozzle (tight core); dominates
+    -- downrange once drag has bled speed off -> the trumpet bloom.
+    local wander = QuatRotateVec(
+        QuatEuler(math.random(0, 360), math.random(0, 360), math.random(0, 360)),
+        Vec(0, 0, TURBULENCE * dt)
+    )
+    flame.vel = VecAdd(flame.vel, wander)
+
     flame.vel = VecScale(flame.vel, 1 - DRAG * dt)
 
     -- Emit fire and age. spawnFireVolume uses this step's pre-force speed on
