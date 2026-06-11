@@ -29,8 +29,17 @@ function SoundManager:tick()
         PlayLoop(self.soundFlamethrowerActive, GetPlayerTransform().pos, self.soundVolume)
     end
 
-    if not self.outOfAmmo and not State:hasAmmo() then
-        PlaySound(self.soundFlamethrowerEnd, GetPlayerTransform().pos, self.soundVolume)
-        self.outOfAmmo = true
+    if not State:hasAmmo() then
+        -- Latch the end-sound to fire exactly once per empty episode (the
+        -- condition is true every frame while empty).
+        if not self.outOfAmmo then
+            PlaySound(self.soundFlamethrowerEnd, GetPlayerTransform().pos, self.soundVolume)
+            self.outOfAmmo = true
+        end
+    else
+        -- Ammo present again (fresh level, or a future refill): re-arm the latch
+        -- so the end-sound can play next time the tank runs dry. Without this the
+        -- flag, persisted across quickload via the _G snapshot, would stay stuck.
+        self.outOfAmmo = false
     end
 end
